@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/01_API/01_API.iml" filepath="$PROJECT_DIR$/01_API/01_API.iml" />
+      <module fileurl="file://$PROJECT_DIR$/02_CollectionAndReflect/02_CollectionAndReflect.iml" filepath="$PROJECT_DIR$/02_CollectionAndReflect/02_CollectionAndReflect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/03_ListAndSet/03_ListAndSet.iml" filepath="$PROJECT_DIR$/03_ListAndSet/03_ListAndSet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04_Map/04_Map.iml" filepath="$PROJECT_DIR$/04_Map/04_Map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/05_ExceptionAndThread/05_ExceptionAndThread.iml" filepath="$PROJECT_DIR$/05_ExceptionAndThread/05_ExceptionAndThread.iml" />
+      <module fileurl="file://$PROJECT_DIR$/06_Thread/06_Thread.iml" filepath="$PROJECT_DIR$/06_Thread/06_Thread.iml" />
+      <module fileurl="file://$PROJECT_DIR$/07_ThreadAndLambda/07_ThreadAndLambda.iml" filepath="$PROJECT_DIR$/07_ThreadAndLambda/07_ThreadAndLambda.iml" />
+      <module fileurl="file://$PROJECT_DIR$/08_FileAndRecursion/08_FileAndRecursion.iml" filepath="$PROJECT_DIR$/08_FileAndRecursion/08_FileAndRecursion.iml" />
+      <module fileurl="file://$PROJECT_DIR$/09_IOAndProperties/09_IOAndProperties.iml" filepath="$PROJECT_DIR$/09_IOAndProperties/09_IOAndProperties.iml" />
+      <module fileurl="file://$PROJECT_DIR$/10_IO/10_IO.iml" filepath="$PROJECT_DIR$/10_IO/10_IO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/11_Net/11_Net.iml" filepath="$PROJECT_DIR$/11_Net/11_Net.iml" />
+      <module fileurl="file://$PROJECT_DIR$/12_FunctionalInterface/12_FunctionalInterface.iml" filepath="$PROJECT_DIR$/12_FunctionalInterface/12_FunctionalInterface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/13_StreamAndMethodReference/13_StreamAndMethodReference.iml" filepath="$PROJECT_DIR$/13_StreamAndMethodReference/13_StreamAndMethodReference.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day04-code/day04-code.iml" filepath="$PROJECT_DIR$/day04-code/day04-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day05-code/day05-code.iml" filepath="$PROJECT_DIR$/day05-code/day05-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day06-code/day06-code.iml" filepath="$PROJECT_DIR$/day06-code/day06-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day07-code/day07-code.iml" filepath="$PROJECT_DIR$/day07-code/day07-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day08-code/day08-code.iml" filepath="$PROJECT_DIR$/day08-code/day08-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day09-code/day09-code.iml" filepath="$PROJECT_DIR$/day09-code/day09-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day10-code/day10-code.iml" filepath="$PROJECT_DIR$/day10-code/day10-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/day11-code/day11-code.iml" filepath="$PROJECT_DIR$/day11-code/day11-code.iml" />
+    </modules>
+  </component>
+</project>
