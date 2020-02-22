@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.print.dao.PrintTemplateDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.print.domain.PrintTemplateDO">
+		select `id`,`created`,`modified`,`background_image`,`fid`,`fix_left`,`fix_top`,`height`,`name`,`pic_path`,`printer`,`width`,`backgroundHeight`,`backgroundWidth`,`fields`,`fontFamily`,`fontSize`,`orderby`,`spot_no`,`user_no`,`status` from print_template where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.print.domain.PrintTemplateDO">
+		select `id`,`created`,`modified`,`background_image`,`fid`,`fix_left`,`fix_top`,`height`,`name`,`pic_path`,`printer`,`width`,`backgroundHeight`,`backgroundWidth`,`fields`,`fontFamily`,`fontSize`,`orderby`,`spot_no`,`user_no`,`status` from print_template
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="created != null and created != ''"> and created = #{created} </if>
+		  		  <if test="modified != null and modified != ''"> and modified = #{modified} </if>
+		  		  <if test="backgroundImage != null and backgroundImage != ''"> and background_image = #{backgroundImage} </if>
+		  		  <if test="fid != null and fid != ''"> and fid = #{fid} </if>
+		  		  <if test="fixLeft != null and fixLeft != ''"> and fix_left = #{fixLeft} </if>
+		  		  <if test="fixTop != null and fixTop != ''"> and fix_top = #{fixTop} </if>
+		  		  <if test="height != null and height != ''"> and height = #{height} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="picPath != null and picPath != ''"> and pic_path = #{picPath} </if>
+		  		  <if test="printer != null and printer != ''"> and printer = #{printer} </if>
+		  		  <if test="width != null and width != ''"> and width = #{width} </if>
+		  		  <if test="backgroundHeight != null and backgroundHeight != ''"> and backgroundHeight = #{backgroundHeight} </if>
+		  		  <if test="backgroundWidth != null and backgroundWidth != ''"> and backgroundWidth = #{backgroundWidth} </if>
+		  		  <if test="fields != null and fields != ''"> and fields = #{fields} </if>
+		  		  <if test="fontFamily != null and fontFamily != ''"> and fontFamily = #{fontFamily} </if>
+		  		  <if test="fontSize != null and fontSize != ''"> and fontSize = #{fontSize} </if>
+		  		  <if test="orderby != null and orderby != ''"> and orderby = #{orderby} </if>
+		  		  <if test="spotNo != null and spotNo != ''"> and spot_no = #{spotNo} </if>
+		  		  <if test="userNo != null and userNo != ''"> and user_no = #{userNo} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from print_template
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="created != null and created != ''"> and created = #{created} </if>
+		  		  <if test="modified != null and modified != ''"> and modified = #{modified} </if>
+		  		  <if test="backgroundImage != null and backgroundImage != ''"> and background_image = #{backgroundImage} </if>
+		  		  <if test="fid != null and fid != ''"> and fid = #{fid} </if>
+		  		  <if test="fixLeft != null and fixLeft != ''"> and fix_left = #{fixLeft} </if>
+		  		  <if test="fixTop != null and fixTop != ''"> and fix_top = #{fixTop} </if>
+		  		  <if test="height != null and height != ''"> and height = #{height} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="picPath != null and picPath != ''"> and pic_path = #{picPath} </if>
+		  		  <if test="printer != null and printer != ''"> and printer = #{printer} </if>
+		  		  <if test="width != null and width != ''"> and width = #{width} </if>
+		  		  <if test="backgroundHeight != null and backgroundHeight != ''"> and backgroundHeight = #{backgroundHeight} </if>
+		  		  <if test="backgroundWidth != null and backgroundWidth != ''"> and backgroundWidth = #{backgroundWidth} </if>
+		  		  <if test="fields != null and fields != ''"> and fields = #{fields} </if>
+		  		  <if test="fontFamily != null and fontFamily != ''"> and fontFamily = #{fontFamily} </if>
+		  		  <if test="fontSize != null and fontSize != ''"> and fontSize = #{fontSize} </if>
+		  		  <if test="orderby != null and orderby != ''"> and orderby = #{orderby} </if>
+		  		  <if test="spotNo != null and spotNo != ''"> and spot_no = #{spotNo} </if>
+		  		  <if test="userNo != null and userNo != ''"> and user_no = #{userNo} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.print.domain.PrintTemplateDO" useGeneratedKeys="true" keyProperty="id">
+		insert into print_template
+		(
+			`created`, 
+			`modified`, 
+			`background_image`, 
+			`fid`, 
+			`fix_left`, 
+			`fix_top`, 
+			`height`, 
+			`name`, 
+			`pic_path`, 
+			`printer`, 
+			`width`, 
+			`backgroundHeight`,
+			`backgroundWidth`,
+			`fields`, 
+			`fontFamily`,
+			`fontSize`,
+			`orderby`, 
+			`spot_no`, 
+			`user_no`, 
+			`status`
+		)
+		values
+		(
+			#{created}, 
+			#{modified}, 
+			#{backgroundImage}, 
+			#{fid}, 
+			#{fixLeft}, 
+			#{fixTop}, 
+			#{height}, 
+			#{name}, 
+			#{picPath}, 
+			#{printer}, 
+			#{width}, 
+			#{backgroundHeight},
+			#{backgroundWidth},
+			#{fields}, 
+			#{fontFamily},
+			#{fontSize},
+			#{orderby}, 
+			#{spotNo}, 
+			#{userNo}, 
+			#{status}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.print.domain.PrintTemplateDO">
+		update print_template 
+		<set>
+			<if test="created != null">`created` = #{created}, </if>
+			<if test="modified != null">`modified` = #{modified}, </if>
+			<if test="backgroundImage != null">`background_image` = #{backgroundImage}, </if>
+			<if test="fid != null">`fid` = #{fid}, </if>
+			<if test="fixLeft != null">`fix_left` = #{fixLeft}, </if>
+			<if test="fixTop != null">`fix_top` = #{fixTop}, </if>
+			<if test="height != null">`height` = #{height}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="picPath != null">`pic_path` = #{picPath}, </if>
+			<if test="printer != null">`printer` = #{printer}, </if>
+			<if test="width != null">`width` = #{width}, </if>
+			<if test="backgroundHeight != null">`backgroundHeight` = #{backgroundHeight}, </if>
+			<if test="backgroundWidth != null">`backgroundWidth` = #{backgroundWidth}, </if>
+			<if test="fields != null">`fields` = #{fields}, </if>
+			<if test="fontFamily != null">`fontFamily` = #{fontFamily}, </if>
+			<if test="fontSize != null">`fontSize` = #{fontSize}, </if>
+			<if test="orderby != null">`orderby` = #{orderby}, </if>
+			<if test="spotNo != null">`spot_no` = #{spotNo}, </if>
+			<if test="userNo != null">`user_no` = #{userNo}, </if>
+			<if test="status != null">`status` = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from print_template where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from print_template where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

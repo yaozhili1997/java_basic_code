@@ -1,0 +1,36 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>攀枝花乡村旅游</title>
+	<!--标准mui.css-->
+	<link rel="stylesheet" type="text/css" href="/css/mui.min.css" />
+	<link rel="stylesheet" type="text/css" href="/css/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="/css/mui.picker.min.css" />
+	<!--App自定义的css-->
+	<link rel="stylesheet" type="text/css" href="/css/app.css?v=1.1.1" />
+	<script type="application/javascript" src="/js/jquery.min.js"></script>
+	<script type="application/javascript" src="/js/mui.min.js"></script>
+	<script type="application/javascript" src="/js/mui.picker.min.js"></script>
+	<script type="application/javascript" src="/js/doT.min.js"></script>
+	<script type="application/javascript" src="/js/utils.js?v=1.1.1"></script>
+	<script type="application/javascript" src="/js/appjs/mobile/mobile.js?v=1.1.3"></script>
+	<script th:inline="javascript">
+        window.orderServerBasePath =[[${session.orderMobileApiBaseUrl}]];
+        window.orderApiBaseUrl =[[${session.orderApiBaseUrl}]];
+        window.applicationNo = [[${session.applicationNo}]];
+        window.openId = [[${session.session_login_open_id}]];
+        window.loginPlatform = [[${session.session_login_platform}]];
+        if (!window.loginPlatform) {
+            window.loginPlatform = "alipay";
+		}
+        if  (!window.openId) {
+           window.openId = "2088702101104222";
+           //window.openId = 'oOxZv0ilU5t89SFupm2Au4bCg47Y';
+           //document.location = '/alipay/auth';
+			//document.location = '/auth';
+		}
+	</script>
+</head>
+<div th:fragment="footer">
+</div>

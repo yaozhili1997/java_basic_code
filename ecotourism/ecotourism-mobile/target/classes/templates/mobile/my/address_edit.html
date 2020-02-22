@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<!--<header>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script type="application/javascript" src="/js/jquery.min.js" ></script>
+    <script type="application/javascript" src="/js/mui.min.js" ></script>
+    <script type="application/javascript" src="/js/mui.picker.min.js" ></script>
+    <link href="/css/mui.min.css" rel="stylesheet">
+    <link href="/css/mui.picker.min.css" rel="stylesheet">
+    <link href="/css/iconfont.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</header>-->
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<link href="/css/addressSelector/ydui.css" rel="stylesheet">
+<script type="application/javascript" src="/js/addressSelector/ydui.flexible.js" ></script>
+<script th:inline="javascript">
+    var addressNo = [[${addressNo}]];
+    $(function() {
+        initAddress(addressNo);
+        if (addressNo) {
+            $('.mui-title').html('编辑收货地址');
+        } else {
+            $('.mui-title').html('新增收货地址');
+        }
+    });
+    function saveAddress(_this) {
+        var name = $.trim($('#name').val());
+        var mobile = $.trim($('#mobile').val());
+        var area = $.trim($('#area').val());
+        var details = $.trim($('#details').val());
+        var zipCode = $.trim($('#zipCode').val());
+
+        if (!name) {
+            mui.toast('请输入姓名');
+            return;
+        }
+
+        if (!mobile) {
+            mui.toast('请输入电话');
+            return;
+        }
+
+        if (!area) {
+            mui.toast('请选择所在地区');
+            return;
+        }
+
+        if (!details) {
+            mui.toast('请输入详细地址');
+            return;
+        }
+        $(_this).prop('disabled', true);
+        var areas = area.split(' ');
+        var params = {};
+        params.openId = openId;
+        params.addressNo = addressNo;
+        params.province = areas[0];
+        params.city = areas[1];
+        params.region = areas[2];
+        params.consigneeName = name;
+        params.consigneePhone = mobile;
+        params.detailAddress = details;
+        params.postalCode = zipCode;
+        saveMyAddress(params, function(result) {
+            if (result.status == 'success') {
+                mui.toast('保存成功');
+                setTimeout(function() {
+                    document.location = '/my/addressList';
+                }, 200);
+            } else {
+                mui.alert(result.errorMsg);
+                $(_this).prop('disabled', false);
+            }
+        });
+    }
+
+    function initAddress(addressNo) {
+        var $target = $('#area');
+        $target.on('click', function (event) {
+            event.stopPropagation();
+            $target.citySelect('open');
+        });
+        $target.on('done.ydui.cityselect', function (ret) {
+            $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+        });
+        if (addressNo) {
+            var params = {};
+            params.openId = openId;
+            params.addressNo = addressNo;
+            getMyAddress(params, function(result) {
+                var address = result.data;
+                if (address) {
+                    $('#name').val(address.consigneeName);
+                    $('#mobile').val(address.consigneePhone);
+                    $('#area').val(address.province + ' ' + address.city + ' ' + address.region);
+                    $('#details').val(address.detailAddress);
+                    $('#zipCode').val(address.postalCode);
+                }
+                $target.citySelect({
+                    provance: address.province,
+                    city: address.city,
+                    area: address.region
+                });
+            });
+        } else {
+            $target.citySelect();
+        }
+    }
+</script>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #fff;"></a>
+    <h1 class="mui-title"></h1>
+</header>
+<div class="mui-content">
+
+    <div class="mui-clearfix" style="background-color: white;">
+        <form class="mui-input-group"  style="padding-top: 10px;">
+            <div class="mui-input-row" style="">
+                <label style="font-size: 14px;">姓名：</label>
+                <input type="text" class="mui-input-clear text-input" placeholder="请输入姓名" id="name">
+            </div>
+
+            <div class="mui-input-row" style="margin: 10px 0;">
+                <label style="font-size: 14px;">电话：</label>
+                <input type="text" class="mui-input-clear text-input" placeholder="请输入电话" id="mobile">
+            </div>
+
+            <div class="mui-input-row" style="margin: 10px 0;">
+                <label style="font-size: 14px;">所在地区：</label>
+                <input type="text" id='city-picker' class="mui-input-clear text-input" placeholder="请选择所在地区" id="area" readonly="readonly">
+            </div>
+
+            <div class="mui-input-row" style="margin: 10px 0;">
+                <label style="font-size: 14px;">详细地址：</label>
+                <input type="text" class="mui-input-clear text-input" placeholder="请输入详细地址" id="details">
+            </div>
+
+            <div class="mui-input-row" style="margin-top: 10px;">
+                <label style="font-size: 14px;">邮编：</label>
+                <input type="text" class="mui-input-clear text-input" placeholder="邮寄地址邮编" id="zipCode">
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<!-- 底部导航 -->
+<foot class="foot-box" style="position: fixed; bottom: 0px; width: 100%;border-top:1px solid rgba(0, 0, 0, .1)">
+    <div style="width: 100%;  float: left;">
+        <button type="button" onclick="saveAddress(this)" id="gotoaddress" class="mui-btn mui-btn-success mui-btn-block  mui-pull-right" style="background-color: rgb(255,75,39);border: 1px solid rgb(255, 75, 39);margin-bottom: 0;border-radius:0px;padding: 10px;width: 100%;font-size: 14px;line-height: 25px;">保存收货地址</button>
+    </div>
+</foot>
+<!-- 底部导航 end!-->
+</body>
+<script type="application/javascript" src="/js/addressSelector/ydui.citys.js" ></script>
+<script type="application/javascript" src="/js/addressSelector/ydui.js" ></script>
+<script type="text/javascript" charset="utf-8">
+    /**
+     * 默认调用
+     */
+    /*!function () {
+        var $target = $('#area');
+        $target.citySelect();
+        $target.on('click', function (event) {
+            event.stopPropagation();
+            $target.citySelect('open');
+        });
+        $target.on('done.ydui.cityselect', function (ret) {
+            $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+        });
+    }();*/
+</script>
+</html>

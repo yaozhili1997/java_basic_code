@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.payment.dao.PaymentAlipayDao">
+
+	<select id="getAlipayDO" resultType="com.ecotourism.api.payment.domain.PaymentAlipayDO">
+		select `id`,`name`,`alipay_no`,`appid`,`rsa_private_key`,`alipay_public_key`
+		,`notify_url`,`return_url`,`charset`,`format`,`signtype`,`sysserviceproviderid`
+		,`available`,`create_user`,`create_time`,`update_user`,`update_time`,`bz`
+		,`company_no` from payment_alipay where alipay_no = #{value} and available='1'
+	</select>
+
+</mapper>

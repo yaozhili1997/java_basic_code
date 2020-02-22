@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.fin.dao.TicketSettlementDao">
+
+	<select id="get" resultType="com.ecotourism.manage.fin.domain.TicketSettlementDO">
+		SELECT
+			a.id,
+			`settlement_no`,
+			b. NAME sell_user,
+			`settlement_number`,
+			`settlement_acoumt`,
+			`settlement_user`,
+			`settlement_time`,
+			c.spot_name spot_no,
+			`sell_ticket_time`,
+			`refund_acoumt`,
+			`receivable_amount`,
+			`refund_num`,
+			`settlement_status`,
+			`settlement_review_person`,
+			`settlement_review_time`,
+			`review_amount`,
+			a.company_no
+		FROM
+			fin_ticket_settlement a
+		LEFT JOIN cooperation_distribution b ON a.sell_user = b.distribution_no
+		LEFT JOIN base_spot_management c ON a.spot_no = c.spot_no
+		WHERE
+		a.settlement_no = #{value}
+
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.fin.domain.TicketSettlementDO">
+		SELECT
+		 a.id,
+		`settlement_no`,
+		 b. NAME sell_user,
+		`settlement_number`,
+		`settlement_acoumt`,
+		`settlement_user`,
+		`settlement_time`,
+		c.spot_name spot_no,
+		`sell_ticket_time`,
+		`refund_acoumt`,
+		`receivable_amount`,
+		`refund_num`,
+		`settlement_status`,
+		`settlement_review_person`,
+		`settlement_review_time`,
+		`review_amount`,
+		a.company_no
+		FROM
+		fin_ticket_settlement a
+		LEFT JOIN cooperation_distribution b ON a.sell_user = b.distribution_no
+		LEFT JOIN base_spot_management c ON a.spot_no = c.spot_no
+		<include refid="sqlWhere"></include>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by a.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from fin_ticket_settlement a
+		LEFT JOIN cooperation_distribution b ON a.sell_user = b.distribution_no
+		LEFT JOIN base_spot_management c ON a.spot_no = c.spot_no
+		<include refid="sqlWhere"></include>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.fin.domain.TicketSettlementDO" useGeneratedKeys="true" keyProperty="id">
+		insert into fin_ticket_settlement
+		(
+			`settlement_no`, 
+			`sell_user`, 
+			`settlement_number`, 
+			`settlement_acoumt`, 
+			`settlement_user`, 
+			`settlement_time`, 
+			`spot_no`, 
+			`sell_ticket_time`, 
+			`refund_acoumt`, 
+			`receivable_amount`, 
+			`refund_num`, 
+			`settlement_status`, 
+			`settlement_review_person`, 
+			`settlement_review_time`, 
+			`review_amount`, 
+			`company_no`
+		)
+		values
+		(
+			#{settlementNo}, 
+			#{sellUser}, 
+			#{settlementNumber}, 
+			#{settlementAcoumt}, 
+			#{settlementUser}, 
+			#{settlementTime}, 
+			#{spotNo}, 
+			#{sellTicketTime}, 
+			#{refundAcoumt}, 
+			#{receivableAmount}, 
+			#{refundNum}, 
+			#{settlementStatus}, 
+			#{settlementReviewPerson}, 
+			#{settlementReviewTime}, 
+			#{reviewAmount}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.fin.domain.TicketSettlementDO">
+		update fin_ticket_settlement 
+		<set>
+			<if test="settlementStatus != null">`settlement_status` = #{settlementStatus}, </if>
+			<if test="reviewAmount != null">`review_amount` = #{reviewAmount}, </if>
+			<if test="reviewAmount != null">`settlement_review_person` = #{settlementReviewPerson}, </if>
+			<if test="reviewAmount != null">`settlement_review_time` = #{settlementReviewTime}, </if>
+			<if test="remarks != null">`remarks` = #{remarks} </if>
+
+		</set>
+		where settlement_no = #{settlementNo} and company_no = #{companyNo}
+	</update>
+
+	<update id="updateOrderSettlementStatus" parameterType="com.ecotourism.manage.fin.domain.TicketSettlementDO">
+		update order_spot
+		<set>
+			<if test="orderStatus != null">`order_status` = #{orderStatus},</if>
+			<if test="settlementStatus != null">`whether_settlement` = #{settlementStatus}</if>
+
+		</set>
+		where settlement_no = #{settlementNo} and company_no = #{companyNo}
+	</update>
+
+
+	<delete id="remove">
+		delete from fin_ticket_settlement where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from fin_ticket_settlement where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<sql id="sqlWhere">
+		<where>
+			a.company_no = #{companyNo}
+			and a.settlement_status = #{settlementStatus}
+			<if test="searchName != null and searchName != ''">
+				and (
+				a.settlement_no LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				)
+			</if>
+			<if test="sellUser != null and sellUser != ''"> and a.sell_user = #{sellUser} </if>
+			<if test="settlementTime != null and settlementTime != ''"> and a.settlement_time = #{settlementTime} </if>
+			<if test="spotNo != null and spotNo != ''"> and a.spot_no = #{spotNo} </if>
+		</where>
+	</sql>
+
+	<select id="listExcel" resultType="com.ecotourism.manage.fin.domain.FinancialManagementDO">
+		select `order_id`,`customer_name`,`customer_phone`,`customer_user_id`,`order_no`,`electronic_ticket`,`product_no`,`product_name`,`order_quantity`,`pay_price`,`total_amount`,`pay_type`,b.name pay_status ,c.name order_status ,d.name refund_status,`order_distributor`,`purchase_time`,`consumption_time`,`play_time`,`message_status`,`whether_issued`,`check_equipment_no`,`spot_no`,e.name ticket_type,`ticket_no`,`check_time`,`piaogo_order_no`,`order_voucherno`,`whether_send_notice`,`self_machine_no`,`whether_send_refund_notice`,`whether_send_check_tolocal`,`refund_time`,`is_transit`,`transit_time`,`device_no`,`device_no_two`,`transit_time_two`,`check_in_time`,`check_in_operator`,`push_user_no`,`bz`,`distribution_user`,`ip` from order_spot a
+		left join sys_dict b ON
+		b.value = a.pay_status
+		and b.company_no = a.company_no
+		left join sys_dict c ON
+		c.value = a.order_status
+		and c.company_no = a.company_no
+		left join sys_dict d ON
+		d.value = a.refund_status
+		and d.company_no = a.company_no
+		left join sys_dict e ON
+		e.value = a.ticket_type
+		and e.company_no = a.company_no
+		where
+		a.company_no = #{companyNo}
+		and a.settlement_no = #{settlementNo}
+	</select>
+
+</mapper>

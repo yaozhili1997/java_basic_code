@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<base href="<%=basePath%>">
+<title>打印设计器</title>
+<link rel="stylesheet" href="http://g.alicdn.com/sj/qnui/1.4.3/css/sui.css">
+<link rel="stylesheet" href="http://g.alicdn.com/sj/qnui/1.4.3/css/sui-append.css">
+<script type="text/javascript" src="/js/designer/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="/js/designer/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="http://g.alicdn.com/sj/dpl/1.4.3/js/sui.min.js"></script>
+<script type="text/javascript" src="/js/designer/template-designer.js"></script>
+<script type="text/javascript" src="/js/designer/doT.js"></script>
+<script type="text/javascript" src="/js/designer/ajaxfileupload.js"></script>
+<script type="text/javascript" src="/js/designer/utils.js"></script>
+<script type="text/javascript" src="/js/designer/layer/layer.js"></script>
+<link rel="stylesheet" href="/css/designer/template-designer.css">
+<script th:inline="javascript" >
+var valueCache;
+var markerCodes = "";
+var templateList = null;
+var backgroundHasChange = false;
+var templateType = "${template.type}";
+var printComponentType = "${setting.printComponentType}";
+var fieldsArr = [];
+$(function() {
+	var printers;
+	if(printers) {
+		printers = printers.split(";");
+		var html = "";
+		$.each(printers, function() {
+			var printer = this;
+			if(printer.trim()) {
+				html += "<option value='" + printer + "'>" + printer + "</option>";
+			}
+		});
+		$("#printer").html(html);
+	}
+	$("body").unbind("keyup");
+	var id = [[${id}]];
+	initTemplate(id);
+	// 获取大头笔的code
+	$(".markerCheckbox").each(function() {
+		var value = $(this).val();
+		markerCodes += value.split("|")[0] + ",";
+	});
+	$("#backgroundFile").change(function() {
+		backgroundHasChange = true;
+	}).preview("#background");
+	if(templateType == 3 && printComponentType == "2") {
+		$("#print-item-draggable").css({left: "451px", top: "114px"});
+	}
+	$("#print-item-draggable").show();
+	$("#print-item-draggable").draggable();
+	$(".show-print-items").click(function() {
+		var itemContainer = $(this).parents("#print-item-draggable").find(".print-field-container");
+		if(itemContainer.css("display") == "none") {
+			itemContainer.show();
+			$(this).find("i").addClass("icon-double-angle-up").removeClass("icon-double-angle-down").html("收起");
+		} else {
+			itemContainer.hide();
+			$(this).find("i").removeClass("icon-double-angle-up").addClass("icon-double-angle-down").html("展开");
+		}
+	});
+	$(".waybill-custom").change(function() {
+		var code = $(this).val();
+		var li = $(this).parents("li");
+		var input = li.find(".custom-text-input");
+		var text = input.val().trim();
+		if (!text) {
+			text = li.find("label span").html();
+		}
+		if ($(this).is(":checked")) {
+			CNPrint.ADD_PRINT_TEXTA(code, 564, 4, 100, 40, text);
+			var field = {};
+			field.code = code;
+			field.text = text;
+			fieldsArr.push(field);
+		} else {
+			CNPrint.SET_PRINT_STYLEA(code, 'Deleted', true);
+			var temp = [];
+			for(var i = 0; i < fieldsArr.length; i ++) {
+				var f = fieldsArr[i];
+				if(f.code != code) {
+					temp.push(f);
+				}
+			}
+			fieldsArr = temp;
+		}
+	});
+	$(".custom-text-input").keyup(function() {
+		var li = $(this).parents("li");
+		if(li.find(".waybill-custom").is(":checked")) {
+			var code = li.find(".waybill-custom").val();
+			var text = $(this).val().trim();
+			if(!text) {
+				text = li.find("label span").html();
+			}
+			CNPrint.SET_PRINT_CONTENT(code, text);
+		}
+	});
+	$(".separator-title").click(function() {
+		var ul = $(this).parent();
+		if(ul.is(".item-hidden")) {
+			$(".print-field-container ul").addClass("item-hidden");
+			$(".print-field-container ul li.separator-title i").removeClass("icon-double-angle-up").addClass("icon-double-angle-down");
+			ul.removeClass("item-hidden");
+			ul.find("li.separator-title i").removeClass("icon-double-angle-down").addClass("icon-double-angle-up");
+		} else {
+			ul.addClass("item-hidden");
+			ul.find("li.separator-title i").removeClass("icon-double-angle-up").addClass("icon-double-angle-down");
+		}
+	});
+});
+function initTemplate(id) {
+
+	if(id) {
+        var printTemplate = [[${printTemplate}]];
+		loadTemplate(printTemplate);
+	}
+}
+function loadTemplate(template) {
+	$("#express_template_wrap,.editor-toolbar").show();
+	$("#id").val(template.id);
+	$("#templateWidth").val(template.width);
+	$("#templateHeight").val(template.height);
+	$("#template_fixTop").val(template.fixTop);
+	$("#template_fixLeft").val(template.fixLeft);
+	$("#fid").val(template.fid);
+	$("#fontSize").setSelectVal(template.fontSize);
+	$("#fontFamily").setSelectVal(template.fontFamily);
+	$("#getBackgroundFile");
+	if(template.fid) {
+		$("#background").attr("src", "printtemplate/getBackgroundFile/" + template.fid);
+	}
+	setBackgroundHeight();
+	if($.trim($("#name").val()) == "") {
+		$("#name").val(template.name);
+	}
+	if(template.fields) {
+		$.each($.parseJSON(template.fields), function() {
+			if(this.code == "customText") {
+				this.className="customText";
+			} if(markerCodes.indexOf(this.code) != -1) {
+				this.className="markerText";
+			} else {
+				this.className="commonText";
+			}
+			$("#express_template").append(doT.template($("#template_field").text())(this));
+			$("#checkbox_" + this.code).addClass("checked").find("input").prop("checked", true);
+		});
+	}
+}
+
+function changeQlectModel(_this) {
+	var $this = $(_this);
+	var value = $this.val();
+	var id = $this.attr("id");
+	if(id == "fontSize") {
+		$(".field-name").css("font-size", parseInt(value));
+	} else if(id == "fontFamily") {
+		$(".field-name").css("font-family", value);
+	} else if(id == "markerFontFamily") {
+		$(".markerText").css("font-family", value);
+	} else if(id == "markerFontSize") {
+		$(".markerText").css("font-size", parseInt(value));
+	} else if(id == "markerFontWeight") {
+		$(".markerText").css("font-weight", value);
+	} else if(id == "customFontSize") {
+		$(".customText").css("font-size", parseInt(value));
+	} else if(id == "customFontFamily") {
+		$(".customText").css("font-family", value);
+	}
+}
+
+function addOrRemoveField(_this,code,label,width,height, className) {
+	if(!className) {
+		className = "commonText";
+	}
+//	var value = $(_this).val();
+//	var paramArray = value.split("|");
+//	var code = paramArray[0];
+	var data = {};
+	data.code = code;
+	data.text = label;
+	data.width = parseInt(width);
+	data.height = parseInt(height);
+	data.className = className;
+	if($(_this).is(":checked")) {
+		if($("#" + code).size() == 0) {
+			// 大头字
+			if(className == "markerText") {
+				var fontSize = 26;
+				var fontFamily = $("#fontFamily").val();
+				if(!fontFamily) {
+					fontFamily = "宋体";
+				}
+				var fontWeight = "bold";
+				data.style = "font-size:" + fontSize + "px;font-family:" + fontFamily + ";font-weight:" + fontWeight + ";";
+			} else {
+				var fontSize2 = $("#fontSize").val();
+				var fontFamily2 = $("#fontFamily").val();
+				if(!fontSize2) {
+					fontSize2 = "13";
+				}
+				if(!fontFamily2) {
+					fontFamily2 = "宋体";
+				}
+				data.style = "font-size:" + fontSize2 + "px;font-family:" + fontFamily2 + ";";
+			}
+			if(printComponentType == "2") {
+				data.top = 2;
+				data.left = 2;
+			}
+			var fieldHtml = doT.template($("#template_field").text())(data);
+			$("#express_template").append(fieldHtml);
+		} 
+	} else {
+		// 删除打印项目
+		$("#" + code).remove();
+	}
+}
+
+var loading;
+function saveTemplate() {
+	var name = $.trim($("#name").val());
+	if(name == "") {
+		showMsg("模版名称不能为空", "error");
+		$("#name").focus();
+		return;
+	}
+	loading = layer.load("");
+	if(backgroundHasChange) {
+		uploadBackground(doSave);
+	} else {
+		doSave(true);
+	}
+	function doSave(isSuccess) {
+		if(isSuccess === true) {
+			var fields = "";
+			fields = fieldToJSON();
+			$("#backgroundWidth").val($("#background").width());
+			$("#backgroundHeight").val($("#background").height());
+			//console.log(fieldsArr.length());
+ 			$("#fields").val(fields);
+			$.post("/print/printTemplate/save", $("form").serialize(), function(result) {
+				layer.close(loading);
+                result = $.parseJSON(result);
+				if(result.code == "0") {
+					layer.msg("保存成功");
+					if(!$("#id").val()) {
+						window.parent.location.reload();
+						window.close();
+					}
+				} else {
+					layer.alert("保存失败，请稍候重试！");
+				}
+			}, "text");
+		} else {
+			layer.close(loading);
+		}
+	}
+}
+
+function uploadBackground(callBack) {
+	$.ajaxFileUpload({
+	    url:'printtemplate/uploadBackgroundImage',//处理图片脚本
+	    secureuri :false,
+	    fileElementId :'backgroundFile',//file控件id
+	    dataType : 'json',
+	    success : function (data, status) {
+	    	var isSuccess = true;
+	        if(data.status == 'success'){
+	          $("#fid").val(data.fid);
+	          backgroundHasChange = false;
+	        } else if(data.status == 'error') {
+	          layer.alert(data.msg);
+	        }
+	        if(callBack) {
+		      callBack(isSuccess);
+		    }
+	    },
+	    error: function(data, status, e){
+	    	alert(JSON.stringify(data));
+	    	callBack(false);
+	    }
+	});
+	// 重新绑定图片预览事件
+	$("#backgroundFile").change(function() {
+		backgroundHasChange = true;
+	}).preview("#background");
+}
+
+function openAddCustomTextDialog() {
+	var prompt = null;
+	prompt = layer.prompt({title: '自定义打印文字'}, function(input) {
+		layer.close(prompt);
+		addCustomText(input.trim());
+	});
+}
+
+function addCustomText(text) {
+	if(!text) {
+		text = $("#customText").val();
+	}
+	text = text.trim();
+	if(text) {
+		var data = {};
+		data.code = "customText";
+		data.text = text;
+		data.className = "customText";
+		var fontSize = $("#fontSize").val();
+		var fontFamily = $("#fontFamily").val();
+		if(!fontSize) {
+			fontSize = "13";
+		}
+		if(!fontFamily) {
+			fontFamily = "宋体";
+		}
+		data.style = "font-size:" + fontSize + "px;font-family:" + fontFamily + ";";
+		var fieldHtml = doT.template($("#template_field").text())(data);
+		$("#express_template").append(fieldHtml);
+	}
+}
+$(function() {
+	// 检查宽高是否合法
+	$("#templateWidth,#templateHeight").change(function() {
+		var value = $.trim($(this).val());
+		if(regex.float.test(value)) {
+			$(this).val(value);
+		} else {
+			$(this).val(valueCache);
+		}
+		if("${template.type}" != "3") {
+			setBackgroundHeight();
+		}
+	});
+	// 检查偏移值是否是整数
+	$("#template_fixTop, #template_fixLeft").change(function() {
+		var value = $.trim($(this).val());
+		if(regex.int.test(value)) {
+			$(this).val(value);
+		} else {
+			$(this).val(valueCache);
+		}
+	});
+	
+});
+function setBackgroundHeight() {
+	var width = $.trim($("#templateWidth").val());
+	var height = $.trim($("#templateHeight").val());
+	//var backgroudHeight = 760 * height / width;
+	if(width) {
+		$("#background").css("width", width + "mm");
+	} 
+	if(height) {
+		$("#background").css("height", height + "mm");
+	}
+}
+
+function changeTemplate(_this) {
+	var value = $(_this).val();
+	var $a = $(_this).parent().parent().find(".active a");
+	if(value != $a.attr("value")) {
+		if(value) {
+			$("#name").val($(_this).parent().parent().find("a[value='" + value + "']").html());
+			loadSystemTemplate(value);
+		} else {
+			$("#name").val($("#companyCode").parent().parent().find("a[value='" + $("#companyCode").val() + "']").html());
+			loadSystemTemplate();
+		}
+	}
+}
+
+function loadSystemTemplate(id) {
+	if(!id) {
+		// 默认模板ID为10000
+		id = "10000";
+	}
+	$.post("printtemplate/express/getTemplate", {id : id}, function(template) {
+		$(".field").remove();
+		$(".field-content .checkbox").checkbox().checkbox("uncheck");
+		loadTemplate(template);
+	}, "json");
+}
+
+var CNPrint; //声明为全局变量 
+
+function CreatePage(CP_CODE){
+	CNPrint = getCaiNiaoPrint(document.getElementById('CaiNiaoPrint_OB'),document.getElementById('CaiNiaoPrint_EM')); 
+   	CNPrint.PRINT_INITA(0,0,"100mm","180mm","打印控件在线编辑");
+   	CNPrint.SET_PRINT_PAGESIZE(1, "100mm", "180mm", "DESIGN_PREVIEW_" + CP_CODE);
+	var config="c2lnbkE1M0ZFODMzQjkzREVBRUREOUZBQzY2QjYxMEU2MTJEJnsidmVyc2lvbiI6IjEiLCJhbGlfd2F5YmlsbF9jcF9sb2dvX1ZJU0lCTEUiOiJmYWxzZSIsImFsaV93YXliaWxsX2NvbnNpZ25lZV9hZGRyZXNzX0NPTlRFTlQiOiLmtYvor5Xpgq7lr4Tmm7/mjaIiLCJhbGlfd2F5YmlsbF9zaGlwcGluZ19hZGRyZXNzX1BPU1RGSVgiOiLvvIjmt5jlrp3mtYvor5Xov73liqDlhoXlrrnvvIkifQ==";
+    CNPrint.SET_PRINT_MODE("CAINIAOPRINT_MODE","CP_CODE="+CP_CODE+"&CONFIG="+config);
+}
+function showMsg(msg, type) {
+	var tip = $("#success_tips");
+	if(type == "error") {
+		tip = $("#error_tips");
+	}
+	tip.fadeIn().find(".msg-con").html(msg);
+	setTimeout(function() {
+ 		tip.fadeOut();
+	}, 2000);
+}
+</script>
+<style type="text/css">
+body {
+	padding: 0;
+	margin: 0;
+	padding-top: 0 !important;
+}
+#backgroundFile {
+	position: absolute;
+	width: 89px;
+	left: 0;
+	top: 0;
+	cursor: pointer;
+	filter:alpha(opacity=0);
+	-moz-opacity:0; 
+	opacity:0;
+}
+.input-wrap {
+	margin-top: 10px;
+}
+</style>
+</head>
+<body>
+	<div class="ui-main-content" style="position: relative;">
+		<article>
+			<div class="tab-pane active" style="padding: 10px;">
+				<form class="sui-form mt-10">
+					<input type="hidden" value="" name="id" id="id">
+					<input type="hidden" value="" name="fid" id="fid">
+					<input type="hidden" value="" name="fields" id="fields">
+					<input type="hidden" value="" name="backgroundWidth" id="backgroundWidth">
+					<input type="hidden" value="" name="backgroundHeight" id="backgroundHeight">
+					<div class="mb-10">
+						<a class="sui-btn btn-primary" onclick="saveTemplate()">保存模版</a>
+						<!--
+						<a class="sui-btn btn-danger" style="position: relative;"><input type="file" name="file" accept="image/*" id="backgroundFile">更换背景图</a>-->
+						<!-- <a class="sui-btn btn-success" onclick="loadSystemTemplate($('#systemTemplateId').val())">恢复默认布局</a>
+						<a class="sui-btn btn-default" onclick="preview()">预览</a> -->
+						<div class="sui-msg msg-success" id="success_tips" style="display: none;">
+						  <div class="msg-con"></div>
+						  <s class="msg-icon"></s>
+						</div>
+						<div class="sui-msg msg-error" id="error_tips" style="display: none;">
+						  <div class="msg-con"></div>
+						  <s class="msg-icon"></s>
+						</div>
+					</div>
+					<div class="input-wrap">
+						<label>模板名称：</label>
+						<input class="input-medium" style="width: 120px;" name="name" id="name" type="text" value="">
+					    <label class="ml-15">
+						模版尺寸（毫米）：
+						</label>
+						<span>
+						宽 <input class="input-mini tc" name="width" id="templateWidth" onfocus="valueCache = this.value" value="85" type="text"> × 高 <input onfocus="valueCache = this.value" name="height" id="templateHeight" class="input-mini tc" value="85" type="text">
+						</span>
+						<label class="ml-15">
+						偏移调整（毫米）：
+						</label>
+						<span>
+							<span class="arrow arrow-up">&nbsp;</span>
+							<input id="template_fixTop" name="fixTop" onfocus="valueCache = this.value" class="input-mini tc" value="0" type="text">
+							<span class="arrow arrow-down">&nbsp;</span>
+							<span class="arrow arrow-left">&nbsp;</span>
+							<input id="template_fixLeft" name="fixLeft" onfocus="valueCache = this.value" class="input-mini tc" value="0" type="text">
+							<span class="arrow arrow-right">&nbsp;</span>
+						</span>
+						<span class="sui-dropdown dropdown-bordered select" style="display: none;">
+						 	<span class="dropdown-inner"><a role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+						        <input value="" onchange="changeTemplate(this)" id="systemTemplateId" name="systemTemplateId" type="hidden"><i class="caret"></i><span></span></a>
+							    <ul id="systemTemplateSelect" role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+							    </ul>
+						    </span>
+					    </span>
+					    <label class="ml-15">
+						全体字体：
+						</label>
+						<span class="sui-dropdown dropdown-bordered select" >
+							<span class="dropdown-inner">
+								<a role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle" style="min-width:30px;">
+								<input id="fontSize" name="fontSize" onchange="changeQlectModel(this)" type="hidden" value="8"><i class="caret"></i><span>8</span></a>
+								<ul class="sui-dropdown-menu" role="menu" aria-labelledby="drop4" >
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="8" style="min-width:30px;">8</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="9" style="min-width:30px;">9</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="10" style="min-width:30px;">10</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="11" style="min-width:30px;">11</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="12" style="min-width:30px;">12</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="13" style="min-width:30px;">13</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="14" style="min-width:30px;">14</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="15" style="min-width:30px;">15</a>
+									</li>
+									<li role="presentation" class="active">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="16" style="min-width:30px;">16</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="17" style="min-width:30px;">17</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="18" style="min-width:30px;">18</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="19" style="min-width:30px;">19</a>
+									</li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" href="javascript:void(0);" value="20" style="min-width:30px;">20</a>
+									</li>
+								</ul>
+							</span>
+						</span>
+						<span class="sui-dropdown dropdown-bordered select">
+							<span class="dropdown-inner">
+								<a role="button" href="javascript:" data-toggle="dropdown" class="dropdown-toggle">
+									<input id="fontFamily" name="fontFamily" onchange="changeQlectModel(this)" type="hidden" value="微软雅黑"><i class="caret"></i><span>雅黑</span>
+								</a>
+								<ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+									<li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="微软雅黑">雅黑</a></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:" value="宋体">宋体</a></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:" value="黑体">黑体</a></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:" value="新宋体">新宋体</a></li>
+								</ul>
+							</span>
+						</span>
+					</div>
+					<div class="editor-toolbar">
+							<span class="editor-icon editor-text editor-for-fontfamily" style="font-weight:bold;" title="字体样式">字体</span>
+							<span class="editor-icon editor-text editor-for-fontsize" style="font-weight:bold;" title="字体大小">大小</span>
+							<span class="editor-icon editor-separator">&nbsp;</span>
+							<span class="editor-icon editor-for-forecolor" title="字体颜色">
+								<span class="editor-icon editor-forecolor-btn">&nbsp; <span class="editor-colorlump"></span></span><span class="editor-icon editor-arrow " onclick="">&nbsp;</span>
+							</span>
+							<span class="editor-icon editor-for-bold" title="加粗">&nbsp;</span>
+							<span class="editor-icon editor-for-italic" title="斜体">&nbsp;</span>
+							<span class="editor-icon editor-for-underline" title="下划线">&nbsp;</span>
+							<span class="editor-icon editor-separator">&nbsp;</span>
+							<span class="editor-icon editor-for-justifyleft" title="居左对齐">&nbsp;</span>
+							<span class="editor-icon editor-for-justifycenter" title="居中对齐">&nbsp;</span>
+							<span class="editor-icon editor-for-justifyright" title="居右对齐">&nbsp;</span>
+							<span class="editor-icon editor-for-justifyjustify" title="两端对齐">&nbsp;</span>
+							<span class="editor-icon editor-separator">&nbsp;</span>
+							<!-- <span class="editor-icon editor-text"><a href="javascript:editSelectedItem();">编辑</a></span> -->
+							<span class="editor-icon editor-text"><a href="javascript:deleteSelectedItem();">删除</a></span>
+					</div>
+					<div class="clearfix"></div>
+				</form>
+				<div id="express_template_wrap" style="height: auto;display: inline-block;padding: 10px 0;overflow: auto;">
+					<div id="express_template" style="float: left;">
+						<img src="/img/default-template-bg.png" id="background" style="width: 85mm;height: 85mm;">
+					</div>
+				</div>
+			</div>
+		</article>
+		<div id="print-item-draggable" class="hide">
+			<div class="print-item-wrap" >
+				<div class="header">
+					添加打印项目
+					<a href="javascript:" class="show-print-items" style="font-size:13px;color:#fff;float:right;"><i class="sui-icon icon-double-angle-up">收起</i></a>
+				</div>
+				<div class="print-field-container">
+					<ul>
+						<li class="separator-title">
+							<span>电子票信息</span>
+							<i class="sui-icon icon-double-angle-up"></i>
+						</li>
+						<li th:each="printItem:${printItems}">
+							<label th:id="checkbox_+(${printItem.code })" class="checkbox-pretty inline checkbox">
+								<input class="markerCheckbox" type="checkbox"th:onchange="'addOrRemoveField(this,\''+${printItem.code}+'\',\''+${printItem.label}+'\',\''+${printItem.width}+'\',\''+${printItem.height}+'\')'"><span th:text="${printItem.name }"></span>
+							</label>
+						</li>
+						<!-- 
+						<li>
+							<label id="checkbox_barcode" class="checkbox-pretty inline checkbox">
+								<input type="checkbox" onchange="addOrRemoveField(this)" value="barcode|二维码|60|60"><span>二维码</span>
+							</label>
+						</li> -->
+					</ul>
+					<ul class="item-hidden">
+						<li class="separator-title">
+							<span>自定义信息</span>
+							<i class="sui-icon icon-double-angle-down"></i>
+						</li>
+						<li class="sui-form" style="padding: 5px;">自定义文字<a style="vertical-align: middle;" class="ml-10" href="javascript:" onclick="openAddCustomTextDialog()" >添加</a></li>
+					</ul>
+				</div>
+			</div>
+			<iframe width="100%" height="100%" frameborder="0" style="position: absolute; top: 0px; left:0px; z-index: 99; border-style: none;"></iframe>
+		</div>
+	</div>
+
+	<div id="edui25"
+		 class="edui-popup edui-default edui-for-forecolor edui-anchor-topleft">
+		<div id="edui25_body" class="edui-popup-body edui-default"
+			 style="width: 212px; height: 220px;">
+			<iframe
+					style="position:absolute;z-index:-1;left:0;top:0;background-color: transparent;"
+					frameborder="0" width="100%" height="100%" src="javascript:"
+					class=" edui-default"></iframe>
+			<div class="edui-shadow edui-default"></div>
+			<div id="edui25_content" class="edui-popup-content edui-default">
+				<div id="edui24" class="edui-colorpicker edui-default">
+					<div class="edui-colorpicker-topbar edui-clearfix edui-default">
+						<div id="edui24_preview"
+							 class="edui-colorpicker-preview edui-default" style=""></div>
+						<div class="edui-colorpicker-nocolor edui-default">清空颜色</div>
+					</div>
+					<table class="edui-box edui-default"
+						   style="border-collapse: collapse;" cellspacing="0" cellpadding="0">
+						<tbody class=" edui-default">
+						<tr style="border-bottom: 1px solid #ddd;font-size: 13px;line-height: 25px;color:#39C;padding-top: 2px" class=" edui-default">
+							<td colspan="10" class=" edui-default">主题颜色</td>
+						</tr>
+						<tr class="edui-colorpicker-tablefirstrow edui-default">
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="ffffff" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#ffffff"
+									style="background-color:#ffffff;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="000000" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#000000"
+									style="background-color:#000000;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="eeece1" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#eeece1"
+									style="background-color:#eeece1;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="1f497d" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#1f497d"
+									style="background-color:#1f497d;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="4f81bd" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#4f81bd"
+									style="background-color:#4f81bd;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="c0504d" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#c0504d"
+									style="background-color:#c0504d;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="9bbb59" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#9bbb59"
+									style="background-color:#9bbb59;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="8064a2" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#8064a2"
+									style="background-color:#8064a2;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="4bacc6" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#4bacc6"
+									style="background-color:#4bacc6;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="f79646" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#f79646"
+									style="background-color:#f79646;border:solid #ccc;border-width:1px;"></a></td>
+						</tr>
+						<tr class=" edui-default">
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="f2f2f2" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#f2f2f2"
+									style="background-color:#f2f2f2;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="7f7f7f" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#7f7f7f"
+									style="background-color:#7f7f7f;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="ddd9c3" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#ddd9c3"
+									style="background-color:#ddd9c3;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="c6d9f0" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#c6d9f0"
+									style="background-color:#c6d9f0;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="dbe5f1" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#dbe5f1"
+									style="background-color:#dbe5f1;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="f2dcdb" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#f2dcdb"
+									style="background-color:#f2dcdb;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="ebf1dd" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#ebf1dd"
+									style="background-color:#ebf1dd;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="e5e0ec" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#e5e0ec"
+									style="background-color:#e5e0ec;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="dbeef3" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#dbeef3"
+									style="background-color:#dbeef3;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="fdeada" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#fdeada"
+									style="background-color:#fdeada;border:solid #ccc;border-width:1px 1px 0 1px;"></a></td>
+						</tr>
+						<tr class=" edui-default">
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="d8d8d8" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#d8d8d8"
+									style="background-color:#d8d8d8;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="595959" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#595959"
+									style="background-color:#595959;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="c4bd97" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#c4bd97"
+									style="background-color:#c4bd97;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="8db3e2" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#8db3e2"
+									style="background-color:#8db3e2;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="b8cce4" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#b8cce4"
+									style="background-color:#b8cce4;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="e5b9b7" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#e5b9b7"
+									style="background-color:#e5b9b7;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="d7e3bc" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#d7e3bc"
+									style="background-color:#d7e3bc;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="ccc1d9" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#ccc1d9"
+									style="background-color:#ccc1d9;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="b7dde8" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#b7dde8"
+									style="background-color:#b7dde8;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="fbd5b5" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#fbd5b5"
+									style="background-color:#fbd5b5;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+						</tr>
+						<tr class=" edui-default">
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="bfbfbf" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#bfbfbf"
+									style="background-color:#bfbfbf;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="3f3f3f" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#3f3f3f"
+									style="background-color:#3f3f3f;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="938953" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#938953"
+									style="background-color:#938953;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="548dd4" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#548dd4"
+									style="background-color:#548dd4;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="95b3d7" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#95b3d7"
+									style="background-color:#95b3d7;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="d99694" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#d99694"
+									style="background-color:#d99694;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="c3d69b" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#c3d69b"
+									style="background-color:#c3d69b;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="b2a2c7" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#b2a2c7"
+									style="background-color:#b2a2c7;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="92cddc" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#92cddc"
+									style="background-color:#92cddc;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="fac08f" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#fac08f"
+									style="background-color:#fac08f;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+						</tr>
+						<tr class=" edui-default">
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="a5a5a5" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#a5a5a5"
+									style="background-color:#a5a5a5;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="262626" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#262626"
+									style="background-color:#262626;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="494429" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#494429"
+									style="background-color:#494429;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="17365d" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#17365d"
+									style="background-color:#17365d;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="366092" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#366092"
+									style="background-color:#366092;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="953734" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#953734"
+									style="background-color:#953734;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="76923c" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#76923c"
+									style="background-color:#76923c;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="5f497a" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#5f497a"
+									style="background-color:#5f497a;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="31859b" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#31859b"
+									style="background-color:#31859b;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="e36c09" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#e36c09"
+									style="background-color:#e36c09;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+						</tr>
+						<tr class=" edui-default">
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="7f7f7f" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#7f7f7f"
+									style="background-color:#7f7f7f;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="0c0c0c" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#0c0c0c"
+									style="background-color:#0c0c0c;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="1d1b10" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#1d1b10"
+									style="background-color:#1d1b10;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="0f243e" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#0f243e"
+									style="background-color:#0f243e;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="244061" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#244061"
+									style="background-color:#244061;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="632423" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#632423"
+									style="background-color:#632423;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="4f6128" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#4f6128"
+									style="background-color:#4f6128;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="3f3151" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#3f3151"
+									style="background-color:#3f3151;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="205867" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#205867"
+									style="background-color:#205867;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="974806" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#974806"
+									style="background-color:#974806;border:solid #ccc;border-width:0 1px 0 1px;"></a></td>
+						</tr>
+						<tr
+								style="border-bottom: 1px solid #ddd;font-size: 13px;line-height: 25px;color:#39C;"
+								class=" edui-default">
+							<td colspan="10" class=" edui-default">标准颜色</td>
+						</tr>
+						<tr class="edui-colorpicker-tablefirstrow edui-default">
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="c00000" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#c00000"
+									style="background-color:#c00000;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="ff0000" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#ff0000"
+									style="background-color:#ff0000;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="ffc000" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#ffc000"
+									style="background-color:#ffc000;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="ffff00" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#ffff00"
+									style="background-color:#ffff00;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="92d050" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#92d050"
+									style="background-color:#92d050;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="00b050" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#00b050"
+									style="background-color:#00b050;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="00b0f0" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#00b0f0"
+									style="background-color:#00b0f0;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="0070c0" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#0070c0"
+									style="background-color:#0070c0;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="002060" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#002060"
+									style="background-color:#002060;border:solid #ccc;border-width:1px;"></a></td>
+							<td style="padding: 0 2px;" class=" edui-default"><a
+									title="7030a0" onclick="return false;" href="javascript:"
+									class="edui-box edui-colorpicker-colorcell edui-default"
+									data-color="#7030a0"
+									style="background-color:#7030a0;border:solid #ccc;border-width:1px;"></a></td>
+						</tr>
+						<tr class=" edui-default"></tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="edui25_bordereraser"
+				 class="edui-bordereraser edui-background" style="width:30px"></div>
+		</div>
+	</div>
+	<div id="edui92"
+		 class="edui-popup edui-list edui-default edui-for-fontfamily edui-anchor-topleft">
+		<div id="edui92_body" class="edui-popup-body edui-default"
+			 style="width: 139px; height: 276px;">
+			<div class="edui-shadow edui-default"></div>
+			<div id="edui92_content" class="edui-popup-content edui-default">
+				<div class="edui-list-body edui-default">
+					<div id="edui93" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:宋体">宋体</div>
+						</div>
+					</div>
+					<div id="edui94" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:微软雅黑">微软雅黑</div>
+						</div>
+					</div>
+					<div id="edui95" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:楷体">楷体</div>
+						</div>
+					</div>
+					<div id="edui96" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:黑体">黑体</div>
+						</div>
+					</div>
+					<div id="edui97" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:隶书">隶书</div>
+						</div>
+					</div>
+					<div id="edui98" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:andale mono">andale mono</div>
+						</div>
+					</div>
+					<div id="edui99" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:arial">arial</div>
+						</div>
+					</div>
+					<div id="edui100" class="edui-listitem  edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:arial black">arial black</div>
+						</div>
+					</div>
+					<div id="edui101" class="edui-listitem  edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:comic sans ms">comic sans ms</div>
+						</div>
+					</div>
+					<div id="edui102" class="edui-listitem  edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:impact">impact</div>
+						</div>
+					</div>
+					<div id="edui103" class="edui-listitem  edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="font-family:times new roman">times new roman</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="edui92_bordereraser"
+				 class="edui-bordereraser edui-background" style="width:76px"></div>
+		</div>
+	</div>
+	<div id="edui105"
+		 class="edui-popup edui-list edui-default edui-for-fontsize edui-anchor-topleft">
+		<div id="edui105_body" class="edui-popup-body edui-default"
+			 style="width: 144px; height: 248px;">
+			<div class="edui-shadow edui-default"></div>
+			<div id="edui105_content" class="edui-popup-content edui-default">
+				<div class="edui-list-body edui-default">
+					<div id="edui106" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:8px">8px</div>
+						</div>
+					</div>
+					<div id="edui106" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:9px">9px</div>
+						</div>
+					</div>
+					<div id="edui106" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:10px">10px</div>
+						</div>
+					</div>
+					<div id="edui107" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:11px">11px</div>
+						</div>
+					</div>
+					<div id="edui108" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:12px">12px</div>
+						</div>
+					</div>
+					<div id="edui109" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:14px">14px</div>
+						</div>
+					</div>
+					<div id="edui110" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:16px">16px</div>
+						</div>
+					</div>
+					<div id="edui111" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:18px">18px</div>
+						</div>
+					</div>
+					<div id="edui112" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:20px">20px</div>
+						</div>
+					</div>
+					<div id="edui113" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:24px">24px</div>
+						</div>
+					</div>
+					<div id="edui114" class="edui-listitem edui-default"
+						 style="-webkit-user-select: none;">
+						<div class="edui-listitem-body edui-default">
+							<div class="edui-label edui-listitem-label edui-default"
+								 style="line-height:1;font-size:36px">36px</div>
+						</div>
+					</div>
+					<div style="-webkit-user-select: none;">
+						<div style="line-height:1;font-size:12px;margin-left:5px;" class="sui-form">其他<input name="customFontSize" style="width:35px;margin: 5px 5px 5px 5px;" type="text"><a class="sui-btn btn-small btn-primary custom-font-size-btn">确定</a></div>
+					</div>
+				</div>
+			</div>
+			<div id="edui105_bordereraser"
+				 class="edui-bordereraser edui-background" style="width:76px"></div>
+		</div>
+	</div>
+	<script id="template_field" type="text/x-dot-template">
+		{{
+			var style = "";
+			if(it.style) {
+				style = it.style;
+			} else {
+				if(it.fontName) {
+					style += "font-family:" + it.fontName + ";";
+				}
+				if(it.fontSize) {
+					style += "font-size:" + it.fontSize + "pt;";
+				}
+			}
+		}}
+		<div class="field" id="{{=it.code }}" style="top:{{=it.top == undefined  ? 10 : it.top}}px;left:{{=it.left == undefined ? 10 : it.left}}px;width:{{=it.width ? it.width + "px" : "auto" }};height:{{=it.height ? it.height + "px" : "auto" }};" onselectstart="return false;">
+			<span class="field-name" style="{{=style}}">{{=it.text }}</span>
+			<input type="hidden" name="code" value="{{=it.code }}">
+			<div onselectstart="return false;" class="handle-close" title="删除">×</div>
+			<div onselectstart="return false;" class="resize-handle resize-handle-s"></div>
+			<div onselectstart="return false;" class="resize-handle resize-handle-e"></div>
+			<div onselectstart="return false;" class="resize-handle resize-handle-se"></div>
+		</div>
+	</script>
+	<script id="template_templateSelect" type="text/x-dot-template">
+				{{ 
+					var templateId = $("#id").val();
+					for(var i = 0; i < it.length; i++) {
+						var template = it[i];
+						/* 屏蔽模板自身 */
+						if(templateId != "" && templateId == template.id) {
+							continue;
+						}
+				}}
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:" value="{{=template.id}}">{{=template.name}}</a></li>
+				{{
+					}
+				}}
+	</script>
+	<script id="template_systemTemplates" type="text/x-dot-template">
+
+	</script>
+</body>
+</html>
+		

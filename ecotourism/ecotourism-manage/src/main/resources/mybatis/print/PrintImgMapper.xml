@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.print.dao.PrintImgDao">
+
+	<select id="get" resultType="com.ecotourism.manage.print.domain.PrintImgDO">
+		select `id`,`fid`,`pic_path`,`data`,`content_type`,`create_time`,`update_time`,`create_user`,`update_user` from print_img where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.print.domain.PrintImgDO">
+		select `id`,`fid`,`pic_path`,`data`,`content_type`,`create_time`,`update_time`,`create_user`,`update_user` from print_img
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="fid != null and fid != ''"> and fid = #{fid} </if>
+		  		  <if test="picPath != null and picPath != ''"> and pic_path = #{picPath} </if>
+		  		  <if test="data != null and data != ''"> and data = #{data} </if>
+		  		  <if test="contentType != null and contentType != ''"> and content_type = #{contentType} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from print_img
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="fid != null and fid != ''"> and fid = #{fid} </if>
+		  		  <if test="picPath != null and picPath != ''"> and pic_path = #{picPath} </if>
+		  		  <if test="data != null and data != ''"> and data = #{data} </if>
+		  		  <if test="contentType != null and contentType != ''"> and content_type = #{contentType} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.print.domain.PrintImgDO" useGeneratedKeys="true" keyProperty="id">
+		insert into print_img
+		(
+			`fid`, 
+			`pic_path`, 
+			`data`, 
+			`content_type`, 
+			`create_time`, 
+			`update_time`, 
+			`create_user`, 
+			`update_user`
+		)
+		values
+		(
+			#{fid}, 
+			#{picPath}, 
+			#{data}, 
+			#{contentType}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{createUser}, 
+			#{updateUser}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.print.domain.PrintImgDO">
+		update print_img 
+		<set>
+			<if test="fid != null">`fid` = #{fid}, </if>
+			<if test="picPath != null">`pic_path` = #{picPath}, </if>
+			<if test="data != null">`data` = #{data}, </if>
+			<if test="contentType != null">`content_type` = #{contentType}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from print_img where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from print_img where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

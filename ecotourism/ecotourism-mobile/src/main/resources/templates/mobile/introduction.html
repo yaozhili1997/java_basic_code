@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<script>
+    console.log('init start');
+</script>
+<body class="gray-bg">
+<!-- mui-content -->
+<!-- mui-content end!-->
+<script type="text/javascript" charset="utf-8">
+    //获取宽度
+
+    var winWidth = $(window).width();
+//    console.log(winWidth);
+    $(".outer-container").width(winWidth-20+"px");
+
+    //图标切换对应页面
+    //门票
+    mui('#main_nav').on('tap', '#ticket', function() {
+        var url = $(this).attr('href');
+        //打开关于页面
+        mui.openWindow({
+            url: '/item/list',
+            id: 'ticket'
+        });
+    });
+
+    //景区直通车
+    mui('#main_nav').on('tap', '#bus_ticket', function() {
+        var url = $(this).attr('href');
+        //打开关于页面
+        mui.openWindow({
+            url: 'busticket.html',
+            id: 'ticket'
+        });
+    });
+
+    //点击切换页面
+
+    mui('.mui-card-footer').on('tap', '#news', function() {
+        var url = $(this).attr('href');
+        //打开关于页面
+        mui.openWindow({
+            url: 'ticket.html',
+            id: 'ticket'
+        });
+    });
+
+</script>
+<script type="text/html" id="template_product">
+    <div style="margin-right: 10px;" class="mui-clearfix mui-pull-left imag-sibox" onclick="itemDetails('{{=it.productNo}}')">
+        <div style="" class="imag-sbox">
+            <img src="{{=it.imgUrl}}" class="imag-size"/>
+        </div>
+        <div style="width: 100%; margin-top: 5px;height: 42px;">
+            <p style="color: #222222; height:42px; line-height:21px;font-size: 14px;text-overflow: ellipsis;overflow: hidden;">
+                {{=it.productName}}</p>
+        </div>
+        <div>
+            <p>
+                <small style="color: #D9534F;font-size: 14px;">{{=it.payPrice}}</small>
+                元起
+            </p>
+        </div>
+    </div>
+</script>
+</body>
+</html>

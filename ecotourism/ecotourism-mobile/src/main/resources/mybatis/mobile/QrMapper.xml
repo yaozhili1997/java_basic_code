@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.mobile.mobile.dao.QrDao">
+	<select id="queryOrderInfoList" resultType="com.ecotourism.mobile.mobile.domain.QrDO">
+		select order_id,electronic_ticket,product_name,play_time,order_quantity,spot_name,opening_hours,stop_checking_time from order_spot o
+		LEFT JOIN base_spot_management s on s.spot_no = o.spot_no where o.order_no=#{orderNo}
+	</select>
+</mapper>

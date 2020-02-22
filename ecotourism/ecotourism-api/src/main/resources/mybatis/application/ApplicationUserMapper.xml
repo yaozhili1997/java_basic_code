@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.application.dao.ApplicationUserDao">
+
+	<sql id="commonField">
+		id,openId,nick_name,avatar,country,province,city,gender
+		,user_type,user_status,is_certified,is_student_certified,latitude
+		,longitude,accuracy,application_no,session_key,unionId,user_source
+		,company_no,access_token,create_time,update_time,scope
+	</sql>
+	<select id="get" resultType="com.ecotourism.api.application.domain.ApplicationUserDO">
+		select <include refid="commonField"/> from application_user where openId = #{value} limit 1
+	</select>
+
+	<select id="list" resultType="com.ecotourism.api.application.domain.ApplicationUserDO">
+		select <include refid="commonField"/> from application_user
+        <where>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="openid != null and openid != ''"> and openId = #{openid} </if>
+		  		  <if test="nickName != null and nickName != ''"> and nick_name = #{nickName} </if>
+		  		  <if test="avatar != null and avatar != ''"> and avatar = #{avatar} </if>
+		  		  <if test="country != null and country != ''"> and country = #{country} </if>
+		  		  <if test="province != null and province != ''"> and province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and city = #{city} </if>
+		  		  <if test="gender != null and gender != ''"> and gender = #{gender} </if>
+		  		  <if test="userType != null and userType != ''"> and user_type = #{userType} </if>
+		  		  <if test="userStatus != null and userStatus != ''"> and user_status = #{userStatus} </if>
+		  		  <if test="isCertified != null and isCertified != ''"> and is_certified = #{isCertified} </if>
+		  		  <if test="isStudentCertified != null and isStudentCertified != ''"> and is_student_certified = #{isStudentCertified} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="accuracy != null and accuracy != ''"> and accuracy = #{accuracy} </if>
+		  		  <if test="applicationNo != null and applicationNo != ''"> and application_no = #{applicationNo} </if>
+		  		  <if test="sessionKey != null and sessionKey != ''"> and session_key = #{sessionKey} </if>
+		  		  <if test="unionid != null and unionid != ''"> and unionId = #{unionid} </if>
+		  		  <if test="userSource != null and userSource != ''"> and user_source = #{userSource} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from application_user
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="openid != null and openid != ''"> and openId = #{openid} </if>
+		  		  <if test="nickName != null and nickName != ''"> and nick_name = #{nickName} </if>
+		  		  <if test="avatar != null and avatar != ''"> and avatar = #{avatar} </if>
+		  		  <if test="country != null and country != ''"> and country = #{country} </if>
+		  		  <if test="province != null and province != ''"> and province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and city = #{city} </if>
+		  		  <if test="gender != null and gender != ''"> and gender = #{gender} </if>
+		  		  <if test="userType != null and userType != ''"> and user_type = #{userType} </if>
+		  		  <if test="userStatus != null and userStatus != ''"> and user_status = #{userStatus} </if>
+		  		  <if test="isCertified != null and isCertified != ''"> and is_certified = #{isCertified} </if>
+		  		  <if test="isStudentCertified != null and isStudentCertified != ''"> and is_student_certified = #{isStudentCertified} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="accuracy != null and accuracy != ''"> and accuracy = #{accuracy} </if>
+		  		  <if test="applicationNo != null and applicationNo != ''"> and application_no = #{applicationNo} </if>
+		  		  <if test="sessionKey != null and sessionKey != ''"> and session_key = #{sessionKey} </if>
+		  		  <if test="unionid != null and unionid != ''"> and unionId = #{unionid} </if>
+		  		  <if test="userSource != null and userSource != ''"> and user_source = #{userSource} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.api.application.domain.ApplicationUserDO" useGeneratedKeys="true" keyProperty="id">
+		insert into application_user
+		(
+			openId, 
+			nick_name, 
+			avatar, 
+			country, 
+			province, 
+			city, 
+			gender, 
+			user_type, 
+			user_status, 
+			is_certified, 
+			is_student_certified, 
+			latitude, 
+			longitude, 
+			accuracy, 
+			application_no, 
+			session_key, 
+			unionId, 
+			user_source,
+			access_token,
+			create_time,
+			scope,
+			company_no
+		)
+		values
+		(
+			#{openid}, 
+			#{nickName}, 
+			#{avatar}, 
+			#{country}, 
+			#{province}, 
+			#{city}, 
+			#{gender}, 
+			#{userType}, 
+			#{userStatus}, 
+			#{isCertified}, 
+			#{isStudentCertified}, 
+			#{latitude}, 
+			#{longitude}, 
+			#{accuracy}, 
+			#{applicationNo}, 
+			#{sessionKey}, 
+			#{unionid}, 
+			#{userSource},
+			#{accessToken},
+			NOW(),
+			#{scope},
+			(select company_no from payment_user where user_no=#{applicationNo} limit 1)
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.api.application.domain.ApplicationUserDO">
+		update application_user 
+		<set>
+			update_time = now(),
+			<if test="nickName != null">nick_name = #{nickName}, </if>
+			<if test="avatar != null">avatar = #{avatar}, </if>
+			<if test="country != null">country = #{country}, </if>
+			<if test="province != null">province = #{province}, </if>
+			<if test="city != null">city = #{city}, </if>
+			<if test="gender != null">gender = #{gender}, </if>
+			<if test="userType != null">user_type = #{userType}, </if>
+			<if test="userStatus != null">user_status = #{userStatus}, </if>
+			<if test="isCertified != null">is_certified = #{isCertified}, </if>
+			<if test="isStudentCertified != null">is_student_certified = #{isStudentCertified}, </if>
+			<if test="latitude != null">latitude = #{latitude}, </if>
+			<if test="longitude != null">longitude = #{longitude}, </if>
+			<if test="accuracy != null">accuracy = #{accuracy}, </if>
+			<if test="applicationNo != null">application_no = #{applicationNo}, </if>
+			<if test="sessionKey != null">session_key = #{sessionKey}, </if>
+			<if test="unionid != null">unionId = #{unionid}, </if>
+			<if test="accessToken != null">access_token = #{accessToken}, </if>
+			<if test="scope != null">scope = #{scope}, </if>
+		</set>
+		where openId = #{openid}
+	</update>
+	
+	<delete id="remove">
+		delete from application_user where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from application_user where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

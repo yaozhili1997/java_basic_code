@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:shiro="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="base:ticketType:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="base:ticketType:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--景点--" name="spotNo" id="spotNo"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 景点 --</option>
+								<option th:each="spot : ${spotlist}" th:value="${spot.spotNo}" th:text="'-- '+${spot.spotName}+' --'"  ></option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--票种类型--" name="ticketType" id="ticketType"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 票种类型 --</option>
+								<option th:each="tickettype : ${ticket_types}" th:value="${tickettype.value}" th:text="'-- '+${tickettype.name}+' --'"  ></option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--所属产品类型--" name="productType" id="productType"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 所属产品类型 --</option>
+								<option th:each="product_type : ${product_types}" th:value="${product_type.productTypeNo}" th:text="'-- '+${product_type.productTypeName}+' --'"  ></option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--票种供应商--" name="ticketSupplier" id="ticketSupplier"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 票种供应商 --</option>
+								<option th:each="supplier : ${supplierLists}" th:value="${supplier.supplierNo}" th:text="'-- '+${supplier.supplierName}+' --'"  ></option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--是否上架--" name="whetherShelves" id="whetherShelves"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 是否上架 --</option>
+								<option value="1">-- 上架 --</option>
+								<option value="0">-- 下架 --</option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+						</div>
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								   placeholder="">
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="base:ticketType:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="base:ticketType:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="base:ticketType:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/base/ticketType/ticketType.js"></script>
+</body>
+</html>

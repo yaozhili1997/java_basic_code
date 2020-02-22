@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.cooperation.dao.CooperationCapitalFlowDao">
+	
+	<select id="count" resultType="int">
+		SELECT COUNT(*) FROM cooperation_capital_flow
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.cooperation.domain.CooperationCapitalFlowDo">
+		SELECT capital_id,distribution_no,settlement_no,order_no,pay_type,houston,out_of_account,transaction_time,remarks,create_user,create_time,company_no
+		FROM cooperation_capital_flow
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.supplier.cooperation.domain.CooperationCapitalFlowDo" useGeneratedKeys="true" keyProperty="capitalId">
+		INSERT INTO cooperation_capital_flow
+		(
+		`distribution_no`,
+		`settlement_no`,
+		`order_no`,
+		`pay_type`,
+		`houston`,
+		`out_of_account`,
+		`transaction_time`,
+		`remarks`,
+		`create_user`,
+		`create_time`,
+		`company_no`
+		)
+		VALUES
+		(
+		#{distributionNo},
+		#{settlementNo},
+		#{orderNo},
+		#{payType},
+		#{houston},
+		#{outOfAccount},
+		#{transactionTime},
+		#{remarks},
+		#{createUser},
+		#{createTime},
+		#{companyNo}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.supplier.cooperation.domain.CooperationCapitalFlowDo">
+		UPDATE cooperation_capital_flow
+		<set>
+			<if test="distributionNo !=null">`distribution_no`=#{distributionNo},</if>
+			<if test="settlementNo !=null">`settlement_no`=#{settlementNo},</if>
+			<if test="orderNo !=null">`order_no`=#{orderNo},</if>
+			<if test="payType !=null">`pay_type`=#{payType},</if>
+			<if test="houston !=null">`houston`=#{houston},</if>
+			<if test="outOfAccount !=null">`out_of_account`=#{outOfAccount},</if>
+			<if test="transactionTime !=null">`transaction_time`=#{transactionTime},</if>
+			<if test="remarks !=null">`remarks`=#{remarks},</if>
+			<if test="createUser !=null">`create_user`=#{createUser},</if>
+			<if test="createTime !=null">`create_time`=#{createTime},</if>
+			<if test="companyNo !=null">`company_no`=#{companyNo}</if>
+		</set>
+		WHERE capital_id=#{capitalId}
+	</update>
+
+	<select id="get" resultType="com.ecotourism.supplier.cooperation.domain.CooperationCapitalFlowDo">
+		SELECT
+		capital_id,
+		distribution_no,
+		settlement_no,
+		order_no,
+		pay_type,
+		houston,
+		out_of_account,
+		transaction_time,
+		remarks,
+		create_user,
+		create_time,
+		company_no
+		FROM cooperation_capital_flow where capital_id=#{id}
+	</select>
+
+</mapper>

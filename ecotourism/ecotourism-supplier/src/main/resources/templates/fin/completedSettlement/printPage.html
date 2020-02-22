@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body>
+<div id="zhongxin">
+    <table width="700" height="30" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center"><h2><span th:text="${completedSettlement.sellUser}"></span>结算单</h2><h4 th:text="${completedSettlement.spotNo}"></h4></td>
+        </tr>
+    </table>
+    <table width="700" height="30" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="left">填报日期：<span th:text="${completedSettlement.settlementTime}==null?null:${#dates.format(completedSettlement.settlementTime,'yyyy-MM-dd hh:MM:ss')}"></span></td>
+            <td align="right"><span th:text="${completedSettlement.settlementNo }"></span></td>
+        </tr>
+    </table>
+    <table width="700" border="1"  style="border-collapse:collapse;" align="center" cellspacing="1" bgcolor="#221144">
+        <tr bgcolor="#EFEFFF">
+            <td width="30" height="27" align="center">编号</td>
+            <td width="80" align="center" >票别</td>
+            <td width="50" align="center">单位</td>
+            <td width="50" align="center">单价</td>
+            <td width="80" align="center" >发售数量</td>
+            <td width="80" align="center" >退票数量</td>
+            <td width="80" align="center" >结算数量</td>
+            <td width="80" align="center">销售金额</td>
+            <td width="80" align="center">退票金额</td>
+            <td width="80" align="center">结算金额</td>
+        </tr>
+        <tr th:each="order,orderStat : ${orderList}">
+            <td height="30" align="center" bgcolor="#FFFFFF" th:text="${orderStat.count}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${order.productName}"></td>
+            <td align="center" bgcolor="#FFFFFF">人</td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${order.payPrice}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${order.settlementNumber}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${order.refundNum}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${order.settlementNumber - order.refundNum}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${order.settlementAcoumt}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${order.refundAcoumt}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${order.settlementAcoumt - order.refundAcoumt}"></td>
+        </tr>
+        <tr>
+            <td height="30" align="center" bgcolor="#FFFFFF"></td>
+            <td align="center" bgcolor="#FFFFFF"></td>
+            <td align="center" bgcolor="#FFFFFF"></td>
+            <td align="center" bgcolor="#FFFFFF">合计</td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${completedSettlement.settlementNumber+completedSettlement.refundNum}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${completedSettlement.refundNum}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${completedSettlement.settlementNumber}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${completedSettlement.settlementAcoumt+completedSettlement.refundAcoumt}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${completedSettlement.refundAcoumt}"></td>
+            <td align="center" bgcolor="#FFFFFF" th:text="${completedSettlement.settlementAcoumt}"></td>
+        </tr>
+        <tr>
+            <td height="30" align="center" bgcolor="#FFFFFF" colspan="10"><b>人民币（大写）：<span th:text="${completedSettlement.bigPrice }"></span></b></td>
+        </tr>
+    </table>
+    <table width="700" height="30" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="37" height="27" align="center"></td>
+            <td width="152" align="center" >审批人:<span th:text="${completedSettlement.settlementReviewPerson }"></span></td>
+            <td width="106" align="center"></td>
+            <td width="154" align="center" >结算人:<span th:text="${completedSettlement.settlementUser }"></span></td>
+        </tr>
+    </table>
+    <table width="700" height="30" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="right"><button onClick="window.print()">打印</button>&nbsp;</td>
+        </tr>
+    </table>
+
+</div>
+<div th:include="include :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,657 @@
+/*
+ *这是单独为hello mui准备的个性化css，可以覆盖标准mui的css定义；
+ * 在实际项目开发时，建议为App单独写一个css文件，从而实现项目的自定义皮肤功能；
+ * 
+ * */
+
+
+.mui-plus.mui-android header.mui-bar{
+	display: none;
+}
+.mui-plus.mui-android .mui-bar-nav~.mui-content{
+	padding: 0;
+}
+
+/*hm开头的表示仅为 Hello MUI示例定义*/
+.notice p{
+	color: #2b2b2b;
+}
+
+.arrow-border{
+	border: 1px solid;
+    border-radius: 50%;
+}
+
+.mui-plus{
+	font-size: 18px;
+    font-weight: 400;
+    line-height: 100%;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    width: 40px;
+    height: 100%;
+    padding: 0;
+    color: #555;
+    border: none;
+    border-radius: 0;
+    background-color: #f9f9f9;
+}
+
+.mui-plus{
+	right: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+} 
+
+.mui-minus{
+	font-size: 18px;
+    font-weight: 400;
+    line-height: 100%;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    width: 40px;
+    height: 100%;
+    padding: 0;
+    color: #555;
+    border: none;
+    border-radius: 0;
+    background-color: #f9f9f9;
+}  
+
+.mui-minus{
+	left: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.foot-bottom{
+	position: fixed; 
+	bottom: 50px; 
+	width: 100%;
+}
+
+#search-input {
+	height: 100%;
+	width: 230px;
+	font-size: 14px;
+	color: white;
+}
+
+#search-input::input-placeholder{color:#b8c4ce!important;font-size: 14px!important;} 
+
+#search-input::-webkit-input-placeholder{ 
+		color: white!important; 
+		font-size: 14px!important;
+} 
+#search-input:-moz-placeholder{ 
+		color: white!important; 
+		font-size: 14px!important;
+} 
+#search-input::-moz-placeholder{ 
+		color: white!important; 
+		font-size: 14px!important;
+} 
+#search-input:-ms-input-placeholder{ 
+		color: white!important; 
+		font-size: 14px!important;
+}
+
+#insearch-input::input-placeholder{color:#ccc!important;font-size: 14px!important;} 
+
+#insearch-input::-webkit-input-placeholder{ 
+		color: #ccc!important; 
+		font-size: 14px!important;
+} 
+#insearch-input:-moz-placeholder{ 
+		color: #ccc!important; 
+		font-size: 14px!important;
+} 
+#insearch-input::-moz-placeholder{ 
+		color: #ccc!important; 
+		font-size: 14px!important;
+} 
+#insearch-input:-ms-input-placeholder{ 
+		color: #ccc!important; 
+		font-size: 14px!important;
+}
+
+.span-block{
+    width:  40px;
+    height: 40px;
+    display: block;
+    margin: 0 auto;
+}
+
+.imag-block{
+    display: block;
+    height: 40px;
+    width: 40px;
+}
+
+.imag-sbox{
+	border-radius: 6px;
+	overflow: hidden;
+	height: 100px;
+}
+
+.imag-size{
+	/*width: 100%;
+	height: 100px;*/
+}
+
+/*.imag-sbox{
+	border-radius: 6px;
+	overflow: hidden;
+	height: 100px;
+}*/
+
+.imag-sibox{
+	border-radius: 6px;
+	overflow: hidden;
+	/*height: 100px;*/
+	width: 140px;
+}
+
+.imag-rbox{
+	border-radius: 6px;
+	overflow: hidden; 
+	height: 100px;
+}
+
+.imag-rsize{
+	width: 100%; 
+	height: 100px;
+}
+
+.imag-ribox{
+	width: 160px; 
+	height: 170px;
+}
+
+.play-nav{
+	list-style-type:none;
+	margin: 0 0 10px -14px;
+}
+
+.play-nav li{
+	float: left;
+	padding: 1px 16px;
+	border-radius: 20px;
+	border: 1px #eee solid;
+	margin-right: 5px;
+	font-size: 12px;
+}
+
+.play-nav li.active{
+	color: white;
+	background-color: #02ac85;
+}
+
+.inplay-nav{
+	list-style-type:none;
+	margin: 5px 10px 10px 10px;
+	display: block;
+	padding: 0px;
+}
+
+.inplay-nav li{
+	float: left;
+	padding: 1px 16px;
+	border-radius: 4px;
+	border: 1px #eee solid;
+	margin-right: 5px;
+	margin-top: 5px;
+	font-size: 12px;
+}
+
+.inplay-nav li.active{
+	color: white;
+	background-color: #02ac85;
+}
+
+.mui-btn-outlined.mui-btn-blue, .mui-btn-outlined.mui-btn-tag {
+    color: #02ac85;
+}
+
+.mui-btn-outlined {
+    background-color: transparent;
+}
+
+.mui-btn-blue, .mui-btn-tag, input[type=submit] {
+    color: #02ac85;
+    border: 1px solid #02ac85;
+}
+
+.mui-btn-outlined.mui-btn-gat {
+    color: #FF7362;
+}
+
+
+.mui-btn-gat, input[type=submit] {
+    color: #FF7362;
+    border: 1px solid #FF7362;
+}
+
+
+ /* for Chrome */
+.element::-webkit-scrollbar { width: 0 !important }
+
+.element { -ms-overflow-style: none; }
+
+.element { overflow: -moz-scrollbars-none; }
+
+
+/* detail */
+.tickt-box{
+	background-color: white;
+	margin: -5px 20px 0 20px;
+	border-radius: 0px;
+    overflow: hidden;
+}
+
+.tips{
+	background-color:#02ac85 ;
+	margin: 60px 20px 0 20px;
+}
+
+.up-box{
+	background-color: white;
+	padding: 0px 20px;
+	background: radial-gradient(circle at top left,
+	            #fff 16px, #fff 0) top left,
+	            radial-gradient(circle at top right,
+	            #fff 16px, #fff 0) top right,
+	            radial-gradient(circle at bottom right,
+	            #eeeef3 16px, #fff 0) bottom right,
+	            radial-gradient(circle at bottom left,
+	            #eeeef3 16px, #fff 0) bottom left;
+	background-size: 50% 50%;
+	background-repeat: no-repeat;
+}
+
+.down-box{
+	background: radial-gradient(circle at top left,
+	            #eeeef3 16px, #fff 0) top left,
+	            radial-gradient(circle at top right,
+	            #eeeef3 16px, #fff 0) top right,
+	            radial-gradient(circle at bottom right,
+	            #fff 16px, #fff 0) bottom right,
+	            radial-gradient(circle at bottom left,
+	            #fff 16px, #fff 0) bottom left;
+	background-size: 50% 50%;
+	background-repeat: no-repeat;
+}
+
+.font-style{
+	color: #02ac85;
+}
+
+.up-left-box{
+	width: 35%;
+}
+
+.up-right-box{
+	width: 65%;
+}
+
+.img-box{
+	width: 130px;
+	height: 130px;
+	margin: 30px auto 60px auto;
+	display: block;
+}
+
+.img-innerbox{
+	width: 126px;
+	height: 126px;
+	margin: 0px auto;
+	display: block;
+}
+
+.outer-container {
+    position: relative;
+    overflow: hidden;
+}
+.inner-container {
+    position: absolute; 
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+ /* for Chrome */
+::-webkit-scrollbar {
+	display: none;/*隐藏滚轮*/
+}
+
+.ads{
+	width: 100%;
+	position: fixed;
+	bottom: -5px;
+}
+
+.ads-box{
+	position: relative;
+	overflow: hidden;
+}
+
+.close-btn{
+	position: absolute;
+	right: -30px;
+	top:-30px;
+	width: 60px;
+	height: 60px;
+	border-radius: 30px;
+	background-color: rgba(0, 0, 0, .4);
+}
+
+.close-x{
+	top: 29px;
+    position: absolute;
+    color: white;
+    left: 7px;
+}
+
+.bg-aqy{
+	background: url(../images/aiqiyyy.png);
+	background-size: 100% 100%;
+	height: 100px;
+	width: 100%;
+	background-position: 0;
+	background-repeat:no-repeat;
+}
+
+/* trainticket */
+.grinplay-nav{
+	list-style-type:none;
+	margin: 0 0 10px -24px;
+}
+
+.grinplay-nav li{
+	float: left;
+	padding: 8px 28px;
+	border-radius: 4px;
+	border: 1px #eee solid;
+	margin-right: 10px;
+	margin-bottom: 5px;
+	font-size: 12px;
+	font-weight: 600;
+	background-color: #f7f7f7;
+}
+
+.grinplay-nav li.active{
+	color: white;
+	background-color: #02ac85;
+}
+
+.week-item{
+  padding: 2% 0;
+  float: left;
+  width: 14.285%;
+  background-color: #efeff4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.total-pay span{
+	line-height: 22px;
+}
+
+.week-box{
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.day-box{
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.day-box .day-item{
+	float: left;
+	text-align: center;	
+	padding: 10px 0px;
+	width: 14.285%;
+}
+
+.day-box .day-item.active{
+	background-color: #02ac85;
+	color: white;
+}
+
+.day-box .day-item.othermouth p{
+	color: #8f8f94;
+}
+
+.day-box .day-item p{
+	color: black;
+}
+
+.day-box .day-item.active p{
+	color: white;
+}
+
+/* busticketdetail */
+
+.down-img{
+	background-image: url(../images/downimg.png);
+	width: 28px;
+    height: 28px;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+}
+
+.up-img{
+	background-image: url(../images/upimg.png);
+	width: 28px;
+    height: 28px;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+}
+
+.titel-box{
+	
+}
+
+.titel-box div{
+	text-align: center;
+	padding: 10px 0;
+	color: #929292;
+	font-size: 14px;
+}
+
+.titel-box .active{
+	background-color: #02ac85;
+	color: white;
+}
+
+.title-font{
+	font-size: 14px;
+}
+
+/* busticketbook */
+
+.date-box{
+	width: 100%;
+	padding-bottom: 16px;
+	border-bottom: 1px solid  rgba(0, 0, 0, .1);
+}
+
+.date-font{
+	font-size: 14px;
+	color: #000000;
+	padding: 4px 5px;
+	font-weight: 600;
+}
+
+.price-font{
+	color: #FF7362;
+	font-size: 10px;
+	padding: 0 5px;
+}
+
+.date-box .item-date{
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.date-box .item-date.active{
+	border: 1px solid #02ac85;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.chose{
+	transform:rotate(-45deg);
+	-ms-transform:rotate(-45deg); 	/* IE 9 */
+	-moz-transform:rotate(-45deg); 	/* Firefox */
+	-webkit-transform:rotate(-45deg); /* Safari 和 Chrome */
+	-o-transform:rotate(-45deg); 	/* Opera */
+	width: 60px; 
+	height: 20px; 
+	background-color: #02ac85; 
+	position: absolute; 
+	bottom: 0; right: -26px;
+}
+
+.chose-icon{
+	color: white;
+	position: absolute;
+	top:-7px;
+	left: 12px;
+	transform:rotate(40deg);
+	-ms-transform:rotate(40deg); 	/* IE 9 */
+	-moz-transform:rotate(40deg); 	/* Firefox */
+	-webkit-transform:rotate(40deg); /* Safari 和 Chrome */
+	-o-transform:rotate(40deg); 
+}
+
+.date-box .item-date.active .chose{
+	display:block ;
+}
+
+.date-box .item-date .chose{
+	display:none ;
+}
+
+#mask{
+	background-color: rgba(0, 0, 0, .3);
+	z-index: 4000;
+	position: fixed;
+	top:0;
+}
+
+.tite-tip-font{
+	font-size: 12px;
+	margin-top: 5px;
+	color: #FF7362;
+}
+
+.mui-btn-green,
+.mui-btn-positive,
+.mui-btn-success {
+	color: #fff;
+	border: 1px solid #4cd964;
+	background-color: #4cd964
+}
+
+.mui-btn-mcolor{
+	color: white;
+	border: 1px solid #02ac85;
+	background-color: #02ac85
+}
+
+.collection-box{
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	right: 20px;
+	top:14px
+}
+
+.uncollection-heart{
+	background-image: url(../images/uncollection.png);
+	background-size: 100% 100%;
+	width: 20px;
+	height: 20px;
+	display: block;
+}
+
+.collection-font{
+	color: #BD2C00;
+}
+
+.collection-heart{
+	background-image: url(../images/collection.png);
+	background-size: 100% 100%;
+	width: 20px;
+	height: 20px;
+	display: block;
+}
+/* orderdetails */
+
+.sig-title{
+	color:#000;
+	border-left:3px solid #02ac85;
+	text-indent: 5px;
+	margin-bottom: 0px;
+	font-weight: 600;
+}
+
+.note{
+	position:absolute;line-height:20px;padding:3px 5px;
+}
+
+.loader4 {
+	width: 60px;
+	height: 60px;
+	display: inline-block;
+	padding: 0;
+	border-radius: 100%;
+	border: 5px solid;
+	border-top-color: #02ac85;
+	border-bottom-color: rgba(0,0,0,.1);
+	border-left-color: #02ac85;
+	border-right-color: rgba(0,0,0,.1);
+	-webkit-animation: loader4 1s ease-in-out infinite;
+	animation: loader4 1s ease-in-out infinite;
+}
+
+@keyframes loader4{
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* buylist */
+.disabled-font{
+	color: #ddd !important;
+}
+
+.disabled-img{
+	-webkit-filter: grayscale(80%);
+}
+input.error {
+	color: red;
+}
+.stock-box {
+	color: #02ac85;
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	display: none;
+}
+.address-row {
+	display: flex;
+	/*padding-right: 42px;
+	padding-left: 50px;*/
+	margin-bottom: 10px;
+	position: relative;
+	background: #fff;
+	padding: 15px 50px 8px 50px;
+}

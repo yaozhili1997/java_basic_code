@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${shoppingAddressOrder.id}"  type="hidden">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">地址所属电子票号：</label>
+								<div class="col-sm-4">
+									<input id="electronicTicket" name="electronicTicket" th:value="${shoppingAddressOrder.electronicTicket}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">地址编号：</label>
+								<div class="col-sm-2">
+									<input id="addressNo" name="addressNo" th:value="${shoppingAddressOrder.addressNo}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">国家：</label>
+								<div class="col-sm-2">
+									<input id="country" name="country" th:value="${shoppingAddressOrder.country}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">省：</label>
+								<div class="col-sm-2">
+									<input id="province" name="province" th:value="${shoppingAddressOrder.province}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">CITY：</label>
+								<div class="col-sm-2">
+									<input id="city" name="city" th:value="${shoppingAddressOrder.city}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">地区：</label>
+								<div class="col-sm-2">
+									<input id="region" name="region" th:value="${shoppingAddressOrder.region}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">街道：</label>
+								<div class="col-sm-2">
+									<input id="street" name="street" th:value="${shoppingAddressOrder.street}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">收货人姓名：</label>
+								<div class="col-sm-2">
+									<input id="consigneeName" name="consigneeName" th:value="${shoppingAddressOrder.consigneeName}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">收货人联系方式：</label>
+								<div class="col-sm-2">
+									<input id="consigneePhone" name="consigneePhone" th:value="${shoppingAddressOrder.consigneePhone}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">门牌号：</label>
+								<div class="col-sm-2">
+									<input id="doorNumber" name="doorNumber" th:value="${shoppingAddressOrder.doorNumber}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">详细地址：</label>
+								<div class="col-sm-4">
+									<input id="detailAddress" name="detailAddress" th:value="${shoppingAddressOrder.detailAddress}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">用户唯一id：</label>
+								<div class="col-sm-4">
+									<input id="openId" name="openId" th:value="${shoppingAddressOrder.openId}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">状态：</label>
+								<div class="col-sm-2">
+									<input id="status" name="status" th:value="${shoppingAddressOrder.status}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">邮政编码：</label>
+								<div class="col-sm-2">
+									<input id="postalCode" name="postalCode" th:value="${shoppingAddressOrder.postalCode}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">是否默认：</label>
+								<div class="switch col-sm-2">
+									<div class="onoffswitch">
+										<input id="isDefault" name="isDefault" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${shoppingAddressOrder.isDefault=='1'}>
+										<label class="onoffswitch-label" for="isDefault">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/ums/shoppingAddressOrder/edit.js">
+	</script>
+</body>
+</html>

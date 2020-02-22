@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">用户名称：</label>
+								<div class="col-sm-4">
+									<input id="userName" name="userName" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">用户编号：</label>
+								<div class="col-sm-4">
+									<input id="userNo" name="userNo" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">用户类型：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--用户类型--" name="userType" id="userType"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 用户类型 --</option>
+										<option th:each="userTypeList : ${userTypeLists}" th:value="${userTypeList.value}" th:text="${userTypeList.name}"  ></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">所属应用：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--所属应用--" name="distributionNo" id="distributionNo"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 所属应用 --</option>
+										<option th:each="userList : ${userLists}" th:value="${userList.userNo}" th:text="${userList.userName}"  ></option>
+									</select>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否上架：</label>
+								<div class="switch col-sm-4">
+									<div class="onoffswitch">
+										<input id="whetherShelves" name="whetherShelves" checked="" type="checkbox" value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="whetherShelves">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">备注：</label>
+								<div class="col-sm-4">
+									<input id="bz" name="bz" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/users/pushUser/add.js">
+	</script>
+</body>
+</html>

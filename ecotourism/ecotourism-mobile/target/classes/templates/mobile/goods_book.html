@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
+	<head th:include="include :: header"><meta charset="utf-8" /></head>
+	<script th:inline="javascript">
+        var productNo = [[${productNo}]];
+        var shoppingCarId = [[${shoppingCarId}]];
+        var wcProductType = [[${wcProductType}]];
+	</script>
+	<link rel="stylesheet" type="text/css" href="/css/calendar-pro.css" />
+	<link href="/css/addressSelector/ydui.css" rel="stylesheet">
+	<script type="application/javascript" src="/js/addressSelector/ydui.flexible.js" ></script>
+	<script type="application/javascript" src="/js/calendar-pro.js"></script>
+	<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #fff;"></a>
+		<h1 class="mui-title">文创产品</h1>
+	</header>
+	<div class="mui-content" style="padding-bottom: 50px;">
+		<div class="mui-clearfix">
+			<div>
+				<!-- 日期数量 -->
+				<div class="mui-card" style="border-radius: 10px;">
+					<div class="mui-card-header">
+						<h4 style="border-bottom: 1px solid #eee; padding: 10px 0; width: 100%;">
+							产品信息
+						</h4>
+					</div>
+					<div class="mui-card-content">
+						<div class="mui-card-content-inner" style="padding-top: 0px;">
+							<div class="productl-box mui-clearfix" style="height: 80px;display: flex;">
+								<div style="text-align: center;">
+									<img style="max-height: 80px; width: 80px; margin-right: 10px;" src="" id="imgUrl">
+								</div>
+								<div class="mui-media-body" style="flex: 1;">
+									<div style="font-size: 16px; font-weight: bold; color: #000000;overflow: hidden;text-overflow: ellipsis;word-break: break-all;min-height: 50px;max-height: 75px;" id="productName">
+									</div>
+									<span style="font-size: 12px;color: rgb(255,74,40);">
+										￥<small style="font-size: 20px;" id="price"></small>元
+									</span>
+								</div>
+							</div>
+
+							<div class="date-box mui-clearfix">
+
+							</div>
+						</div>
+					</div>
+					<div class="mui-card-footer" style="padding-top: 0px;">
+						<div style="width: 100%;">
+							<h4 class="mui-pull-left">
+								购买数量
+							</h4>
+
+							<div class="mui-pull-right">
+								<div class="mui-numbox " style="width:120px;">
+									<button class="mui-btn mui-minus" type="button" onclick="modifyBuyNum('-', this)">-</button>
+									<input class="mui-input-numbox" type="number" name="num" style="color: #000000;" value="1"/>
+									<button class="mui-btn mui-plus" type="button" onclick="modifyBuyNum('+', this)">+</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- 日期数量 end!-->
+
+				<!-- 游客信息 -->
+				<!--<div>
+					<div class="mui-card" style="border-radius: 10px;">
+						<div class="mui-card-header" style="padding-bottom: 0;">
+							<h4 style="border-bottom: 1px solid #eee; padding: 10px 0; width: 100%;">
+								游客信息&lt;!&ndash;<p class="mui-pull-right tite-tip-font">多人入园，可填一人有效证件</p>&ndash;&gt;
+							</h4>
+						</div>
+						<div class="mui-card-content">
+							<div class="mui-card-content-inner" style="padding-top: 0px;">
+								<div>
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+											姓名
+										</h4>
+										<input type="text" placeholder="请输入身份证上的姓名" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerName"/>
+									</div>
+									<div class="mui-clearfix" style="border-bottom: 1px solid #eee;">
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;" id="buyerNameTip">必须填</p >
+									</div>
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+											身份证
+										</h4>
+										<input type="text" placeholder="输入有效身份证号码" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerIdCard"/>
+									</div>
+									<div class="mui-clearfix" style="border-bottom: 1px solid #eee;">
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;" id="buyerIdCardTip">必须填</p >
+									</div>
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+											手机号
+										</h4>
+										<input type="text" placeholder="输入入园人手机号码" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerMobile"/>
+									</div>
+									<div class="mui-clearfix" >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;" id="buyerMobileTip">必须填</p >
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>-->
+				<!-- 游客信息 end!-->
+
+				<!-- 游客信息 -->
+				<div style="margin-bottom: 50px;">
+					<div class="mui-card" style="border-radius: 10px;">
+						<div class="mui-card-header" style="padding-bottom: 0px;">
+							<h4 style="border-bottom: 1px solid #eee; padding: 10px 0; width: 100%;line-height: 26px;">
+								收件人信息
+								<button class="mui-pull-right mui-btn mui-btn-warning mui-btn-outlined add-address-btn" style="padding: 4px 10px;font-size: 10px;" onclick="openAddressSelectorModal()">选择地址</button>
+							</h4>
+						</div>
+						<div class="mui-card-content">
+							<div class="mui-card-content-inner" style="padding-top: 0px;">
+								<div id="addressInfo">
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%;padding: 10px 0 0 5px;font-size: 14px;">
+											姓名
+										</h4>
+										<input type="text" placeholder="请填写收件人姓名" name="name" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;padding-top: 0px;font-size: 14px;height: 30px"/>
+									</div>
+									<div class="mui-clearfix" style="border-bottom: 1px solid #eee;">
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p>
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;"></p>
+									</div>
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%;padding: 10px 0 0 5px;font-size: 14px;">
+											手机号
+										</h4>
+										<input type="text" placeholder="请填写收件人手机" name="mobile" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;padding-top: 0px;font-size: 14px;height: 30px"/>
+
+									</div>
+									<div class="mui-clearfix" style="border-bottom: 1px solid #eee;">
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p>
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;"></p>
+									</div>
+
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%;padding: 10px 0 0 5px;font-size: 14px;">
+											所在地区
+										</h4>
+										<span><input type="text" placeholder="请选择所在地区" name="area" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;padding-top: 0px;font-size: 14px;height: 30px" id="area" readonly="readonly"/></span>
+									</div>
+
+									<div class="mui-clearfix" style="border-bottom: 1px solid #eee;">
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p>
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;"></p>
+									</div>
+
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%;padding: 10px 0 0 5px;font-size: 14px;">
+											详细地址
+										</h4>
+										<textarea  rows="3"  placeholder="请填写详细地址" name="address" style="width: 70%; border: none; margin-bottom: 0px;padding:10px 15px;font-size: 14px;height:48px"></textarea>
+									</div>
+
+									<div class="mui-clearfix" >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p>
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 游客信息 end!-->
+			</div>
+		</div>
+	</div>
+	<div>
+
+	</div>
+
+	<!-- 底部导航 -->
+	<foot class="foot-box" style="position: fixed; bottom: 0px; width: 100%;border-top:1px solid rgba(0, 0, 0, .1)">
+		<div style="width: 40%; float: left;background-color: white;">
+			<div class="total-pay mui-clearfix mui-pull-left" style="width: 70%;text-align: center; border-right:1px solid rgba(0, 0, 0, .1);height: 50px;padding-top: 2px;">
+				<span style="color: #999; font-size: 14px;">在线支付</span>
+				<div>
+					<span style="font-size: 10px;color: rgb(255,74,40)">￥</span>
+					<span style="color: rgb(255,74,40);font-weight: 600;font-size: 16px;" id="payment">&nbsp;</span>
+				</div>
+			</div>
+			<div style="width: 30%;color: rgb(40,158,243);position: relative;height: 50px;" class="mui-pull-right mui-clearfix buyer-box" onclick="toShoppingCartList()">
+				<span class="iconfont icon-gouwuche" style="color: red; position: relative;font-size: 24px;top: 14px;left: 8px;">
+					<span class="mui-badge" id="shoppingCarNum" style="position: absolute;top: -5px;left: 16px;background-color: red;color: white;display: none;"></span>
+				</span>
+			</div>
+		</div>
+		<div style="width: 60%;  float: left;">
+			<button class="mui-btn mui-btn-success mui-btn-block choseset mui-pull-left" style="background-color: rgb(255,181,39);border: 1px solid rgb(255,181,39);margin-bottom: 0;border-radius:0px;padding: 10px;width: 50%;font-size: 14px;line-height: 28px;" onclick="addShoppingCart()">加入购物车</button>
+			<button class="mui-btn mui-btn-success mui-btn-block choseset mui-pull-right" style="background-color: rgb(255,75,39);border: 1px solid rgb(255,75,39);margin-bottom: 0;border-radius:0px;padding: 10px;width: 50%;font-size: 14px;line-height: 28px;" onclick="submitOrder(this)" id="submitBtn">立即预定</button>
+		</div>
+	</foot>
+	<!-- 底部导航 end!-->
+	<div id="addressChooseMask" style="display: none;">
+		<div class="name-list-box" style="height: 100%; width: 100%;background-color: white; position: fixed; bottom: 0px;z-index: 12;">
+			<div class="mui-clearfix" style="width: 100%;background: #02ac85;">
+				<a class="mui-icon mui-icon-left-nav mui-pull-left" style="position: absolute;top: 10px;left: 10px;font-size: 20px;color: #fff;" onclick="addressChooseBack()"></a>
+				<h4 class="mui-text-center add-address-title"  style="padding: 8px 0;color: #fff;font-weight: normal;font-size: 18px;margin: 5px 0;">选择地址</h4>
+				<a class="mui-pull-left mui-icon mui-icon-plus smlladd-address-btn" style="position: absolute;top: 10px;right: 14px;font-size: 20px;color: #fff;" onclick="addOrEditAddress()"></a>
+			</div>
+			<form class="mui-input-group" id="form-box" style="height: calc(100% - 50px);">
+				<!-- 地址选择 -->
+				<div class="mui-content"  style="position: absolute; bottom: 48px; top:0px; width: 100%; overflow: auto; padding-bottom: 10px;">
+					<div class="mui-card mui-clearfix" style="margin: 10px 0 10px 0px;background: transparent;">
+						<div class="mui-card-content">
+							<div class="mui-card-content-inner mui-clearfix" style="padding: 0px;" id="addressSelectList">
+							</div>
+						</div>
+						<!--<div class="mui-card-footer" style="border-top:1px solid #eee ;">
+							<div class="mui-clearfix"  style="width: 100%;">
+								<div class="mui-pull-left mui-radio mui-clearfix" style="">
+									<label class="choice-font address-box" for="radio_no" style="padding-left: 32px; margin-top: 8px;">默认上门地点</label>
+									<input name="radio" value="" type="radio" checked value="0" class="checkbox-c mui-pull-left" style="left: -6px;">
+								</div>
+								<div class="mui-pull-right">
+									<p class="mui-pull-right delete-btn">删除</p>
+									<p class="mui-pull-right edit-btn" style="margin-right: 20px;">编辑</p>
+								</div>
+							</div>
+						</div>-->
+					</div>
+
+					<!-- 地址选择 end!-->
+				</div>
+			</form>
+			<div style="position: fixed; bottom: 0px;width: 100%;height: 50px;" class="address-confirm-select">
+				<button class="mui-btn-primary close-form" style="width: 100%;height: 100%;" onclick="confirmAddressChoose()">
+					确认
+				</button>
+			</div>
+			<div style="position: fixed; bottom: 0px;width: 100%;height: 50px;display: none;" class="save-address">
+				<button class="mui-btn mui-btn-primary close-form" style="width: 100%;height: 100%;" onclick="saveAddress(this)">
+					保存地址
+				</button>
+			</div>
+		</div>
+	</div>
+	<script id="template-address-select" type="text/html">
+		{{
+			var hasDefault = false;
+			$.each(it, function() {
+				if (this.isDefault === '1') {
+					hasDefault = true;
+					return false;
+				};
+			});
+		}}
+		{{
+			$.each(it, function(index) {
+				var address = this;
+		}}
+		<div class="address-row">
+			<label style="width: 100%;">
+				<div class="mui-radio mui-clearfix" style="position: absolute;left: 18px; top: 28%; ">
+					<input value="{{=address.addressNo}}" name="addressRadio" type="radio" {{=((!hasDefault && index == 0) || (address.addressNo == selectedAddressNo) || (!selectedAddressNo && address.isDefault === '1')) ? 'checked' : ''}} class="checkbox-c mui-pull-left" style="left: -6px;">
+				</div>
+				<div style="position: relative">
+					<div class="mui-clearfix">
+						<div class="mui-pull-left" style="padding-right: 10px; font-size: 14px;">
+							{{=address.consigneeName}}
+						</div>
+						<div class="mui-pull-left" style="">
+							<p style="overflow: hidden;text-overflow: ellipsis;word-break: break-all;color:#ff5555;font-size: 14px;margin-left: 10px;height: 24px; margin-top: 2px;">
+								{{=address.consigneePhone}}
+							</p>
+						</div>
+					</div>
+					<div class="mui-clearfix" style="margin-bottom: 10px;font-size: 14px;">
+						<p>{{=address.province + ' ' + address.city + ' ' + address.region + ' ' + address.detailAddress}}</p>
+					</div>
+				</div>
+			</label>
+			<div style="position: absolute;top: 0;right: 18px;font-size: 12px;color: #999;top: 38%;" onclick="addOrEditAddress('{{=address.addressNo}}')">
+				编辑
+			</div>
+		</div>
+		{{
+			});
+		}}
+		{{
+
+			if (it.length == 0) {
+		}}
+		<div class="mui-clearfix" style="background-color: white; padding: 28px 0;">
+			<h4  class="mui-text-center" style="font-size: 16px;font-weight: 400;">
+				<span class="mui-icon mui-icon-location" style="color: #FF7362;font-size: 18px;"></span>
+				您还没有收货地址！
+			</h4>
+		</div>
+		<p class="mui-text-center" style="color: #02ac85; font-size: 12px; padding: 22px;"></p>
+
+		<div class="mui-clearfix btn-box" style="width: 100%;padding: 0 20px;">
+			<button type="button" class="mui-btn mui-btn-danger mui-btn-block btn-detail" style="padding: 12px 0;font-size: 14px;" onclick="addOrEditAddress()">
+				新增收货地址
+			</button>
+		</div>
+		{{
+			}
+		}}
+	</script>
+	<script id="template-add-address-form" type="text/html">
+		{{
+			var data = it;
+		}}
+		<div class="mui-input-group">
+			<input name="addressNo" type="hidden"/>
+			<div class="mui-input-row" style=""><label style="font-size: 14px;width: 35%;">收件人姓名：</label>
+				<input type="text" class="mui-input-clear text-input" name="consigneeName" placeholder="请输入姓名">
+			</div>
+			<div class="mui-input-row" style=""><label style="font-size: 14px;width: 35%;">收件人手机：</label>
+				<input type="text" class="mui-input-clear text-input" name="consigneePhone" placeholder="请输入手机号">
+			</div>
+			<div class="mui-input-row" style=""><label style="font-size: 14px;width: 35%;">所在地区：</label>
+				<input type="text" class="mui-input-clear text-input" name="area" placeholder="请选择所在地区" readonly="readonly">
+			</div>
+			<div class="mui-input-row" style=""><label style="font-size: 14px;width: 35%;">收件人地址：</label>
+				<input type="text" class="mui-input-clear text-input" name="detailAddress" placeholder="请输入详细地址">
+			</div>
+			<div class="mui-input-row" style=""><label style="font-size: 14px;width: 35%;">邮政编码：</label>
+				<input type="text" class="mui-input-clear text-input" name="postalCode" placeholder="请输入邮政编码">
+			</div>
+		</div>
+	</script>
+	<script type="application/javascript" src="/js/appjs/mobile/bus_ticket_book.js?v=1.2"></script>
+	<script type="application/javascript" src="/js/addressSelector/ydui.citys.js" ></script>
+	<script type="application/javascript" src="/js/addressSelector/ydui.js" ></script>
+	<script>
+
+	</script>
+	</body>
+</html>

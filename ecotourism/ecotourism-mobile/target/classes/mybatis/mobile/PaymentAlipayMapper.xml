@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.mobile.mobile.dao.PaymentAlipayDao">
+    <select id="getPaymentAlipayByUserNo" resultType="com.ecotourism.mobile.mobile.domain.PaymentAlipayDO">
+      select a.* from payment_alipay a
+      left join payment_user b on a.alipay_no = b.alipay_id
+      where b.user_no=#{userNo}
+    </select>
+</mapper>

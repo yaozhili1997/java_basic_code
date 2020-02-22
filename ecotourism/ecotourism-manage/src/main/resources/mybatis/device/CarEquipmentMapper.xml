@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.report.dao.cluster.CarReportReadDao">
+
+	<select id="getTodayDeviceTotal" resultType="com.ecotourism.manage.report.domain.CarReportDO">
+		SELECT
+		d. check_equipment_no checkEquipmentNo,
+		s. device_name deviceName,
+		s.vehicle_number vehicleNumber,
+		sum(ride_number) rideNumber
+		FROM
+		device_check_info d
+		inner JOIN device_car_equipment s ON d.check_equipment_no = s.device_no
+		WHERE
+		DATE_FORMAT(d.check_time, "%Y-%m-%d") = DATE_FORMAT(SYSDATE(), "%Y-%m-%d")
+		<if test="companyNo != null and companyNo != ''"> and d.company_no = #{companyNo} </if>
+		GROUP BY
+		d. check_equipment_no,s. device_name,s.vehicle_number
+	</select>
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.base.dao.WarehouseDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.base.domain.WarehouseDO">
+		select `id`,`warehouse_no`,`warehouse_name`,`address`,`phone`,`contacts`,`remarks`,`whether_default`,`company_no` from base_warehouse where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.base.domain.WarehouseDO">
+		select `id`,`warehouse_no`,`warehouse_name`,`address`,`phone`,`contacts`,`remarks`,`whether_default`,`company_no` from base_warehouse
+        <where>
+				  company_no = #{companyNo}
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="warehouseNo != null and warehouseNo != ''"> and warehouse_no = #{warehouseNo} </if>
+		  		  <if test="warehouseName != null and warehouseName != ''"> and warehouse_name = #{warehouseName} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="phone != null and phone != ''"> and phone = #{phone} </if>
+		  		  <if test="contacts != null and contacts != ''"> and contacts = #{contacts} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="whetherDefault != null and whetherDefault != ''"> and whether_default = #{whetherDefault} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from base_warehouse
+		 <where>
+			      company_no = #{companyNo}
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="warehouseNo != null and warehouseNo != ''"> and warehouse_no = #{warehouseNo} </if>
+		  		  <if test="warehouseName != null and warehouseName != ''"> and warehouse_name = #{warehouseName} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="phone != null and phone != ''"> and phone = #{phone} </if>
+		  		  <if test="contacts != null and contacts != ''"> and contacts = #{contacts} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="whetherDefault != null and whetherDefault != ''"> and whether_default = #{whetherDefault} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.base.domain.WarehouseDO" useGeneratedKeys="true" keyProperty="id">
+		insert into base_warehouse
+		(
+			`warehouse_no`, 
+			`warehouse_name`, 
+			`address`, 
+			`phone`, 
+			`contacts`, 
+			`remarks`, 
+			`whether_default`, 
+			`company_no`
+		)
+		values
+		(
+			#{warehouseNo}, 
+			#{warehouseName}, 
+			#{address}, 
+			#{phone}, 
+			#{contacts}, 
+			#{remarks}, 
+			#{whetherDefault}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.base.domain.WarehouseDO">
+		update base_warehouse 
+		<set>
+			<if test="warehouseNo != null">`warehouse_no` = #{warehouseNo}, </if>
+			<if test="warehouseName != null">`warehouse_name` = #{warehouseName}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="contacts != null">`contacts` = #{contacts}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="whetherDefault != null">`whether_default` = #{whetherDefault}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from base_warehouse where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from base_warehouse where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm"  method="post" enctype="multipart/form-data">
+						<input id="id" name="id" th:value="${wechatProvider.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">服务商名称：</label>
+								<div class="col-sm-4">
+									<input id="providerName" name="providerName" th:value="${wechatProvider.providerName}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">appid：</label>
+								<div class="col-sm-4">
+									<input id="appId" name="appId" th:value="${wechatProvider.appId}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">私钥：</label>
+								<div class="col-sm-4">
+									<input id="privateKey" name="privateKey" th:value="${wechatProvider.privateKey}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">商户ID：</label>
+								<div class="col-sm-4">
+									<input id="mchId" name="mchId" th:value="${wechatProvider.mchId}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">证书：</label>
+								<div class="col-sm-4">
+									<button type="button" class="btn btn-primary" onclick="$('#file').trigger('click');">
+										<i class="fa fa-cloud"></i>上传证书
+									</button>
+									<input type="file" id="file" name="file" style="visibility:hidden;">
+								</div>
+								<label class="col-sm-2 control-label">证书密码：</label>
+								<div class="col-sm-4">
+									<input id="certPassword" name="certPassword" th:value="${wechatProvider.certPassword}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">
+								<label class="col-sm-2 control-label">是否启用：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="available" name="available" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox" th:checked=${wechatProvider.available=='1'}>
+										<label class="onoffswitch-label" for="available">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">备注：</label>
+								<div class="col-sm-4">
+									<input id="bz" name="bz" th:value="${wechatProvider.bz}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/payment/wechatProvider/edit.js">
+	</script>
+</body>
+</html>

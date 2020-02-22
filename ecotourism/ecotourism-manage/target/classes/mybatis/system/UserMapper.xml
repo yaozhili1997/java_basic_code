@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.system.dao.UserDao">
+
+	<select id="get" resultType="com.ecotourism.manage.system.domain.UserDO">
+		select `user_id`,`username`,`name`,`password`,`dept_id`,`email`,`mobile`,`status`,`user_id_create`,`gmt_create`,`gmt_modified`,`sex`,`birth`,`pic_id`,`live_address`,`hobby`,`province`,`city`,`district`,`company_no`,`system_no`,`distribution_no`,`supplier_no` from sys_user where user_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.system.domain.UserDO">
+		SELECT
+			`user_id`,
+			`username`,
+			a. NAME,
+			`password`,
+			`dept_id`,
+			`email`,
+			`mobile`,
+			`status`,
+			`user_id_create`,
+			`gmt_create`,
+			`gmt_modified`,
+			`sex`,
+			`birth`,
+			`pic_id`,
+			`live_address`,
+			`hobby`,
+			a.province,
+			a.city,
+			`district`,
+			a.company_no,
+			b. NAME system_no,
+			c.`name` distribution_no,
+			d.supplier_name supplier_no
+		FROM
+		sys_user a
+		LEFT JOIN sys_dict b ON a.system_no = b.`value`
+		LEFT JOIN cooperation_distribution c ON c.distribution_no = a.distribution_no
+		LEFT JOIN base_supplier d ON d.supplier_no = a.supplier_no
+        <where>
+		  		  <if test="userId != null and userId != ''"> and a.user_id = #{userId} </if>
+		  		  <if test="username != null and username != ''"> and a.username = #{username} </if>
+		  		  <if test="name != null and name != ''"> and a.name = #{name} </if>
+		  		  <if test="password != null and password != ''"> and a.password = #{password} </if>
+		  		  <if test="deptId != null and deptId != ''"> and a.dept_id = #{deptId} </if>
+		  		  <if test="email != null and email != ''"> and a.email = #{email} </if>
+		  		  <if test="mobile != null and mobile != ''"> and a.mobile = #{mobile} </if>
+		  		  <if test="status != null and status != ''"> and a.status = #{status} </if>
+		  		  <if test="userIdCreate != null and userIdCreate != ''"> and a.user_id_create = #{userIdCreate} </if>
+		  		  <if test="gmtCreate != null and gmtCreate != ''"> and a.gmt_create = #{gmtCreate} </if>
+		  		  <if test="gmtModified != null and gmtModified != ''"> and a.gmt_modified = #{gmtModified} </if>
+		  		  <if test="sex != null and sex != ''"> and a.sex = #{sex} </if>
+		  		  <if test="birth != null and birth != ''"> and a.birth = #{birth} </if>
+		  		  <if test="picId != null and picId != ''"> and a.pic_id = #{picId} </if>
+		  		  <if test="liveAddress != null and liveAddress != ''"> and a.live_address = #{liveAddress} </if>
+		  		  <if test="hobby != null and hobby != ''"> and a.hobby = #{hobby} </if>
+		  		  <if test="province != null and province != ''"> and a.province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and a.city = #{city} </if>
+		  		  <if test="district != null and district != ''"> and a.district = #{district} </if>
+				  <if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+			      <if test="systemNo != null and systemNo != ''"> and a.system_no = #{systemNo} </if>
+				  <if test="userType != 'admin'"> and a.username != 'admin'</if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) FROM
+		sys_user a
+		LEFT JOIN sys_dict b ON a.system_no = b.`value`
+		LEFT JOIN cooperation_distribution c ON c.distribution_no = a.distribution_no
+		LEFT JOIN base_supplier d ON d.supplier_no = a.supplier_no
+		<where>
+			<if test="userId != null and userId != ''"> and a.user_id = #{userId} </if>
+			<if test="username != null and username != ''"> and a.username = #{username} </if>
+			<if test="name != null and name != ''"> and a.name = #{name} </if>
+			<if test="password != null and password != ''"> and a.password = #{password} </if>
+			<if test="deptId != null and deptId != ''"> and a.dept_id = #{deptId} </if>
+			<if test="email != null and email != ''"> and a.email = #{email} </if>
+			<if test="mobile != null and mobile != ''"> and a.mobile = #{mobile} </if>
+			<if test="status != null and status != ''"> and a.status = #{status} </if>
+			<if test="userIdCreate != null and userIdCreate != ''"> and a.user_id_create = #{userIdCreate} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and a.gmt_create = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and a.gmt_modified = #{gmtModified} </if>
+			<if test="sex != null and sex != ''"> and a.sex = #{sex} </if>
+			<if test="birth != null and birth != ''"> and a.birth = #{birth} </if>
+			<if test="picId != null and picId != ''"> and a.pic_id = #{picId} </if>
+			<if test="liveAddress != null and liveAddress != ''"> and a.live_address = #{liveAddress} </if>
+			<if test="hobby != null and hobby != ''"> and a.hobby = #{hobby} </if>
+			<if test="province != null and province != ''"> and a.province = #{province} </if>
+			<if test="city != null and city != ''"> and a.city = #{city} </if>
+			<if test="district != null and district != ''"> and a.district = #{district} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+			<if test="systemNo != null and systemNo != ''"> and a.system_no = #{systemNo} </if>
+			<if test="distributionNo != null and distributionNo != ''"> and a.distribution_no = #{distributionNo} </if>
+			<if test="userType != 'admin'"> and a.username != 'admin'</if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.system.domain.UserDO" useGeneratedKeys="true" keyProperty="userId">
+		insert into sys_user
+		(
+			`username`, 
+			`name`, 
+			`password`, 
+			`dept_id`, 
+			`email`, 
+			`mobile`, 
+			`status`, 
+			`user_id_create`, 
+			`gmt_create`, 
+			`gmt_modified`, 
+			`sex`, 
+			`birth`, 
+			`pic_id`, 
+			`live_address`, 
+			`hobby`, 
+			`province`, 
+			`city`, 
+			`district`,
+			`company_no`,
+			`system_no`
+		)
+		values
+		(
+			#{username}, 
+			#{name}, 
+			#{password}, 
+			#{deptId}, 
+			#{email}, 
+			#{mobile}, 
+			#{status}, 
+			#{userIdCreate}, 
+			#{gmtCreate}, 
+			#{gmtModified}, 
+			#{sex}, 
+			#{birth}, 
+			#{picId}, 
+			#{liveAddress}, 
+			#{hobby}, 
+			#{province}, 
+			#{city}, 
+			#{district},
+			#{companyNo},
+			#{systemNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.system.domain.UserDO">
+		update sys_user 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="deptId != null">`dept_id` = #{deptId}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="userIdCreate != null">`user_id_create` = #{userIdCreate}, </if>
+			<if test="gmtCreate != null">`gmt_create` = #{gmtCreate}, </if>
+			<if test="gmtModified != null">`gmt_modified` = #{gmtModified}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="birth != null">`birth` = #{birth}, </if>
+			<if test="picId != null">`pic_id` = #{picId}, </if>
+			<if test="liveAddress != null">`live_address` = #{liveAddress}, </if>
+			<if test="hobby != null">`hobby` = #{hobby}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="distributionNo != null">`distribution_no` = #{distributionNo}, </if>
+			<if test="systemNo != null">`system_no` = #{systemNo}, </if>
+			<if test="supplierNo != null">`supplier_no` = #{supplierNo}, </if>
+			<if test="district != null">`district` = #{district}</if>
+		</set>
+		where user_id = #{userId}
+		<if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+	</update>
+	
+	<delete id="remove">
+		delete from sys_user where user_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_user where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+	<select id="listAllDept" resultType="long">
+				select DISTINCT dept_id from sys_user
+	</select>
+</mapper>

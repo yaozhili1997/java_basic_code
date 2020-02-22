@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<!--<header>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script type="application/javascript" src="/js/jquery.min.js" ></script>
+    <script type="application/javascript" src="/js/mui.min.js" ></script>
+    <script type="application/javascript" src="/js/mui.picker.min.js" ></script>
+    <link href="/css/mui.min.css" rel="stylesheet">
+    <link href="/css/mui.picker.min.css" rel="stylesheet">
+    <link href="/css/iconfont.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</header>-->
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<script type="application/javascript" src="/js/qrcode.js" ></script>
+<script>
+    $(function() {
+        /*var params = {};
+        params.openId = openId;
+        getOrderList(params, function(result) {
+            var html = doT.template($('#template_order_list').text())(result.data);
+            $('.mui-content').html(html);
+        });*/
+        $('.qr').each(function() {
+            var id = $(this).attr('id');
+            var qrcode = new QRCode(id, {
+                text: id,
+                width: 256,
+                height: 256,
+                colorDark : '#000000',
+                colorLight : '#ffffff',
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+    });
+</script>
+<style>
+    .qr img {
+        width: 126px;
+        height: 126px;
+        margin: 0px auto;
+        display: block;
+    }
+</style>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">票务详情</h1>
+</header>
+<div style="margin-bottom: 80px;">
+    <div class="mui-clearfix" th:each="orderInfo,lstat:${list}">
+        <div class="tips">
+            <h4 style="padding: 10px; color: white;text-indent: 10px;" th:text="${orderInfo.spotName}"></h4>
+        </div>
+
+        <div class="mui-clearfix tickt-box" >
+            <div class="up-box">
+                <div class="mui-clearfix ticket-info" style="padding-bottom: 28px;border-bottom: 1px dashed black;">
+                    <div style="margin-top: 28px;">
+                        <p>产品名称</p>
+                        <h4 class="font-style mui-ellipsis" th:text="${orderInfo.productName}" style="line-height: 20px;"></h4>
+                    </div>
+                    <div class="up-left-box mui-pull-left" style="margin-top: 28px;">
+                        <div style="display: inline-block">
+                            <p>游玩人数</p>
+                            <h4 class="font-style" style="text-align: center;line-height: 20px;" th:text="${orderInfo.orderQuantity + '人'}"></h4>
+                        </div>
+                    </div>
+                    <div class="up-right-box mui-pull-right" style="margin-top: 28px;">
+                        <p>入园时间</p>
+                        <h4 class="font-style  mui-ellipsis" style="line-height: 20px;"><span th:text="${orderInfo.openingHours}"></span>-<span th:text="${#dates.format(orderInfo.stopCheckingTime, 'HH:mm')}"></span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="down-box mui-clearfix">
+                <div class="">
+                    <div class="img-box mui-clearfix">
+                        <h5 style="font-size: 12px; text-align: center;color: #02ac85;font-weight: 700;">游玩日期：<span th:text="${#dates.format(orderInfo.playTime, 'yyyy-MM-dd')}"></span></h5>
+                        <!--<img src="../images/code.png" class="img-innerbox"/>-->
+                        <div th:id="${orderInfo.electronicTicket}" class="qr">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="mui-bar mui-bar-tab" id="bottom_nav" style="background-color: #f7f7f7;">
+    <a class="mui-tab-item" href="javascript:" id="bottom_nav_index">
+        <span class="mui-icon iconfont icon-home" style="top:0px"></span>
+        <span class="mui-tab-label">首页</span>
+    </a>
+
+    <!--<a class="mui-tab-item" href="javascript:;" id="bottom_nav_find">
+        <span class="mui-icon iconfont icon-faxian" style="top:0px"></span>
+        <span class="mui-tab-label">发现</span>
+    </a>-->
+
+    <a class="mui-tab-item" href="javascript:" id="bottom_nav_shopping_cart">
+        <span class="mui-icon iconfont icon-tubiaozhizuomoban" style="top:0px"></span>
+        <span class="mui-tab-label">购物车</span>
+    </a>
+
+    <a class="mui-tab-item mui-active" href="javascript:" id="bottom_nav_order_list">
+        <span class="mui-icon iconfont icon-dingdan" style="top:0px"><!--<span class="mui-badge">2</span>--></span>
+        <span class="mui-tab-label">订单</span>
+    </a>
+
+    <a class="mui-tab-item" href="javascript:" id="bottom_nav_user_center">
+        <span class="mui-icon iconfont icon-wode" style="top:0px"></span>
+        <span class="mui-tab-label">我的</span>
+    </a>
+</nav>
+
+<!--<div class="mui-clearfix" th:each="orderInfo,lstat:${list}">
+    <div class="tips" style="padding: 10px;">
+        <h4 style="color: white;text-indent: 10px;" th:text="${orderInfo.spotName}"></h4>
+    </div>
+    <div class="mui-clearfix ticket-box">
+        <div class="up-box">
+            <div class="mui-clearfix ticket-info" style="padding-bottom: 28px;border-bottom: 1px dashed black;">
+                <div style="margin-top: 28px;">
+                    <p>产品名称</p>
+                    <h4 class="font-style mui-ellipsis" th:text="${orderInfo.productName}"></h4>
+                </div>
+                <div class="up-left-box mui-pull-left" style="margin-top: 28px;">
+                    <div style="display: inline-block">
+                        <p>游玩人数</p>
+                        <h4 class="font-style" style="text-align: center;" th:text="${orderInfo.orderQuantity + '人'}"></h4>
+                    </div>
+                </div>
+                <div class="up-right-box mui-pull-right" style="margin-top: 28px;">
+                    <p>入园时间</p>
+                    <h4 class="font-style  mui-ellipsis"><span th:text="${orderInfo.openingHours}"></span>-<span th:text="${#dates.format(orderInfo.stopCheckingTime, 'HH:mm')}"></span></h4>
+                </div>
+            </div>
+        </div>
+        <div class="down-box mui-clearfix">
+            <div class="">
+                <div class="img-box mui-clearfix">
+                    <h5 style="font-size: 12px; text-align: center;color: #02ac85;font-weight: 700;">游玩日期：<span th:text="${#dates.format(orderInfo.playTime, 'yyyy-MM-dd')}"></span></h5>
+                    <div th:id="${orderInfo.electronicTicket}" class="qr">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+</body>
+
+<script type="text/javascript" charset="utf-8">
+
+    $(".close-btn").click(function(){
+        $(".ads").hide();
+    });
+
+
+    //获得slider插件对象
+    var gallery = mui('.mui-slider');
+    gallery.slider({
+        interval:5000//自动轮播周期，若为0则不自动播放，默认为0；
+    })
+
+
+</script>
+</body>
+</html>

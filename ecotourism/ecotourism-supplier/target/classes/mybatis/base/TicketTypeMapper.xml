@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.base.dao.TicketTypeDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.base.domain.TicketTypeDO">
+		select `ticket_id`,`spot_no`,`spot_name`,`ticket_no`,is_self,`ticket_name`,`ticket_supplier`,`ticket_type`,`ticket_price`,`after_take_scene_refund`,`expired_refund`,`whether_shelves`,`create_user`,`create_time`,`update_user`,`update_time`,`abbreviation`,`product_type`,`company_no` from base_ticket_type where ticket_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.base.domain.TicketTypeDO">
+		SELECT
+		`ticket_id`,
+		a.spot_no,
+		c.spot_name,
+		`ticket_no`,
+		is_self,
+		`ticket_name`,
+		`ticket_supplier`,
+		`ticket_type`,
+		`ticket_price`,
+		`after_take_scene_refund`,
+		`expired_refund`,
+		`whether_shelves`,
+		a.create_user,
+		a.create_time,
+		a.update_user,
+		a.update_time,
+		`abbreviation`,
+		b.product_type_name product_type,
+		a.company_no,
+		(
+		SELECT
+		supplier_name
+		FROM
+		base_supplier s
+		WHERE
+		s.supplier_no = a.ticket_supplier
+		LIMIT 1
+		) AS supplier_name
+		FROM
+		base_ticket_type a
+		LEFT JOIN product_type b ON a.product_type = b.product_type_no
+		LEFT JOIN base_spot_management c ON c.spot_no = a.spot_no
+        <where>
+			a.company_no = #{companyNo}
+            <if test="searchName != null and searchName != ''">
+                and (a.ticket_no LIKE
+                CONCAT(CONCAT(#{searchName}),'%')
+                or
+				a.ticket_name
+                LIKE CONCAT(CONCAT(#{searchName}),'%')
+                or
+				a.spot_name LIKE CONCAT(CONCAT( #{searchName}),'%')
+                or
+				a.ticket_price LIKE CONCAT(CONCAT(#{searchName}),'%')
+                )
+            </if>
+		  		  <if test="ticketId != null and ticketId != ''"> and a.ticket_id = #{ticketId} </if>
+		  		  <if test="spotNo != null and spotNo != ''"> and a.spot_no = #{spotNo} </if>
+		  		  <if test="spotName != null and spotName != ''"> and a.spot_name = #{spotName} </if>
+		  		  <if test="ticketNo != null and ticketNo != ''"> and a.ticket_no = #{ticketNo} </if>
+		  		  <if test="ticketName != null and ticketName != ''"> and a.ticket_name = #{ticketName} </if>
+		  		  <if test="ticketSupplier != null and ticketSupplier != ''"> and a.ticket_supplier = #{ticketSupplier} </if>
+		  		  <if test="ticketType != null and ticketType != ''"> and a.ticket_type = #{ticketType} </if>
+		  		  <if test="ticketPrice != null and ticketPrice != ''"> and a.ticket_price = #{ticketPrice} </if>
+		  		  <if test="afterTakeSceneRefund != null and afterTakeSceneRefund != ''"> and a.after_take_scene_refund = #{afterTakeSceneRefund} </if>
+		  		  <if test="expiredRefund != null and expiredRefund != ''"> and a.expired_refund = #{expiredRefund} </if>
+		  		  <if test="whetherShelves != null and whetherShelves != ''"> and a.whether_shelves = #{whetherShelves} </if>
+		  		  <if test="createUser != null and createUser != ''"> and a.create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and a.create_time = #{createTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and a.update_user = #{updateUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and a.update_time = #{updateTime} </if>
+		  		  <if test="abbreviation != null and abbreviation != ''"> and a.abbreviation = #{abbreviation} </if>
+		  		  <if test="productType != null and productType != ''"> and a.product_type = #{productType} </if>
+		  		  <if test="isSelf != null and isSelf != ''"> and a.is_self = #{isSelf} </if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by a.ticket_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from base_ticket_type a
+		LEFT  JOIN product_type b ON
+		a.product_type = b.product_type_no
+		<where>
+			a.company_no = #{companyNo}
+			<if test="searchName != null and searchName != ''">
+				and (a.ticket_no LIKE
+				CONCAT(CONCAT(#{searchName}),'%')
+				or
+				a.ticket_name
+				LIKE CONCAT(CONCAT(#{searchName}),'%')
+				or
+				a.spot_name LIKE CONCAT(CONCAT( #{searchName}),'%')
+				or
+				a.ticket_price LIKE CONCAT(CONCAT(#{searchName}),'%')
+				)
+			</if>
+			<if test="ticketId != null and ticketId != ''"> and a.ticket_id = #{ticketId} </if>
+			<if test="spotNo != null and spotNo != ''"> and a.spot_no = #{spotNo} </if>
+			<if test="spotName != null and spotName != ''"> and a.spot_name = #{spotName} </if>
+			<if test="ticketNo != null and ticketNo != ''"> and a.ticket_no = #{ticketNo} </if>
+			<if test="ticketName != null and ticketName != ''"> and a.ticket_name = #{ticketName} </if>
+			<if test="ticketSupplier != null and ticketSupplier != ''"> and a.ticket_supplier = #{ticketSupplier} </if>
+			<if test="ticketType != null and ticketType != ''"> and a.ticket_type = #{ticketType} </if>
+			<if test="ticketPrice != null and ticketPrice != ''"> and a.ticket_price = #{ticketPrice} </if>
+			<if test="afterTakeSceneRefund != null and afterTakeSceneRefund != ''"> and a.after_take_scene_refund = #{afterTakeSceneRefund} </if>
+			<if test="expiredRefund != null and expiredRefund != ''"> and a.expired_refund = #{expiredRefund} </if>
+			<if test="whetherShelves != null and whetherShelves != ''"> and a.whether_shelves = #{whetherShelves} </if>
+			<if test="createUser != null and createUser != ''"> and a.create_user = #{createUser} </if>
+			<if test="createTime != null and createTime != ''"> and a.create_time = #{createTime} </if>
+			<if test="updateUser != null and updateUser != ''"> and a.update_user = #{updateUser} </if>
+			<if test="updateTime != null and updateTime != ''"> and a.update_time = #{updateTime} </if>
+			<if test="abbreviation != null and abbreviation != ''"> and a.abbreviation = #{abbreviation} </if>
+			<if test="productType != null and productType != ''"> and a.product_type = #{productType} </if>
+			<if test="isSelf != null and isSelf != ''"> and a.is_self = #{isSelf} </if>
+		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.base.domain.TicketTypeDO" useGeneratedKeys="true" keyProperty="ticketId">
+		insert into base_ticket_type
+		(
+			`spot_no`, 
+			`spot_name`, 
+			`ticket_no`, 
+			`ticket_name`, 
+			`ticket_supplier`, 
+			`ticket_type`, 
+			`ticket_price`, 
+			`after_take_scene_refund`, 
+			`expired_refund`, 
+			`whether_shelves`, 
+			`create_user`, 
+			`create_time`, 
+			`update_user`, 
+			`update_time`, 
+			`abbreviation`, 
+			`product_type`, 
+			`is_self`,
+			`company_no`
+		)
+		values
+		(
+			#{spotNo}, 
+			#{spotName}, 
+			#{ticketNo}, 
+			#{ticketName}, 
+			#{ticketSupplier}, 
+			#{ticketType}, 
+			#{ticketPrice}, 
+			#{afterTakeSceneRefund},
+			#{expiredRefund},
+			#{whetherShelves},
+			#{createUser},
+			#{createTime}, 
+			#{updateUser}, 
+			#{updateTime}, 
+			#{abbreviation}, 
+			#{productType}, 
+			#{isSelf},
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.base.domain.TicketTypeDO">
+		update base_ticket_type 
+		<set>
+			<if test="spotNo != null">`spot_no` = #{spotNo}, </if>
+			<if test="spotName != null">`spot_name` = #{spotName}, </if>
+			<if test="ticketNo != null">`ticket_no` = #{ticketNo}, </if>
+			<if test="ticketName != null">`ticket_name` = #{ticketName}, </if>
+			<if test="ticketSupplier != null">`ticket_supplier` = #{ticketSupplier}, </if>
+			<if test="ticketType != null">`ticket_type` = #{ticketType}, </if>
+			<if test="ticketPrice != null">`ticket_price` = #{ticketPrice}, </if>
+			<if test="afterTakeSceneRefund != null">`after_take_scene_refund` = #{afterTakeSceneRefund}, </if>
+			<if test="expiredRefund != null">`expired_refund` = #{expiredRefund}, </if>
+			<if test="whetherShelves != null">`whether_shelves` = #{whetherShelves}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="abbreviation != null">`abbreviation` = #{abbreviation}, </if>
+			<if test="productType != null">`product_type` = #{productType}, </if>
+			<if test="isSelf != null">`is_self` = #{isSelf}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}</if>
+		</set>
+		where ticket_id = #{ticketId}
+	</update>
+	
+	<delete id="remove">
+		delete from base_ticket_type where ticket_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from base_ticket_type where ticket_id in 
+		<foreach item="ticketId" collection="array" open="(" separator="," close=")">
+			#{ticketId}
+		</foreach>
+	</delete>
+
+</mapper>

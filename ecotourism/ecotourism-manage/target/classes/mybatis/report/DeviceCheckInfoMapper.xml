@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.report.dao.cluster.DeviceCheckInfoDao">
+
+
+	<select id="list" resultType="com.ecotourism.manage.report.domain.DeviceCheckInfoDO">
+		SELECT
+			a.id,
+			a.product_name,
+			a.electronic_ticket,
+			b.vehicle_number,
+			a.ride_number,
+			a.check_equipment_no,
+			a.check_time,
+			c.line_name,
+			b.car_no
+		FROM
+		device_check_info a
+		INNER JOIN device_car_equipment b ON a.check_equipment_no = b.device_no
+		LEFT JOIN line_management c ON a.subordinate_line = c.line_no
+        <where>
+		  	<if test="electronicTicket != null and electronicTicket != ''"> and a.electronic_ticket = #{electronicTicket} </if>
+		  	<if test="orderDistributor != null and orderDistributor != ''"> and a.order_distributor = #{orderDistributor} </if>
+		  	<if test="checkEquipmentNo != null and checkEquipmentNo != ''"> and a.check_equipment_no = #{checkEquipmentNo} </if>
+		  	<if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}  ]]> </if>
+			<if test="startTime != null and startTime != ''"> <![CDATA[ and a.check_time >= #{startTime} ]]></if>
+		  	<if test="subordinateLine != null and subordinateLine != ''"> and a.subordinate_line = #{subordinateLine} </if>
+		  	<if test="rideNumber != null and rideNumber != ''"> and a.ride_number = #{rideNumber} </if>
+		  	<if test="productName != null and productName != ''"> and a.product_name = #{productName} </if>
+		  	<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+			<if test="vehicleNumber != null and vehicleNumber != ''"> and b.vehicle_number = #{vehicleNumber} </if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by a.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from device_check_info a
+		INNER JOIN device_car_equipment b ON a.check_equipment_no = b.device_no
+		LEFT JOIN line_management c ON a.subordinate_line = c.line_no
+		 <where>
+			 <if test="electronicTicket != null and electronicTicket != ''"> and a.electronic_ticket = #{electronicTicket} </if>
+			 <if test="orderDistributor != null and orderDistributor != ''"> and a.order_distributor = #{orderDistributor} </if>
+			 <if test="checkEquipmentNo != null and checkEquipmentNo != ''"> and a.check_equipment_no = #{checkEquipmentNo} </if>
+			 <if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}  ]]> </if>
+			 <if test="startTime != null and startTime != ''"> <![CDATA[ and a.check_time >= #{startTime} ]]></if>
+			 <if test="subordinateLine != null and subordinateLine != ''"> and a.subordinate_line = #{subordinateLine} </if>
+			 <if test="rideNumber != null and rideNumber != ''"> and a.ride_number = #{rideNumber} </if>
+			 <if test="productName != null and productName != ''"> and a.product_name = #{productName} </if>
+			 <if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+			 <if test="vehicleNumber != null and vehicleNumber != ''"> and b.vehicle_number = #{vehicleNumber} </if>
+		 </where>
+	</select>
+</mapper>

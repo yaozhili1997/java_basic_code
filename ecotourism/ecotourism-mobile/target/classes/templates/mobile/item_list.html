@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<body class="gray-bg">
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">产品列表</h1>
+</header>
+<div id="tabbar-with-chat" class="" style="margin:55px 0 51px 0">
+    <!-- 搜索 -->
+    <div class="mui-clearfix">
+        <div style="width: 100%; height:30px;z-index:1000;">
+            <div style="width: 90%; margin: 0 auto;">
+                <div style="width: 100%; float: left; height:100%;background-color: #f9f9f9;  border-radius: 20px; margin-bottom: 10px;">
+                    <span class="mui-icon mui-icon-search" style="color: #ccc; margin-left: 10px; font-size: 18px;"></span>
+                    <span>
+                        <input type="search" id="insearch-input" style="width: 80%;padding: 0px 5px;height:30px;margin-bottom:0px;background-color: rgba(0,0,0,0); border: none;color: #333; font-size: 14px;" placeholder="输入您想要搜索的旅游产品" />
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 搜索end! -->
+    <!-- 导航 -->
+    <div class="mui-card-media-body mui-clearfix" style="overflow: auto; background-color: white;">
+        <ul class="inplay-nav mui-clearfix">
+            <li product-type="043001">城市观光巴士</li>
+            <li product-type="043002">景点门票</li>
+            <li product-type="043003">车+门票套餐</li>
+            <li product-type="043004">文创商城</li>
+            <li product-type="043005">酒店</li>
+            <li product-type="043006">跟团游</li>
+        </ul>
+    </div>
+    <ul class="mui-table-view" id='item_list'>
+    </ul>
+</div>
+<script th:inline="javascript">
+    var pageSize = 10;
+    var pageNumber = 1;
+    var productType = [[${productType}]];
+    var spotNo = [[${spotNo}]];
+    console.log(spotNo);
+    console.log(productType);
+    var hasLoadAll = false;
+    var loading = false;
+    $(function() {
+        $('[product-type="' + productType + '"]').addClass('active');
+        $(document).scroll(function() {
+            var arriveBottom = $(document).scrollTop() + $(window).height() >= $(document).height() - 100;
+            console.log(arriveBottom);
+            if (arriveBottom && !loading && !hasLoadAll) {
+                pageNumber++;
+                console.log(pageNumber);
+                loadProduct();
+            }
+        });
+        if (productType == 'search') {
+            $('#insearch-input').focus();
+        } else {
+            loadProduct();
+        }
+        //当地玩乐切换
+        mui('.inplay-nav').on('tap', 'li', function() {
+            $(this).addClass('active');
+            $(this).siblings().removeClass('active');
+            $('#insearch-input').blur();
+            productType = $(this).attr('product-type');
+            $('#item_list').html('');
+            pageNumber = 1;
+            hasLoadAll = false;
+            loadProduct();
+        });
+        $('#insearch-input').keyup(function(e) {
+            if (e.keyCode == 13) {
+                $('#item_list').html('');
+                pageNumber = 1;
+//                $('.inplay-nav li').removeClass('active');
+//                productType == '';
+                loadProduct();
+            }
+        });
+    });
+    function loadProduct() {
+        loading = true;
+        var searchValue = $('#insearch-input').val();
+        getProducts(productType, spotNo, searchValue, pageSize, pageNumber, function(result) {
+            console.log(result);
+            var text = $('#template-item').text();
+            var data = result.data;
+            if (data.length != pageSize) {
+                hasLoadAll = true;
+            }
+            var html = '';
+            if (data.length > 0) {
+                html = doT.template(text)(data);
+            } else if (pageNumber == 1) {
+                html = $('#template-item-empty').text();
+            }
+            $('#item_list').append(html);
+            $.each(data, function() {
+                var productNo = this.productNo;
+                productMonthSell({productNo: productNo}, function (result) {
+                    if (result.status == 'success') {
+                        $('#num_' + productNo).html('当月销量：' +  (result.data * 3));
+                    }
+                });
+            });
+            loading = false;
+        });
+    }
+</script>
+</body>
+<script type="text/html" id="template-item">
+    {{
+        var list = it;
+        $.each(list, function() {
+        var product = this;
+    }}
+    <li class="mui-table-view-cell mui-media" id="ticket_one">
+        <a href="javascript:itemDetails('{{=product.productNo}}')">
+            <img class="mui-pull-left" style="width: 100px; height: 75px; margin-right: 10px;" src="{{=product.imgUrl}}">
+            <div class="mui-media-body">
+                <p style="font-size: 16px; font-weight: bold; color: #000000;height: 44px;overflow: hidden;text-overflow: ellipsis;word-break: break-all">
+                    {{=product.productName}}
+                </p>
+                <!--<div class="mui-clearfix" style="margin-top: 5px;">
+                    <p class='mui-ellipsis mui-pull-left'>8.9评分</p>
+                    <p class='mui-ellipsis mui-pull-left'>
+                        <button type="" class="mui-btn-tag mui-btn-outlined" style="padding: 1px 4px; font-size: 12px; margin-left: 10px;">
+                            4A景区
+                        </button>
+                    </p>
+                </div>-->
+
+                <div class='mui-ellipsis'  style="font-size: 30px; margin-top:0px; color: #FF7362;text-indent: 4px;vertical-align:bottom;">
+                    <span class="mui-pull-left" style="font-size: 12px;">
+                        ￥<small style="font-size: 20px;">{{=product.payPrice}}</small>起
+                    </span>
+                    <span class="mui-pull-right" style="font-size: 12px;color:#808080;padding-top: 4px;" id="num_{{=product.productNo}}">
+                    </span>
+                    <!--<span class="mui-pull-left" style="line-height: 30px;">
+                        <span class="mui-icon mui-icon-location-filled mui-pull-left" style="font-size: 14px;margin: 7px; color:#02ac85;" ></span>
+                        <p class="mui-pull-left" style="font-size: 12px;">四川·成都</p>
+                    </span>-->
+                </div>
+
+            </div>
+        </a>
+    </li>
+    {{
+        });
+    }}
+</script>
+<script type="text/html" id="template-item-empty">
+    <div class="mui-clearfix" style="position: fixed;width: 100%; height: 100%; background: #efeff4;">
+        <img src="/images/box.png"  style="width: 110px; height: 90px; display: block; margin: 45% auto 20px auto;"/>
+        <p class="mui-text-center" style="color: #0000004d; font-weight: bold;">没有找到您需要购买的产品!</p>
+    </div>
+</script>
+</body>
+</html>

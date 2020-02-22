@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.base.dao.TermManagementDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.base.domain.TermManagementDO">
+		select `term_id`,`term_no`,`term_name`,`term_use_type`,`term_time`,`remarks`,`available`,`create_user`,`create_time`,`update_user`,`update_time`,`effective_start_date`,`effective_end_date`,`whether_limit_number`,`frequency` from base_term_management where term_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.base.domain.TermManagementDO">
+		select `term_id`,`term_no`,`term_name`,b.name term_use_type,`term_time`,a.remarks,`available`,`create_user`,`create_time`,`update_user`,`update_time`,`effective_start_date`,`effective_end_date`,`whether_limit_number`,`frequency` from base_term_management a
+		inner join sys_dict b ON
+		b.value = a.term_use_type
+		and b.company_no=a.company_no
+        <where>
+				  a.company_no = #{companyNo}
+				<if test="searchName != null and searchName != ''">
+					and (
+					term_name LIKE
+					CONCAT(CONCAT('', #{searchName}),'%')
+					)
+				</if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by term_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from base_term_management a
+		inner join sys_dict b ON
+		b.value = a.term_use_type
+		and b.company_no=a.company_no
+		 <where>
+			 	  a.company_no = #{companyNo}
+				 <if test="searchName != null and searchName != ''">
+					 and (
+					 term_name LIKE
+					 CONCAT(CONCAT('', #{searchName}),'%')
+					 )
+				 </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.base.domain.TermManagementDO" useGeneratedKeys="true" keyProperty="termId">
+		insert into base_term_management
+		(
+			`term_no`, 
+			`term_name`, 
+			`term_use_type`, 
+			`term_time`, 
+			`remarks`, 
+			`available`, 
+			`create_user`, 
+			`create_time`, 
+			`update_user`, 
+			`update_time`, 
+			`effective_start_date`, 
+			`efective_end_date`, 
+			`whether_limit_number`, 
+			`frequency`,
+			`company_no`
+		)
+		values
+		(
+			#{termNo}, 
+			#{termName}, 
+			#{termUseType}, 
+			#{termTime}, 
+			#{remarks}, 
+			#{available}, 
+			#{createUser}, 
+			#{createTime}, 
+			#{updateUser}, 
+			#{updateTime}, 
+			#{effectiveStartDate}, 
+			#{efectiveEndDate}, 
+			#{whetherLimitNumber}, 
+			#{frequency},
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.base.domain.TermManagementDO">
+		update base_term_management 
+		<set>
+			<if test="termNo != null">`term_no` = #{termNo}, </if>
+			<if test="termName != null">`term_name` = #{termName}, </if>
+			<if test="termUseType != null">`term_use_type` = #{termUseType}, </if>
+			<if test="termTime != null">`term_time` = #{termTime}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="available != null">`available` = #{available}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="effectiveStartDate != null">`effective_start_date` = #{effectiveStartDate}, </if>
+			<if test="efectiveEndDate != null">`efective_end_date` = #{efectiveEndDate}, </if>
+			<if test="whetherLimitNumber != null">`whether_limit_number` = #{whetherLimitNumber}, </if>
+			<if test="frequency != null">`frequency` = #{frequency}</if>
+		</set>
+		where term_id = #{termId}
+	</update>
+	
+	<delete id="remove">
+		delete from base_term_management where term_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from base_term_management where term_id in 
+		<foreach item="termId" collection="array" open="(" separator="," close=")">
+			#{termId}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="product/hotel/include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<form class="form-horizontal m-t" id="signupForm">
+						<input id="productId" name="productId" th:value="${hotel.productId}"  type="hidden">
+						<div class="col-sm-12">
+							<h4 style="color: green">产品信息</h4>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">产品名称：</label>
+							<div class="col-sm-2">
+								<input id="productName" name="productName" th:value="${hotel.productName}" class="form-control" type="text">
+							</div>
+							<label class="col-sm-2 control-label">票种名称：</label>
+							<div class="col-sm-2">
+								<select data-placeholder="--票种名称--" name="ticketNo" id="ticketNo"
+										class="form-control chosen-select" tabindex="2">
+									<option value="">-- 票种名称 --</option>
+									<option th:each="ticketTypeList : ${ticketTypeLists}" th:value="${ticketTypeList.ticketNo}" th:text="${ticketTypeList.ticketName}"  th:if="${ticketTypeList.ticketNo eq hotel.ticketNo}" th:selected="selected"></option>
+									<option th:each="ticketTypeList : ${ticketTypeLists}" th:value="${ticketTypeList.ticketNo}" th:text="${ticketTypeList.ticketName}"  th:if="${ticketTypeList.ticketNo ne hotel.ticketNo}"></option>
+								</select>
+							</div>
+							<label class="col-sm-2 control-label">产品类型：</label>
+							<div class="col-sm-2">
+								<input id="productSecondType" name="productSecondType" th:value="${hotel.productSecondType}" class="form-control" type="hidden">
+								<input id="productTypeName" name="productTypeName" th:value="${hotel.productTypeName}" readonly="readonly" onclick="openProductType()" class="form-control" type="text">
+								<input id="productType" name="productType" th:value="${hotel.productType}" class="form-control" type="hidden">
+							</div>
+
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">销售渠道：</label>
+							<div class="col-sm-2">
+								<select data-placeholder="--销售渠道--" name="distributionChannel" id="distributionChannel"
+										class="form-control chosen-select" tabindex="2">
+									<option value="">-- 销售渠道 --</option>
+									<option th:each="distributionChannelList : ${distributionChannelLists}" th:value="${distributionChannelList.value}" th:text="${distributionChannelList.name}" th:if="${distributionChannelList.value eq hotel.distributionChannel}" th:selected="selected"  ></option>
+									<option th:each="distributionChannelList : ${distributionChannelLists}" th:value="${distributionChannelList.value}" th:text="${distributionChannelList.name}" th:if="${distributionChannelList.value ne hotel.distributionChannel}"   ></option>
+								</select>
+							</div>
+							<label class="col-sm-2 control-label">兑换凭证：</label>
+							<div class="col-sm-2">
+								<input id="certificateExchange" name="certificateExchange" th:value="${hotel.certificateExchange}" class="form-control" type="text">
+							</div>
+							<label class="col-sm-2 control-label">票种分组：</label>
+							<div class="col-sm-2">
+								<select data-placeholder="--票种分组--" name="ticketGrouping" id="ticketGrouping"
+										class="form-control chosen-select" tabindex="2">
+									<option value="">-- 票种分组 --</option>
+									<option th:each="ticketGroupList : ${ticketGroupLists}" th:value="${ticketGroupList.value}" th:text="${ticketGroupList.name}" th:if="${ticketGroupList.value eq hotel.ticketGrouping}" th:selected="selected" ></option>
+									<option th:each="ticketGroupList : ${ticketGroupLists}" th:value="${ticketGroupList.value}" th:text="${ticketGroupList.name}" th:if="${ticketGroupList.value ne hotel.ticketGrouping}" ></option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">售价：</label>
+							<div class="col-sm-2">
+								<input id="payPrice" name="payPrice" class="form-control" th:value="${hotel.payPrice}" type="number">
+							</div>
+							<label class="col-sm-2 control-label">结算单价：</label>
+							<div class="col-sm-2">
+								<input id="settlementPrice" name="settlementPrice" th:value="${hotel.settlementPrice}" class="form-control" type="number">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">支付方式：</label>
+							<div class="col-sm-10">
+								<label th:each="payTypeList:${payTypeLists}" class="checkbox-inline">
+									<input name="payType" type="checkbox" th:value="${payTypeList.value}"
+										   th:text="${payTypeList.name}" th:checked="${payTypeList.isCheck}">
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">产品主图：</label>
+							<div class="col-sm-2">
+								<button type="button" class="btn btn-primary" onclick="$('#imgFile').trigger('click');">
+									<i class="fa fa-cloud"></i>上传图片
+								</button>
+								<input type="file" id="imgFile" name="imgFile" style="display: none;">
+							</div>
+							<label class="col-sm-2 control-label">产品副图：</label>
+							<div class="col-sm-2">
+								<button type="button" class="btn btn-primary" onclick="$('#file').trigger('click');">
+									<i class="fa fa-cloud"></i>上传图片
+								</button>
+								<input type="file" id="file" name="file" multiple style="display: none;">
+							</div>
+							<label class="col-sm-2 control-label">是否为实体产品：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="isEntity" name="isEntity" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.isEntity=='1'}>
+									<label class="onoffswitch-label" for="isEntity">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<h4 style="color: green">短信设置</h4>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">短信模板：</label>
+							<div class="col-sm-2">
+								<select data-placeholder="--短信模板--" name="templateSmsNo" id="templateSmsNo"
+										class="form-control chosen-select" tabindex="2">
+									<option value="">-- 短信模板 --</option>
+									<option th:each="smsTemplateList : ${smsTemplateLists}" th:value="${smsTemplateList.templateNo}" th:text="${smsTemplateList.templateName}"  th:if="${smsTemplateList.templateNo eq hotel.templateSmsNo}" th:selected="selected" ></option>
+									<option th:each="smsTemplateList : ${smsTemplateLists}" th:value="${smsTemplateList.templateNo}" th:text="${smsTemplateList.templateName}"  th:if="${smsTemplateList.templateNo ne hotel.templateSmsNo}"  ></option>
+								</select>
+							</div>
+
+							<label class="col-sm-2 control-label">彩信模板：</label>
+							<div class="col-sm-2">
+								<select data-placeholder="--彩信模板--" name="templateMmsNo" id="templateMmsNo"
+										class="form-control chosen-select" tabindex="2">
+									<option value="">-- 彩信模板 --</option>
+									<option th:each="mmsTemplateList : ${mmsTemplateLists}" th:value="${mmsTemplateList.templateNo}" th:text="${mmsTemplateList.templateName}"  th:if="${mmsTemplateList.templateNo eq hotel.templateMmsNo}" th:selected="selected"></option>
+									<option th:each="mmsTemplateList : ${mmsTemplateLists}" th:value="${mmsTemplateList.templateNo}" th:text="${mmsTemplateList.templateName}"  th:if="${mmsTemplateList.templateNo ne hotel.templateMmsNo}" ></option>
+								</select>
+							</div>
+							<label class="col-sm-2 control-label">打印模板：</label>
+							<div class="col-sm-2">
+								<input id="templateNo" name="templateNo" th:value="${hotel.templateNo}" class="form-control" type="text">
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<h4 style="color: green">使用规则</h4>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">订单取消设置：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="orderCancel" name="orderCancel" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.orderCancel=='1'}>
+									<label class="onoffswitch-label" for="orderCancel">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">是否需要手机号：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherUserPhone" name="whetherUserPhone" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherUserPhone=='1'}>
+									<label class="onoffswitch-label" for="whetherUserPhone">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">是否需要身份证：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherUserId" name="whetherUserId" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherUserId=='1'}>
+									<label class="onoffswitch-label" for="whetherUserId">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">是否需要预约：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherMake" name="whetherMake" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherMake=='1'}>
+									<label class="onoffswitch-label" for="whetherMake">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">入园方式：</label>
+							<div class="col-sm-2">
+								<select data-placeholder="--入园方式--" name="parkWay" id="parkWay"
+										class="form-control chosen-select" tabindex="2">
+									<option value="">-- 入园方式 --</option>
+									<option th:each="parkWayList : ${parkWayLists}" th:value="${parkWayList.value}" th:text="${parkWayList.name}" th:if="${parkWayList.value eq hotel.parkWay}" th:selected="selected"  ></option>
+									<option th:each="parkWayList : ${parkWayLists}" th:value="${parkWayList.value}" th:text="${parkWayList.name}" th:if="${parkWayList.value ne hotel.parkWay}"   ></option>
+								</select>
+							</div>
+							<label class="col-sm-2 control-label">是否需要审核：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherExamine" name="whetherExamine" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherExamine=='1'}>
+									<label class="onoffswitch-label" for="whetherExamine">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">是否需要联系人：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherUserName" name="whetherUserName" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherUserName=='1'}>
+									<label class="onoffswitch-label" for="whetherUserName">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">有效天数：</label>
+							<div class="col-sm-2">
+								<input id="effectiveDays" name="effectiveDays" th:value="${hotel.effectiveDays}" class="form-control" type="number">
+							</div>
+							<label class="col-sm-2 control-label">使用期限：</label>
+							<div class="col-sm-2">
+								<select data-placeholder="--使用期限--" name="termNo" id="termNo"
+										class="form-control chosen-select" tabindex="2">
+									<option value="">-- 使用期限 --</option>
+									<option th:each="termManagementList : ${termManagementLists}" th:value="${termManagementList.termNo}" th:text="${termManagementList.termName}" th:if="${termManagementList.termNo eq hotel.termNo}" th:selected="selected"  ></option>
+									<option th:each="termManagementList : ${termManagementLists}" th:value="${termManagementList.termNo}" th:text="${termManagementList.termName}" th:if="${termManagementList.termNo ne hotel.termNo}"   ></option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">是否预售：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherShelvesAdvance" name="whetherShelvesAdvance" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherShelvesAdvance=='1'}>
+									<label class="onoffswitch-label" for="whetherShelvesAdvance">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">预售开始时间：</label>
+							<div class="col-sm-2">
+								<input id="advanceStartDate" name="advanceStartDate" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" th:value="${hotel.advanceStartDate}==null?null:${#dates.format(hotel.advanceStartDate,'yyyy-MM-dd')}" class="laydate-icon layer-date form-control" type="text">
+							</div>
+							<label class="col-sm-2 control-label">预售结束时间：</label>
+							<div class="col-sm-2">
+								<input id="advanceEndDate" name="advanceEndDate" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" th:value="${hotel.advanceEndDate}==null?null:${#dates.format(hotel.advanceEndDate,'yyyy-MM-dd')}" class="laydate-icon layer-date form-control" type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">使用说明：</label>
+							<input id="useExplain" name="useExplain" class="form-control" type="hidden" th:value="${hotel.useExplain}">
+							<div class="col-sm-10">
+								<div class="ibox-content no-padding">
+									<div id="useExplain_en" class="summernote"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-12">
+							<h4 style="color: green">退票规则</h4>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">是否可以退款：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherRefund" name="whetherRefund" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherRefund=='1'}>
+									<label class="onoffswitch-label" for="whetherRefund">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">是否使用退票策略：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherRefundStrategy" name="whetherRefundStrategy" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherRefundStrategy=='1'}>
+									<label class="onoffswitch-label" for="whetherRefundStrategy">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">退票策略：</label>
+							<div class="col-sm-2">
+								<input id="strategyNo" name="strategyNo" class="form-control" th:value="${hotel.strategyNo}" type="hidden">
+								<input id="strategyDetailName" name="strategyDetailName" onclick="openStrategy()"  th:value="${hotel.strategyDetailName}" class="form-control" type="text">
+								<input id="refundStrategyDetailNo" name="refundStrategyDetailNo" th:value="${hotel.refundStrategyDetailNo}" class="form-control" type="hidden">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">退款说明：</label>
+							<input id="refundExplain" name="refundExplain" class="form-control" type="hidden" th:value="${hotel.refundExplain}">
+							<div class="col-sm-10">
+								<div class="ibox-content no-padding">
+									<div id="refundExplain_en" class="summernote"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<h4 style="color: green">其他规则</h4>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">是否限购：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherLimitSell" name="whetherLimitSell" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherLimitSell=='1'}>
+									<label class="onoffswitch-label" for="whetherLimitSell">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">限购日期类型：</label>
+							<div class="col-sm-2">
+								<input id="sellDateType" name="sellDateType" th:value="${hotel.sellDateType}" class="form-control" type="text">
+							</div>
+							<label class="col-sm-2 control-label">限购数量：</label>
+							<div class="col-sm-2">
+								<input id="limitSellNum" name="limitSellNum" th:value="${hotel.limitSellNum}" class="form-control" type="number">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">是否启用库存：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherLimitStock" name="whetherLimitStock" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherLimitStock=='1'}>
+									<label class="onoffswitch-label" for="whetherLimitStock">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">是否实名：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherRealName" name="whetherRealName" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherRealName=='1'}>
+									<label class="onoffswitch-label" for="whetherRealName">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<h4 style="color: green">其他信息</h4>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">是否上架：</label>
+							<div class="switch col-sm-2">
+								<div class="onoffswitch">
+									<input id="whetherShelves" name="whetherShelves" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${hotel.whetherShelves=='1'}>
+									<label class="onoffswitch-label" for="whetherShelves">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">产品提供商：</label>
+							<div class="col-sm-2">
+								<select data-placeholder="--产品提供商--" name="productProvider" id="productProvider"
+										class="form-control chosen-select" tabindex="2">
+									<option value="">-- 产品提供商 --</option>
+									<option th:each="supplierList : ${supplierLists}" th:value="${supplierList.supplierNo}" th:text="${supplierList.supplierName}" th:if="${supplierList.supplierNo eq hotel.productProvider}" th:selected="selected"  ></option>
+									<option th:each="supplierList : ${supplierLists}" th:value="${supplierList.supplierNo}" th:text="${supplierList.supplierName}" th:if="${supplierList.supplierNo ne hotel.productProvider}"   ></option>
+								</select>
+							</div>
+
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">入园地址：</label>
+							<input id="parkAddress" name="parkAddress" class="form-control" type="hidden" th:value="${hotel.parkAddress}">
+							<div class="col-sm-10">
+								<div class="ibox-content no-padding">
+									<div id="parkAddress_en" class="summernote"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">费用包含：</label>
+							<input id="costIncludes" name="costIncludes" class="form-control" type="hidden" th:value="${hotel.costIncludes}">
+							<div class="col-sm-10">
+								<div class="ibox-content no-padding">
+									<div id="costIncludes_en" class="summernote"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">费用不含：</label>
+							<input id="costNotIncludes" name="costNotIncludes" class="form-control" type="hidden" th:value="${hotel.costNotIncludes}">
+							<div class="col-sm-10">
+								<div class="ibox-content no-padding">
+									<div id="costNotIncludes_en" class="summernote"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-8 col-sm-offset-3">
+								<button type="submit" class="btn btn-primary">提交</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:include="product/hotel/include::footer"></div>
+<script type="text/javascript" src="/js/appjs/product/hotel/edit.js">
+</script>
+</body>
+</html>

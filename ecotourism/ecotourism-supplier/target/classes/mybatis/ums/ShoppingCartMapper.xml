@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.ums.dao.ShoppingCartDao">
+
+	<sql id="commonField">
+		s.id,s.open_id,s.product_no,s.product_num,s.customer_name
+		,s.id_card,s.phone_num,s.play_time,s.status,s.sort,s.checked
+		,s.create_time,s.update_time,(SELECT user_name from payment_user where user_no= s.application_no limit 1) as application_no
+	</sql>
+
+	<select id="get" resultType="com.ecotourism.supplier.ums.domain.ShoppingCartDO">
+		select <include refid="commonField"/> from shopping_cart s where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.ums.domain.ShoppingCartDO">
+		select <include refid="commonField"/>,
+		p.product_name,CONCAT(p.base_url,p.img_url) as product_img,a.nick_name,a.avatar
+		from shopping_cart s
+		LEFT JOIN product_spot_ticket p
+		on s.product_no=p.product_no
+		LEFT JOIN application_user a on s.open_id=a.openId
+        <where>  s.status='1'
+		  		  <if test="searchName != null and searchName != ''">
+					  and (p.product_name LIKE
+					  CONCAT(CONCAT('', #{searchName}),'%')
+					  or
+					  a.nick_name
+					  LIKE CONCAT(CONCAT('', #{searchName}),'%')
+					  or
+					  s.id_card
+					  LIKE CONCAT(CONCAT('', #{searchName}),'%')
+					  or
+					  s.customer_name
+					  LIKE CONCAT(CONCAT('', #{searchName}),'%')
+					  or
+					  s.product_no=#{searchName})
+				  </if>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="openId != null and openId != ''"> and open_id = #{openId} </if>
+		  		  <if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+		  		  <if test="productNum != null and productNum != ''"> and product_num = #{productNum} </if>
+		  		  <if test="customerName != null and customerName != ''"> and customer_name = #{customerName} </if>
+		  		  <if test="idCard != null and idCard != ''"> and id_card = #{idCard} </if>
+		  		  <if test="phoneNum != null and phoneNum != ''"> and phone_num = #{phoneNum} </if>
+		  		  <if test="playTime != null and playTime != ''"> and play_time = #{playTime} </if>
+		  		  <if test="sort != null and sort != ''"> and sort = #{sort} </if>
+		  		  <if test="checked != null and checked != ''"> and checked = #{checked} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="applicationNo != null and applicationNo != ''"> and application_no = #{applicationNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from shopping_cart s
+		LEFT JOIN product_spot_ticket p
+		on s.product_no=p.product_no
+		LEFT JOIN application_user a on s.open_id=a.openId
+		<where>  s.status='1'
+			<if test="searchName != null and searchName != ''">
+				and (p.product_name LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				a.nick_name
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				s.id_card
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				s.customer_name
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				s.product_no=#{searchName})
+			</if>
+			<if test="id != null and id != ''"> and s.id = #{id} </if>
+			<if test="openId != null and openId != ''"> and s.open_id = #{openId} </if>
+			<if test="productNo != null and productNo != ''"> and s.product_no = #{productNo} </if>
+			<if test="productNum != null and productNum != ''"> and s.product_num = #{productNum} </if>
+			<if test="customerName != null and customerName != ''"> and s.customer_name = #{customerName} </if>
+			<if test="idCard != null and idCard != ''"> and s.id_card = #{idCard} </if>
+			<if test="phoneNum != null and phoneNum != ''"> and s.phone_num = #{phoneNum} </if>
+			<if test="playTime != null and playTime != ''"> and s.play_time = #{playTime} </if>
+			<if test="sort != null and sort != ''"> and s.sort = #{sort} </if>
+			<if test="checked != null and checked != ''"> and s.checked = #{checked} </if>
+			<if test="createTime != null and createTime != ''"> and s.create_time = #{createTime} </if>
+			<if test="updateTime != null and updateTime != ''"> and s.update_time = #{updateTime} </if>
+			<if test="applicationNo != null and applicationNo != ''"> and s.application_no = #{applicationNo} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.supplier.ums.domain.ShoppingCartDO" useGeneratedKeys="true" keyProperty="id">
+		insert into shopping_cart
+		(
+			open_id,
+			product_no,
+			product_num,
+			customer_name,
+			id_card,
+			phone_num,
+			play_time,
+			status,
+			sort,
+			checked,
+			create_time,
+			update_time,
+			application_no
+		)
+		values
+		(
+			#{openId},
+			#{productNo},
+			#{productNum},
+			#{customerName},
+			#{idCard},
+			#{phoneNum},
+			#{playTime},
+			#{status},
+			#{sort},
+			#{checked},
+			#{createTime},
+			#{updateTime},
+			#{applicationNo}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.supplier.ums.domain.ShoppingCartDO">
+		update shopping_cart 
+		<set>
+			<if test="openId != null">open_id = #{openId}, </if>
+			<if test="productNo != null">product_no = #{productNo}, </if>
+			<if test="productNum != null">product_num = #{productNum}, </if>
+			<if test="customerName != null">customer_name = #{customerName}, </if>
+			<if test="idCard != null">id_card = #{idCard}, </if>
+			<if test="phoneNum != null">phone_num = #{phoneNum}, </if>
+			<if test="playTime != null">play_time = #{playTime}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="sort != null">sort = #{sort}, </if>
+			<if test="checked != null">checked = #{checked}, </if>
+			<if test="createTime != null">create_time = #{createTime}, </if>
+			<if test="updateTime != null">update_time = #{updateTime}, </if>
+			<if test="applicationNo != null">application_no = #{applicationNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from shopping_cart where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from shopping_cart where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

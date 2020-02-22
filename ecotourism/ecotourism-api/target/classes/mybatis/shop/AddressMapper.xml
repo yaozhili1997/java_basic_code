@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.shop.dao.AddressDao">
+
+	<sql id="commonField">
+		address_no,country,province,city,region
+		,consignee_name,consignee_phone,detail_address,postal_code
+		,is_default,status,create_time,update_time
+	</sql>
+	<select id="get" resultType="com.ecotourism.api.shop.domain.AddressDO">
+		select <include refid="commonField"/> from shopping_address
+		where application_no = #{applicationNo} and address_no=#{addressNo} and open_id = #{openId} and status='1'
+	</select>
+	<select id="getDefault" resultType="com.ecotourism.api.shop.domain.AddressDO">
+		select <include refid="commonField"/> from shopping_address
+		where application_no = #{applicationNo} and open_id = #{openId} and status='1' limit 1
+	</select>
+	<select id="list" resultType="com.ecotourism.api.shop.domain.AddressDO">
+		select <include refid="commonField"/> from shopping_address
+        <where> application_no = #{applicationNo} and open_id = #{openId} and status='1'
+		  		  <if test="consigneeName != null and consigneeName != ''"> and consignee_name = #{consigneeName} </if>
+		  		  <if test="consigneePhone != null and consigneePhone != ''"> and consignee_phone = #{consigneePhone} </if>
+		  		  <if test="isDefault != null and isDefault != ''"> and is_default = #{isDefault} </if>
+		  		</where>
+			order by create_time DESC
+		<if test="pageNumber != null and pageSize != null">
+			limit #{pageNumber}, #{pageSize}
+		</if>
+	</select>
+	
+	<insert id="save" parameterType="com.ecotourism.api.shop.domain.AddressDO">
+		insert into shopping_address
+		(
+			address_no, 
+			country, 
+			province, 
+			city, 
+			region, 
+			consignee_name, 
+			consignee_phone, 
+			detail_address, 
+			postal_code, 
+			is_default, 
+			status, 
+			create_time, 
+			open_id,
+			application_no
+		)
+		values
+		(
+			#{addressNo}, 
+			#{country}, 
+			#{province}, 
+			#{city}, 
+			#{region}, 
+			#{consigneeName}, 
+			#{consigneePhone}, 
+			#{detailAddress}, 
+			#{postalCode}, 
+			#{isDefault},
+			"1",
+			NOW(),
+			#{openId},
+			#{applicationNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.api.shop.domain.AddressDO">
+		update shopping_address 
+		<set>
+			update_time =NOW(),
+			<if test="country != null">country = #{country}, </if>
+			<if test="province != null">province = #{province}, </if>
+			<if test="city != null">city = #{city}, </if>
+			<if test="region != null">region = #{region}, </if>
+			<if test="consigneeName != null">consignee_name = #{consigneeName}, </if>
+			<if test="consigneePhone != null">consignee_phone = #{consigneePhone}, </if>
+			<if test="detailAddress != null">detail_address = #{detailAddress}, </if>
+			<if test="postalCode != null">postal_code = #{postalCode}, </if>
+		</set>
+		where application_no = #{applicationNo} and address_no=#{addressNo} and open_id = #{openId} and status='1'
+	</update>
+	<update id="updateDefault">
+		update shopping_address set is_default='1'
+		where application_no = #{applicationNo} and address_no=#{addressNo} and open_id = #{openId} and status='1'
+	</update>
+	<update id="clearnDefault">
+		update shopping_address set is_default='0'
+		where application_no = #{applicationNo} and open_id = #{openId} and status='1'
+	</update>
+
+	<update id="remove">
+		update shopping_address set status='0'
+		where application_no = #{applicationNo} and address_no=#{addressNo} and open_id = #{openId} and status='1'
+	</update>
+
+</mapper>

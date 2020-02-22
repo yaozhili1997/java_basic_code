@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.sms.dao.QrcodeFileDao">
+
+	<select id="get" resultType="com.ecotourism.manage.sms.domain.QrcodeFileDO">
+		select `id`,`ticket`,`path`,`create_time`,`update_time` from sms_qrcode_file where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.sms.domain.QrcodeFileDO">
+		select `id`,`ticket`,`path`,`create_time`,`update_time` from sms_qrcode_file
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="ticket != null and ticket != ''"> and ticket = #{ticket} </if>
+		  		  <if test="path != null and path != ''"> and path = #{path} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sms_qrcode_file
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="ticket != null and ticket != ''"> and ticket = #{ticket} </if>
+		  		  <if test="path != null and path != ''"> and path = #{path} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.sms.domain.QrcodeFileDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sms_qrcode_file
+		(
+			`ticket`, 
+			`path`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{ticket}, 
+			#{path}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.sms.domain.QrcodeFileDO">
+		update sms_qrcode_file 
+		<set>
+			<if test="ticket != null">`ticket` = #{ticket}, </if>
+			<if test="path != null">`path` = #{path}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sms_qrcode_file where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sms_qrcode_file where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

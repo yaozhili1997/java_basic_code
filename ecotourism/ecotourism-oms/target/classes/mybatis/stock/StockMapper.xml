@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.StockDao">
+	<!--查询产品库存-->
+	<select id="findProductStock"  resultType="com.ecotourism.oms.oms.domain.StockDO">
+		select
+		*
+		from product_stock
+		where product_no=#{productNo}
+		and abbreviation=#{abbreviation}
+		and user_start_time &lt;= #{nowTime}
+		and  user_end_time &gt;=#{nowTime}
+		ORDER BY CREATE_TIME DESC
+		limit 1
+	</select>
+	<update id="updateProductStockNum">
+		update product_stock set
+		surplus_stock_num = surplus_stock_num-#{num}
+		where product_no=#{productNo}
+		and abbreviation=#{abbreviation}
+		and user_start_time &lt;= #{nowTime}
+		and  user_end_time &gt;=#{nowTime}
+		ORDER BY CREATE_TIME DESC
+		limit 1
+	</update>
+
+</mapper>

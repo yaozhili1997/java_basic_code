@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">客户名称：</label>
+								<div class="col-sm-8">
+									<input id="customerName" name="customerName" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">客户电话：</label>
+								<div class="col-sm-8">
+									<input id="customerPhone" name="customerPhone" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">客户身份证：</label>
+								<div class="col-sm-8">
+									<input id="customerUserId" name="customerUserId" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">订单编号：</label>
+								<div class="col-sm-8">
+									<input id="orderNo" name="orderNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">电子票：</label>
+								<div class="col-sm-8">
+									<input id="electronicTicket" name="electronicTicket" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">产品编号：</label>
+								<div class="col-sm-8">
+									<input id="productNo" name="productNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">产品名称：</label>
+								<div class="col-sm-8">
+									<input id="productName" name="productName" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">数量：</label>
+								<div class="col-sm-8">
+									<input id="orderQuantity" name="orderQuantity" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">售价：</label>
+								<div class="col-sm-8">
+									<input id="payPrice" name="payPrice" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">总金额：</label>
+								<div class="col-sm-8">
+									<input id="totalAmount" name="totalAmount" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">支付方式：</label>
+								<div class="col-sm-8">
+									<input id="payType" name="payType" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">支付状态：</label>
+								<div class="col-sm-8">
+									<input id="payStatus" name="payStatus" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">订单状态：</label>
+								<div class="col-sm-8">
+									<input id="orderStatus" name="orderStatus" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退款状态：</label>
+								<div class="col-sm-8">
+									<input id="refundStatus" name="refundStatus" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">分销商：</label>
+								<div class="col-sm-8">
+									<input id="orderDistributor" name="orderDistributor" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">购买时间：</label>
+								<div class="col-sm-8">
+									<input id="purchaseTime" name="purchaseTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">消费时间：</label>
+								<div class="col-sm-8">
+									<input id="consumptionTime" name="consumptionTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">游玩时间：</label>
+								<div class="col-sm-8">
+									<input id="playTime" name="playTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">短信状态：</label>
+								<div class="col-sm-8">
+									<input id="messageStatus" name="messageStatus" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">是否下发（0-未下发，1-已下发）：</label>
+								<div class="col-sm-8">
+									<input id="whetherIssued" name="whetherIssued" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">检票设备编码：</label>
+								<div class="col-sm-8">
+									<input id="checkEquipmentNo" name="checkEquipmentNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">景点编号：</label>
+								<div class="col-sm-8">
+									<input id="spotNo" name="spotNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">票种类型：</label>
+								<div class="col-sm-8">
+									<input id="ticketType" name="ticketType" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">票种定义：</label>
+								<div class="col-sm-8">
+									<input id="ticketNo" name="ticketNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">检票时间：</label>
+								<div class="col-sm-8">
+									<input id="checkTime" name="checkTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">piaogo系统中的第三方订单号：</label>
+								<div class="col-sm-8">
+									<input id="piaogoOrderNo" name="piaogoOrderNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">取票凭证码：</label>
+								<div class="col-sm-8">
+									<input id="orderVoucherno" name="orderVoucherno" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">是否发送通知：</label>
+								<div class="col-sm-8">
+									<input id="whetherSendNotice" name="whetherSendNotice" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">购票设备编码：</label>
+								<div class="col-sm-8">
+									<input id="selfMachineNo" name="selfMachineNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退票审核：</label>
+								<div class="col-sm-8">
+									<input id="whetherSendRefundNotice" name="whetherSendRefundNotice" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">推送检票信息到本地(西信--->本地)：</label>
+								<div class="col-sm-8">
+									<input id="whetherSendCheckTolocal" name="whetherSendCheckTolocal" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退票(审核)时间：</label>
+								<div class="col-sm-8">
+									<input id="refundTime" name="refundTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">是否使用公交：</label>
+								<div class="col-sm-8">
+									<input id="isTransit" name="isTransit" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">乘车时间：</label>
+								<div class="col-sm-8">
+									<input id="transitTime" name="transitTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">设备编号：</label>
+								<div class="col-sm-8">
+									<input id="deviceNo" name="deviceNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">设备编号2：</label>
+								<div class="col-sm-8">
+									<input id="deviceNoTwo" name="deviceNoTwo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="transitTimeTwo" name="transitTimeTwo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">入住时间：</label>
+								<div class="col-sm-8">
+									<input id="checkInTime" name="checkInTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">入住办理人：</label>
+								<div class="col-sm-8">
+									<input id="checkInOperator" name="checkInOperator" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">地推用户编号：</label>
+								<div class="col-sm-8">
+									<input id="pushUserNo" name="pushUserNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">公司编号：</label>
+								<div class="col-sm-8">
+									<input id="companyNo" name="companyNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">备注：</label>
+								<div class="col-sm-8">
+									<input id="bz" name="bz" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">人工下单用户：</label>
+								<div class="col-sm-8">
+									<input id="distributionUser" name="distributionUser" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">来源ip：</label>
+								<div class="col-sm-8">
+									<input id="ip" name="ip" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/order/orderSpot/add.js">
+	</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.mobile.mobile.dao.PaymentWechatDao">
+    <select id="getPaymentWechatByUserNo" resultType="com.ecotourism.mobile.mobile.domain.PaymentWechatDO">
+      select a.* from payment_wechat a
+      left join payment_user b on a.wechat_no = b.wechat_id
+      where b.user_no=#{userNo}
+    </select>
+</mapper>

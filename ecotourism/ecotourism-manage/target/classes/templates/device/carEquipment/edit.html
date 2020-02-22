@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${carEquipment.id}"  type="hidden">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">设备编码：</label>
+								<div class="col-sm-4">
+									<input id="deviceNo" name="deviceNo" th:value="${carEquipment.deviceNo}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">设备名称：</label>
+								<div class="col-sm-4">
+									<input id="deviceName" name="deviceName" th:value="${carEquipment.deviceName}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">设备mac地址：</label>
+								<div class="col-sm-4">
+									<input id="deviceMac" name="deviceMac" th:value="${carEquipment.deviceMac}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">所属景点：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--所属景点--" name="spotNo" id="spotNo"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 所属景点 --</option>
+										<option th:each="spotList : ${spotLists}" th:value="${spotList.spotNo}" th:text="${spotList.spotName}"  th:if="${spotList.spotNo eq carEquipment.spotNo}" th:selected="selected"></option>
+										<option th:each="spotList : ${spotLists}" th:value="${spotList.spotNo}" th:text="${spotList.spotName}"  th:if="${spotList.spotNo ne carEquipment.spotNo}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否可用：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="enable" name="enable" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${carEquipment.enable==1}>
+										<label class="onoffswitch-label" for="enable">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">设备编号：</label>
+								<div class="col-sm-4">
+									<input id="equipmentNumber" name="equipmentNumber" th:value="${carEquipment.equipmentNumber}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">欢迎乘坐：</label>
+								<div class="col-sm-4">
+									<input id="welcomeText" name="welcomeText" th:value="${carEquipment.welcomeText}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">基础票价：</label>
+								<div class="col-sm-4">
+									<input id="basePrice" name="basePrice" th:value="${carEquipment.basePrice}" class="form-control" type="number">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">车牌号：</label>
+								<div class="col-sm-4">
+									<input id="carNo" name="carNo" th:value="${carEquipment.carNo}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">请刷卡：</label>
+								<div class="col-sm-4">
+									<input id="prompt" name="prompt" th:value="${carEquipment.prompt}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">基础信息：</label>
+								<div class="col-sm-4">
+									<input id="baseText" name="baseText" th:value="${carEquipment.baseText}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">车辆编号：</label>
+								<div class="col-sm-4">
+									<input id="vehicleNumber" name="vehicleNumber" th:value="${carEquipment.vehicleNumber}" class="form-control" type="text">
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">所属线路：</label>
+								<div class="col-sm-4">
+									<input id="transitNo" name="transitNo" th:value="${carEquipment.transitNo}" class="form-control" type="hidden">
+									<select data-placeholder="--所属线路--" name="subordinateLine" id="subordinateLine"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 所属线路 --</option>
+										<option th:each="lineList : ${lineLists}" th:value="${lineList.lineNo}" th:text="${lineList.lineName}"  th:if="${lineList.lineNo eq carEquipment.subordinateLine}" th:selected="selected"></option>
+										<option th:each="lineList : ${lineLists}" th:value="${lineList.lineNo}" th:text="${lineList.lineName}"  th:if="${lineList.lineNo ne carEquipment.subordinateLine}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/device/carEquipment/edit.js">
+	</script>
+</body>
+</html>

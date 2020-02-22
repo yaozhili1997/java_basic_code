@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.common.dao.DictDao">
+
+	<select id="list" resultType="com.ecotourism.oms.common.domain.DictDO">
+		select
+		a.id,`name`,`value`,b.description type,a.description,`sort`,`parent_id`,`create_by`,`create_date`,`update_by`,`update_date`,`remarks`,`del_flag`
+		from sys_dict a
+		left join sys_dict_type b ON
+		a.type = b.type
+		<where>
+			company_no = #{companyNo}
+			<if test="type != null and type != ''"> and a.type = #{type} </if>
+			<if test="value != null and value != ''"> and a.value = #{value} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by a.id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+</mapper>

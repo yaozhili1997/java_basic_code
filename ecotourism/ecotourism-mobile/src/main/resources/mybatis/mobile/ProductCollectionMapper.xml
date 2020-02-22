@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.mobile.mobile.dao.ProductCollectionDao">
+	<select id="get" resultType="com.ecotourism.mobile.mobile.domain.ProductCollectionDO">
+		select * from product_collection where open_id=#{openId}
+		<if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+	</select>
+
+	<delete id="remove">
+		delete from product_collection where product_no = #{productNo} and open_id=#{openId}
+	</delete>
+
+	<insert id="insert">
+		insert into product_collection (open_id, product_no, create_time) values (#{openId}, #{productNo}, now())
+	</insert>
+
+	<select id="getList" resultType="com.ecotourism.mobile.mobile.domain.ProductCollectionDO">
+		SELECT * from product_collection where open_id=#{openId}
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+</mapper>

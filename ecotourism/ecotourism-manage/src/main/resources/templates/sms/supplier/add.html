@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">供应商编号：</label>
+								<div class="col-sm-4">
+									<input id="supplierNo" name="supplierNo" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">供应商名称：</label>
+								<div class="col-sm-4">
+									<input id="supplierName" name="supplierName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">短信发送接口：</label>
+								<div class="col-sm-4">
+									<input id="senderClass" name="senderClass" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">余额查询接口：</label>
+								<div class="col-sm-4">
+									<input id="balanceClass" name="balanceClass" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">账号：</label>
+								<div class="col-sm-4">
+									<input id="account" name="account" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">密码：</label>
+								<div class="col-sm-4">
+									<input id="password" name="password" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">APPKEY：</label>
+								<div class="col-sm-4">
+									<input id="appkey" name="appkey" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">剩余量：</label>
+								<div class="col-sm-4">
+									<input id="remainNum" name="remainNum" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">已发送量：</label>
+								<div class="col-sm-4">
+									<input id="usedNum" name="usedNum" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">短信供应价：</label>
+								<div class="col-sm-4">
+									<input id="supplyPrice" name="supplyPrice" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">售价：</label>
+								<div class="col-sm-4">
+									<input id="sellPrice" name="sellPrice" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">是否可用：</label>
+								<div class="col-sm-4">
+									<label class="radio-inline"> <input type="radio"
+																		name="enable" value="012001" /> 启用
+									</label> <label class="radio-inline"> <input type="radio"
+																				 name="enable" value="012002" /> 禁用</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否默认：</label>
+								<div class="col-sm-4">
+									<label class="radio-inline"> <input type="radio"
+																		name="isDefault" value="012001" /> 是
+									</label> <label class="radio-inline"> <input type="radio"
+																				 name="isDefault" value="012002" /> 否</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/sms/supplier/add.js">
+	</script>
+</body>
+</html>

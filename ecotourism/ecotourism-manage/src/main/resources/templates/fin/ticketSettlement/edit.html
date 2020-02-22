@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${ticketSettlement.id}"  type="hidden">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">结算编码：</label>
+								<div class="col-sm-4">
+									<input id="settlementNo" name="settlementNo" th:value="${ticketSettlement.settlementNo}" readonly="readonly" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">售票人：</label>
+								<div class="col-sm-4">
+									<input id="sellUser" name="sellUser" th:value="${ticketSettlement.sellUser}" readonly="readonly" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">景点：</label>
+								<div class="col-sm-4">
+									<input id="spotNo" name="spotNo" th:value="${ticketSettlement.spotNo}" readonly="readonly" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">结算人：</label>
+								<div class="col-sm-4">
+									<input id="settlementUser" name="settlementUser" th:value="${ticketSettlement.settlementUser}" readonly="readonly" class="form-control" type="text">
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">结算数量：</label>
+								<div class="col-sm-4">
+									<input id="settlementNumber" name="settlementNumber" th:value="${ticketSettlement.settlementNumber}" readonly="readonly" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">结算金额：</label>
+								<div class="col-sm-4">
+									<input id="settlementAcoumt" name="settlementAcoumt" th:value="${ticketSettlement.settlementAcoumt}" readonly="readonly" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">退票金额：</label>
+								<div class="col-sm-4">
+									<input id="refundAcoumt" name="refundAcoumt" th:value="${ticketSettlement.refundAcoumt}" readonly="readonly" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">退票数量：</label>
+								<div class="col-sm-4">
+									<input id="refundNum" name="refundNum" th:value="${ticketSettlement.refundNum}" readonly="readonly" class="form-control" type="text">
+								</div>
+
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label">应收金额：</label>
+								<div class="col-sm-4">
+									<input id="receivableAmount" name="receivableAmount" th:value="${ticketSettlement.receivableAmount}" readonly="readonly" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">结算时间：</label>
+								<div class="col-sm-4">
+									<input id="settlementTime" name="settlementTime" th:value="${ticketSettlement.settlementTime}==null?null:${#dates.format(ticketSettlement.settlementTime,'yyyy-MM-dd hh:MM:ss')}" readonly="readonly" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">审核金额：</label>
+								<div class="col-sm-4">
+									<input id="reviewAmount" name="reviewAmount" class="form-control" type="number">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">备注：</label>
+								<div class="col-sm-10">
+									<textarea id="remarks" name="remarks"  class="form-control" type="text"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">审核</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/fin/ticketSettlement/edit.js">
+	</script>
+</body>
+</html>

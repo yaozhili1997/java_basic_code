@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.application.dao.ApplicationApiDetectionDao">
+
+	<select id="get" resultType="com.ecotourism.api.application.domain.ApplicationApiDetectionDO">
+		select id,api_name,api_url,req_param,time_consuming,create_time,complete_time from application_api_detection where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.api.application.domain.ApplicationApiDetectionDO">
+		select id,api_name,api_url,req_param,time_consuming,create_time,complete_time from application_api_detection
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="apiName != null and apiName != ''"> and api_name = #{apiName} </if>
+		  		  <if test="apiUrl != null and apiUrl != ''"> and api_url = #{apiUrl} </if>
+		  		  <if test="reqParam != null and reqParam != ''"> and req_param = #{reqParam} </if>
+		  		  <if test="timeConsuming != null and timeConsuming != ''"> and time_consuming = #{timeConsuming} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="completeTime != null and completeTime != ''"> and complete_time = #{completeTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from application_api_detection
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="apiName != null and apiName != ''"> and api_name = #{apiName} </if>
+		  		  <if test="apiUrl != null and apiUrl != ''"> and api_url = #{apiUrl} </if>
+		  		  <if test="reqParam != null and reqParam != ''"> and req_param = #{reqParam} </if>
+		  		  <if test="timeConsuming != null and timeConsuming != ''"> and time_consuming = #{timeConsuming} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="completeTime != null and completeTime != ''"> and complete_time = #{completeTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.api.application.domain.ApplicationApiDetectionDO">
+		insert into application_api_detection
+		(
+			api_code,
+			api_name,
+			api_url,
+			req_param, 
+			time_consuming, 
+			create_time, 
+			complete_time
+		)
+		values
+		(
+			#{apiCode},
+			#{apiName},
+			#{apiUrl},
+			#{reqParam}, 
+			#{timeConsuming}, 
+			#{createTime}, 
+			#{completeTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.api.application.domain.ApplicationApiDetectionDO">
+		update application_api_detection 
+		<set>
+			<if test="apiName != null">api_name = #{apiName}, </if>
+			<if test="apiUrl != null">api_url = #{apiUrl}, </if>
+			<if test="reqParam != null">req_param = #{reqParam}, </if>
+			<if test="timeConsuming != null">time_consuming = #{timeConsuming}, </if>
+			<if test="createTime != null">create_time = #{createTime}, </if>
+			<if test="completeTime != null">complete_time = #{completeTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from application_api_detection where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from application_api_detection where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

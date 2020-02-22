@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.application.dao.IndexContentDao">
+
+	<sql id="commonFieldSql">
+		cid,title,slug,created,modified,content,type,tags,categories,hits,comments_num,jump_url
+		,allow_comment,allow_ping,allow_feed,status,author,gtm_create,gtm_modified
+		,CONCAT(base_url,img_url) as img_url,belong_app
+	</sql>
+
+	<select id="get" resultType="com.ecotourism.api.application.domain.IndexContentDO">
+		select <include refid="commonFieldSql"/>  from info_index_content where cid = #{value} and status=1
+	</select>
+
+	<select id="list" resultType="com.ecotourism.api.application.domain.IndexContentDO">
+		select <include refid="commonFieldSql"/> from info_index_content
+        <where>  status=1
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="slug != null and slug != ''"> and slug = #{slug} </if>
+		  		  <if test="created != null and created != ''"> and created = #{created} </if>
+		  		  <if test="modified != null and modified != ''"> and modified = #{modified} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="tags != null and tags != ''"> and tags = #{tags} </if>
+		  		  <if test="categories != null and categories != ''"> and categories = #{categories} </if>
+		  		  <if test="hits != null and hits != ''"> and hits = #{hits} </if>
+		  		  <if test="commentsNum != null and commentsNum != ''"> and comments_num = #{commentsNum} </if>
+		  		  <if test="allowComment != null and allowComment != ''"> and allow_comment = #{allowComment} </if>
+		  		  <if test="allowPing != null and allowPing != ''"> and allow_ping = #{allowPing} </if>
+		  		  <if test="allowFeed != null and allowFeed != ''"> and allow_feed = #{allowFeed} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="author != null and author != ''"> and author = #{author} </if>
+		  		  <if test="gtmCreate != null and gtmCreate != ''"> and gtm_create = #{gtmCreate} </if>
+		  		  <if test="gtmModified != null and gtmModified != ''"> and gtm_modified = #{gtmModified} </if>
+		  		  <if test="imgUrl != null and imgUrl != ''"> and img_url = #{imgUrl} </if>
+		  		  <if test="belongApp != null and belongApp != ''"> and belong_app = #{belongApp} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by cid desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from info_index_content
+		 <where>  status=1
+		  		  <if test="cid != null and cid != ''"> and cid = #{cid} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="slug != null and slug != ''"> and slug = #{slug} </if>
+		  		  <if test="created != null and created != ''"> and created = #{created} </if>
+		  		  <if test="modified != null and modified != ''"> and modified = #{modified} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="tags != null and tags != ''"> and tags = #{tags} </if>
+		  		  <if test="categories != null and categories != ''"> and categories = #{categories} </if>
+		  		  <if test="hits != null and hits != ''"> and hits = #{hits} </if>
+		  		  <if test="commentsNum != null and commentsNum != ''"> and comments_num = #{commentsNum} </if>
+		  		  <if test="allowComment != null and allowComment != ''"> and allow_comment = #{allowComment} </if>
+		  		  <if test="allowPing != null and allowPing != ''"> and allow_ping = #{allowPing} </if>
+		  		  <if test="allowFeed != null and allowFeed != ''"> and allow_feed = #{allowFeed} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="author != null and author != ''"> and author = #{author} </if>
+		  		  <if test="gtmCreate != null and gtmCreate != ''"> and gtm_create = #{gtmCreate} </if>
+		  		  <if test="gtmModified != null and gtmModified != ''"> and gtm_modified = #{gtmModified} </if>
+		  		  <if test="imgUrl != null and imgUrl != ''"> and img_url = #{imgUrl} </if>
+		  		  <if test="belongApp != null and belongApp != ''"> and belong_app = #{belongApp} </if>
+		  		</where>
+	</select>
+	 
+</mapper>

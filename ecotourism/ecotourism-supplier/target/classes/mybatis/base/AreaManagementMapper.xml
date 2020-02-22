@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.base.dao.AreaManagementDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.base.domain.AreaManagementDO">
+		select `area_id`,`area_no`,`area_name`,`area_introduce`,`area_phone`,`available`,`create_user`,`create_time`,`update_user`,`update_time` from base_area_management where area_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.base.domain.AreaManagementDO">
+		select `area_id`,`area_no`,`area_name`,`area_introduce`,`area_phone`,`available`,`create_user`,`create_time`,`update_user`,`update_time` from base_area_management
+        <where>  
+		  		  <if test="areaId != null and areaId != ''"> and area_id = #{areaId} </if>
+		  		  <if test="areaNo != null and areaNo != ''"> and area_no = #{areaNo} </if>
+		  		  <if test="areaName != null and areaName != ''"> and area_name = #{areaName} </if>
+		  		  <if test="areaIntroduce != null and areaIntroduce != ''"> and area_introduce = #{areaIntroduce} </if>
+		  		  <if test="areaPhone != null and areaPhone != ''"> and area_phone = #{areaPhone} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by area_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from base_area_management
+		 <where>  
+		  		  <if test="areaId != null and areaId != ''"> and area_id = #{areaId} </if>
+		  		  <if test="areaNo != null and areaNo != ''"> and area_no = #{areaNo} </if>
+		  		  <if test="areaName != null and areaName != ''"> and area_name = #{areaName} </if>
+		  		  <if test="areaIntroduce != null and areaIntroduce != ''"> and area_introduce = #{areaIntroduce} </if>
+		  		  <if test="areaPhone != null and areaPhone != ''"> and area_phone = #{areaPhone} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.base.domain.AreaManagementDO" useGeneratedKeys="true" keyProperty="areaId">
+		insert into base_area_management
+		(
+			`area_no`, 
+			`area_name`, 
+			`area_introduce`, 
+			`area_phone`, 
+			`available`, 
+			`create_user`, 
+			`create_time`, 
+			`update_user`, 
+			`update_time`
+		)
+		values
+		(
+			#{areaNo}, 
+			#{areaName}, 
+			#{areaIntroduce}, 
+			#{areaPhone}, 
+			#{available}, 
+			#{createUser}, 
+			#{createTime}, 
+			#{updateUser}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.base.domain.AreaManagementDO">
+		update base_area_management 
+		<set>
+			<if test="areaNo != null">`area_no` = #{areaNo}, </if>
+			<if test="areaName != null">`area_name` = #{areaName}, </if>
+			<if test="areaIntroduce != null">`area_introduce` = #{areaIntroduce}, </if>
+			<if test="areaPhone != null">`area_phone` = #{areaPhone}, </if>
+			<if test="available != null">`available` = #{available}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where area_id = #{areaId}
+	</update>
+	
+	<delete id="remove">
+		delete from base_area_management where area_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from base_area_management where area_id in 
+		<foreach item="areaId" collection="array" open="(" separator="," close=")">
+			#{areaId}
+		</foreach>
+	</delete>
+
+</mapper>

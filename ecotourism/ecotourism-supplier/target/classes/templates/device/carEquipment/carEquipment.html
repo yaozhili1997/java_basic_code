@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="device:carEquipment:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="device:carEquipment:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--景区--" name="spotNo" id="spotNo"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 景区 --</option>
+								<option th:each="spotList : ${spotLists}" th:value="${spotList.spotNo}" th:text="${spotList.spotName}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--线路--" name="subordinateLine" id="subordinateLine"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 线路 --</option>
+								<option th:each="lineList : ${lineLists}" th:value="${lineList.lineNo}" th:text="${lineList.lineName}"  ></option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								placeholder="车牌/编号/名称">
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="device:carEquipment:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="device:carEquipment:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="device:carEquipment:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/device/carEquipment/carEquipment.js"></script>
+</body>
+</html>

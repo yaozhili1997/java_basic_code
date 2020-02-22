@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.CooperationDistributionDao">
+
+	<select id="queryCooperationDistribution" parameterType="com.ecotourism.oms.oms.domain.CooperationDistributionDO" resultType="com.ecotourism.oms.oms.domain.CooperationDistributionDO">
+		SELECT
+			`id`,
+			`distribution_no`,
+			`name`,
+			`type`,
+			`province`,
+			`city`,
+			`contact_address`,
+			`contact_name`,
+			`contact_mobile`,
+			`customer_service_phone`,
+			`contact_qq`,
+			`bank`,
+			`bank_account`,
+			`admin_login_id`,
+			`api_is_open`,
+			`expired_take`,
+			`part_take`,
+			`expired_refund`,
+			`book_today`,
+			`after_take_scene_refund`,
+			`app_secret`,
+			`app_id`,
+			`sale_channel_code`,
+			`pay_type`,
+			`allow_max_user_num`,
+			`delay_entry_time`,
+			`deposit`,
+			`start_date`,
+			`end_date`,
+			`enable`,
+			`create_time`,
+			`update_time`,
+			`create_user`,
+			`update_user`,
+			`whether_print`,
+			`whether_send_sms`,
+			`notice_url`,
+			`whether_refund`,
+			`whether_auto_refund_out_time`,
+			`whether_use_car`,
+			`car_price`,
+			`whether_check_ip`,
+			`ips`,
+			`authorized_address`,
+			`company_no`,
+			`whether_more_encode`
+		FROM
+			cooperation_distribution
+		WHERE
+			distribution_no = #{distributionNo}
+		limit 1
+	</select>
+</mapper>

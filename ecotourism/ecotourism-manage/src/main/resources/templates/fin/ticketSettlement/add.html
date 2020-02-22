@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">结算编码：</label>
+								<div class="col-sm-8">
+									<input id="settlementNo" name="settlementNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">售票人：</label>
+								<div class="col-sm-8">
+									<input id="sellUser" name="sellUser" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">结算数量：</label>
+								<div class="col-sm-8">
+									<input id="settlementNumber" name="settlementNumber" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">结算金额：</label>
+								<div class="col-sm-8">
+									<input id="settlementAcoumt" name="settlementAcoumt" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">结算人：</label>
+								<div class="col-sm-8">
+									<input id="settlementUser" name="settlementUser" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">结算时间：</label>
+								<div class="col-sm-8">
+									<input id="settlementTime" name="settlementTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">景点：</label>
+								<div class="col-sm-8">
+									<input id="spotNo" name="spotNo" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">售票时间：</label>
+								<div class="col-sm-8">
+									<input id="sellTicketTime" name="sellTicketTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退票金额：</label>
+								<div class="col-sm-8">
+									<input id="refundAcoumt" name="refundAcoumt" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">应收金额：</label>
+								<div class="col-sm-8">
+									<input id="receivableAmount" name="receivableAmount" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退票数量：</label>
+								<div class="col-sm-8">
+									<input id="refundNum" name="refundNum" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">结算状态：</label>
+								<div class="col-sm-8">
+									<input id="settlementStatus" name="settlementStatus" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">审核人：</label>
+								<div class="col-sm-8">
+									<input id="settlementReviewPerson" name="settlementReviewPerson" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">审核时间：</label>
+								<div class="col-sm-8">
+									<input id="settlementReviewTime" name="settlementReviewTime" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">审核金额：</label>
+								<div class="col-sm-8">
+									<input id="reviewAmount" name="reviewAmount" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">公司编码：</label>
+								<div class="col-sm-8">
+									<input id="companyNo" name="companyNo" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/fin/ticketSettlement/add.js">
+	</script>
+</body>
+</html>

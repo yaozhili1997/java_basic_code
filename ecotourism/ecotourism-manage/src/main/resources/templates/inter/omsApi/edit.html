@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${omsApi.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">接口编号：</label>
+								<div class="col-sm-4">
+									<input id="apino" name="apino" th:value="${omsApi.apino}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">接口名称：</label>
+								<div class="col-sm-4">
+									<input id="apiname" name="apiname" th:value="${omsApi.apiname}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">地址：</label>
+								<div class="col-sm-4">
+									<input id="apiurl" name="apiurl" th:value="${omsApi.apiurl}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">接口说明：</label>
+								<div class="col-sm-4">
+									<input id="apiexplain" name="apiexplain" th:value="${omsApi.apiexplain}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">版本：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择版本--" name="version" id="version"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择版本 --</option>
+										<option th:each="versionType : ${versionTypes}" th:value="${versionType.value}" th:text="${versionType.name}" th:if="${versionType.value eq omsApi.version}" th:selected="selected" ></option>
+										<option th:each="versionType : ${versionTypes}" th:value="${versionType.value}" th:text="${versionType.name}" th:if="${versionType.value ne omsApi.version}" ></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">是否可用：</label>
+								<div class="col-sm-4">
+										<label class="radio-inline"> <input
+												th:field="*{omsApi.enabled}" type="radio" name="enabled" value="1" />
+											启用
+										</label>
+										<label class="radio-inline"> <input
+											th:field="*{omsApi.enabled}" type="radio" name="enabled" value="0" />
+											禁用
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/inter/omsApi/edit.js">
+	</script>
+</body>
+</html>

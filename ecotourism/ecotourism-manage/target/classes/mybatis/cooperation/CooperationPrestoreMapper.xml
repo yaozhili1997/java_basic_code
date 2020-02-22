@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.cooperation.dao.CooperationPrestoreDao">
+
+	<select id="count" resultType="int">
+		SELECT COUNT(*) FROM cooperation_prestore
+	</select>
+
+	<sql id="commonFieldSql">
+			`prestore_id`,
+		  `prestore_no`,
+		  `distribution_no` as distributionNo,
+		  (select c.name from cooperation_distribution c where c.distribution_no=distributionNo) as distribution_name,
+		  `prestore_amount`,
+		  `up_recharge_amount`,
+		  `total_recharge_amount`,
+		  `balance_threshold`,
+		  `threshold_phone`,
+		  `threshold_status`,
+		  `create_user`,
+		  `create_time`,
+		  `update_user`,
+		  `update_time`,
+		  `company_no`
+	</sql>
+
+	<select id="list" resultType="com.ecotourism.manage.cooperation.domain.CooperationPrestoreDo">
+		SELECT <include refid="commonFieldSql"/> FROM  cooperation_prestore
+	</select>
+
+	<select id="get" resultType="com.ecotourism.manage.cooperation.domain.CooperationPrestoreDo">
+		SELECT
+		<include refid="commonFieldSql"/>
+		FROM  cooperation_prestore
+		WHERE prestore_id=#{value}
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.manage.cooperation.domain.CooperationPrestoreDo" useGeneratedKeys="true" keyProperty="prestoreId">
+		INSERT INTO cooperation_prestore
+		  (`prestore_no`,
+		  `distribution_no`,
+		  `prestore_amount`,
+		  `balance_threshold`,
+		  `threshold_phone`,
+		  `threshold_status`,
+		  `create_user`,
+		  `create_time`,
+		  `company_no`)
+		VALUES
+		  (#{prestoreNo},
+		  #{distributionNo},
+		  #{prestoreAmount},
+		  #{balanceThreshold},
+		  #{thresholdPhone},
+		  #{thresholdStatus},
+		  #{createUser},
+		  now(),
+		  #{companyNo}
+		  )
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.manage.cooperation.domain.CooperationPrestoreDo">
+		UPDATE cooperation_prestore
+		<set>
+			<if test="prestoreNo !=null">`prestore_no`=#{prestoreNo},</if>
+			<if test="distributionNo !=null">`distribution_no`=#{distributionNo},</if>
+			<if test="prestoreAmount !=null">`prestore_amount`=#{prestoreAmount},</if>
+			<if test="upRechargeAmount !=null">`up_recharge_amount`=#{upRechargeAmount},</if>
+			<if test="totalRechargeAmount !=null">`total_recharge_amount`=#{totalRechargeAmount},</if>
+			<if test="balanceThreshold !=null">`balance_threshold`=#{balanceThreshold},</if>
+			<if test="thresholdPhone !=null">`threshold_phone`=#{thresholdPhone},</if>
+			<if test="thresholdStatus !=null">`threshold_status`=#{thresholdStatus},</if>
+			<if test="createUser !=null">`create_user`=#{createUser},</if>
+			<if test="createTime !=null">`create_time`=#{createTime},</if>
+			<if test="updateUser !=null">`update_user`=#{updateUser},</if>
+			<if test="updateTime !=null">`update_time`=#{updateTime},</if>
+			<if test="companyNo !=null">`company_no`=#{companyNo}</if>
+		</set>
+		WHERE prestore_id=#{prestoreId}
+	</update>
+	<!--查询可开户（启用，结算方式为预存）分销商-->
+	<select id="findListCoo" resultType="com.ecotourism.manage.cooperation.domain.CooperationDistributionDO">
+		select * from cooperation_distribution where distribution_no NOT in (select distribution_no from cooperation_prestore)
+		and enable='1' AND pay_type='006004'
+	</select>
+
+</mapper>

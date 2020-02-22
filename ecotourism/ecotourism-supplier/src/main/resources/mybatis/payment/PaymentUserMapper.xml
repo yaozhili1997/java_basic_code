@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.payment.dao.PaymentUserDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.payment.domain.PaymentUserDO">
+		select `id`,`user_no`,`user_name`,`app_id`,`app_key`,`wechat_id`,`alipay_id`,`distribution_no`,`authorized_address`,`base_url_no`,`version`,`bz`,`available`,`create_time`,`update_time`,`create_user`,`update_user`,`company_no` from payment_user where id = #{value}
+	</select>
+
+	<select id="getByUserNo" resultType="com.ecotourism.supplier.payment.domain.PaymentUserDO">
+		select `id`,`user_no`,`user_name`,`app_id`,`app_key`,`wechat_id`,`alipay_id`,`distribution_no`,`authorized_address`,`base_url_no`,`version`,`bz`,`available`,`create_time`,`update_time`,`create_user`,`update_user`,`company_no` from payment_user where user_no = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.payment.domain.PaymentUserDO">
+		select `id`,`user_no`,`user_name`,`app_id`,`app_key`,`wechat_id`,`alipay_id`,
+		(select name from payment_wechat where wechat_no=wechat_id limit 1) as wechatName,
+		(select name from payment_alipay where alipay_no=alipay_id limit 1) as alipayName,
+		(select name from cooperation_distribution c where c.distribution_no=distribution_no limit 1) as distributionName,
+		`distribution_no`,`authorized_address`,`base_url_no`,`version`,`bz`,`available`,`create_time`,`update_time`,`create_user`,`update_user`,`company_no` from payment_user
+
+        <where>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userNo != null and userNo != ''"> and user_no = #{userNo} </if>
+		  		  <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+		  		  <if test="appId != null and appId != ''"> and app_id = #{appId} </if>
+		  		  <if test="appKey != null and appKey != ''"> and app_key = #{appKey} </if>
+		  		  <if test="wechatId != null and wechatId != ''"> and wechat_id = #{wechatId} </if>
+		  		  <if test="alipayId != null and alipayId != ''"> and alipay_id = #{alipayId} </if>
+		  		  <if test="distributionNo != null and distributionNo != ''"> and distribution_no = #{distributionNo} </if>
+		  		  <if test="authorizedAddress != null and authorizedAddress != ''"> and authorized_address = #{authorizedAddress} </if>
+		  		  <if test="baseUrlNo != null and baseUrlNo != ''"> and base_url_no = #{baseUrlNo} </if>
+		  		  <if test="version != null and version != ''"> and version = #{version} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<select id="findCountNo" resultType="int">
+		select count(user_no) from payment_user where user_no = #{user_no}
+	</select>
+ 	<select id="count" resultType="int">
+		select count(*) from payment_user
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userNo != null and userNo != ''"> and user_no = #{userNo} </if>
+		  		  <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+		  		  <if test="appId != null and appId != ''"> and app_id = #{appId} </if>
+		  		  <if test="appKey != null and appKey != ''"> and app_key = #{appKey} </if>
+		  		  <if test="wechatId != null and wechatId != ''"> and wechat_id = #{wechatId} </if>
+		  		  <if test="alipayId != null and alipayId != ''"> and alipay_id = #{alipayId} </if>
+		  		  <if test="distributionNo != null and distributionNo != ''"> and distribution_no = #{distributionNo} </if>
+		  		  <if test="authorizedAddress != null and authorizedAddress != ''"> and authorized_address = #{authorizedAddress} </if>
+		  		  <if test="baseUrlNo != null and baseUrlNo != ''"> and base_url_no = #{baseUrlNo} </if>
+		  		  <if test="version != null and version != ''"> and version = #{version} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.payment.domain.PaymentUserDO" useGeneratedKeys="true" keyProperty="id">
+		insert into payment_user
+		(
+			`user_no`, 
+			`user_name`, 
+			`app_id`, 
+			`app_key`, 
+			`wechat_id`, 
+			`alipay_id`, 
+			`distribution_no`, 
+			`authorized_address`, 
+			`base_url_no`, 
+			`version`, 
+			`bz`, 
+			`available`, 
+			`create_time`, 
+			`update_time`, 
+			`create_user`, 
+			`update_user`, 
+			`company_no`
+		)
+		values
+		(
+			#{userNo}, 
+			#{userName}, 
+			#{appId}, 
+			#{appKey}, 
+			#{wechatId}, 
+			#{alipayId}, 
+			#{distributionNo}, 
+			#{authorizedAddress}, 
+			#{baseUrlNo}, 
+			#{version}, 
+			#{bz}, 
+			#{available}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.payment.domain.PaymentUserDO">
+		update payment_user 
+		<set>
+			<if test="userNo != null">`user_no` = #{userNo}, </if>
+			<if test="userName != null">`user_name` = #{userName}, </if>
+			<if test="appId != null">`app_id` = #{appId}, </if>
+			<if test="appKey != null">`app_key` = #{appKey}, </if>
+			<if test="wechatId != null">`wechat_id` = #{wechatId}, </if>
+			<if test="alipayId != null">`alipay_id` = #{alipayId}, </if>
+			<if test="distributionNo != null">`distribution_no` = #{distributionNo}, </if>
+			<if test="authorizedAddress != null">`authorized_address` = #{authorizedAddress}, </if>
+			<if test="baseUrlNo != null">`base_url_no` = #{baseUrlNo}, </if>
+			<if test="version != null">`version` = #{version}, </if>
+			<if test="bz != null">`bz` = #{bz}, </if>
+			<if test="available != null">`available` = #{available}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from payment_user where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from payment_user where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

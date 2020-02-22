@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.payment.dao.WechatDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.payment.domain.WechatDO">
+		select `id`,`wechat_no`,`name`,`mch_no`,`app_id`,`app_secret`,`notify_url`,`body`,`bz`,`available`,`create_time`,`update_time`,`create_user`,`update_user`,`company_no` from payment_wechat where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.payment.domain.WechatDO">
+		select `id`,`wechat_no`,p.`name`,`mch_no`,`app_id`,
+		(select mch_name from payment_wechat_mch w where w.mch_no=p.mch_no limit 1) as mchName,
+		`app_secret`,`notify_url`,`body`,`bz`,`available`,`create_time`,`update_time`,`create_user`,`update_user`,`company_no` from payment_wechat p
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="wechatNo != null and wechatNo != ''"> and wechat_no = #{wechatNo} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="mchNo != null and mchNo != ''"> and mch_no = #{mchNo} </if>
+		  		  <if test="appId != null and appId != ''"> and app_id = #{appId} </if>
+		  		  <if test="appSecret != null and appSecret != ''"> and app_secret = #{appSecret} </if>
+		  		  <if test="notifyUrl != null and notifyUrl != ''"> and notify_url = #{notifyUrl} </if>
+		  		  <if test="body != null and body != ''"> and body = #{body} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<select id="findCountNo" resultType="int">
+		select count(wechat_no) from payment_wechat where wechat_no = #{wechat_no}
+	</select>
+ 	<select id="count" resultType="int">
+		select count(*) from payment_wechat
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="wechatNo != null and wechatNo != ''"> and wechat_no = #{wechatNo} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="mchNo != null and mchNo != ''"> and mch_no = #{mchNo} </if>
+		  		  <if test="appId != null and appId != ''"> and app_id = #{appId} </if>
+		  		  <if test="appSecret != null and appSecret != ''"> and app_secret = #{appSecret} </if>
+		  		  <if test="notifyUrl != null and notifyUrl != ''"> and notify_url = #{notifyUrl} </if>
+		  		  <if test="body != null and body != ''"> and body = #{body} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.payment.domain.WechatDO" useGeneratedKeys="true" keyProperty="id">
+		insert into payment_wechat
+		(
+			`wechat_no`, 
+			`name`, 
+			`mch_no`, 
+			`app_id`, 
+			`app_secret`, 
+			`notify_url`, 
+			`body`, 
+			`bz`, 
+			`available`, 
+			`create_time`, 
+			`update_time`, 
+			`create_user`, 
+			`update_user`, 
+			`company_no`
+		)
+		values
+		(
+			#{wechatNo}, 
+			#{name}, 
+			#{mchNo}, 
+			#{appId}, 
+			#{appSecret}, 
+			#{notifyUrl}, 
+			#{body}, 
+			#{bz}, 
+			#{available}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.payment.domain.WechatDO">
+		update payment_wechat 
+		<set>
+			<if test="wechatNo != null">`wechat_no` = #{wechatNo}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="mchNo != null">`mch_no` = #{mchNo}, </if>
+			<if test="appId != null">`app_id` = #{appId}, </if>
+			<if test="appSecret != null">`app_secret` = #{appSecret}, </if>
+			<if test="notifyUrl != null">`notify_url` = #{notifyUrl}, </if>
+			<if test="body != null">`body` = #{body}, </if>
+			<if test="bz != null">`bz` = #{bz}, </if>
+			<if test="available != null">`available` = #{available}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from payment_wechat where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from payment_wechat where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

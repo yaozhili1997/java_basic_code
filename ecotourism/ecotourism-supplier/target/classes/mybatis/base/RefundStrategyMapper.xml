@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.base.dao.RefundStrategyDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.base.domain.RefundStrategyDO">
+		select `strategy_id`,`strategy_no`,`strategy_name`,`available`,`create_user`,`create_time`,`update_user`,`update_time` from base_refund_strategy where strategy_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.base.domain.RefundStrategyDO">
+		select `strategy_id`,`strategy_no`,`strategy_name`,`available`,`create_user`,`create_time`,`update_user`,`update_time` from base_refund_strategy
+        <where>
+				company_no = #{companyNo}
+				<if test="searchName != null and searchName != ''">
+					and (
+					strategyName LIKE
+					CONCAT(CONCAT('', #{searchName}),'%')
+					)
+				</if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by strategy_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from base_refund_strategy
+		 <where>
+				 company_no = #{companyNo}
+				 <if test="searchName != null and searchName != ''">
+					 and (
+					 strategyName LIKE
+					 CONCAT(CONCAT('', #{searchName}),'%')
+					 )
+			 	</if>
+		 </where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.base.domain.RefundStrategyDO" useGeneratedKeys="true" keyProperty="strategyId">
+		insert into base_refund_strategy
+		(
+			`strategy_no`, 
+			`strategy_name`, 
+			`available`, 
+			`create_user`, 
+			`create_time`, 
+			`update_user`, 
+			`update_time`,
+			`company_no`
+		)
+		values
+		(
+			#{strategyNo}, 
+			#{strategyName}, 
+			#{available}, 
+			#{createUser}, 
+			#{createTime}, 
+			#{updateUser}, 
+			#{updateTime},
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.base.domain.RefundStrategyDO">
+		update base_refund_strategy 
+		<set>
+			<if test="strategyNo != null">`strategy_no` = #{strategyNo}, </if>
+			<if test="strategyName != null">`strategy_name` = #{strategyName}, </if>
+			<if test="available != null">`available` = #{available}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where strategy_id = #{strategyId}
+	</update>
+	
+	<delete id="remove">
+		delete from base_refund_strategy where strategy_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from base_refund_strategy where strategy_id in 
+		<foreach item="strategyId" collection="array" open="(" separator="," close=")">
+			#{strategyId}
+		</foreach>
+	</delete>
+
+</mapper>

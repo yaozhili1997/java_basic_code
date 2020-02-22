@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.product.dao.ProductPriceStockDao">
+
+    <select id="get" resultType="com.ecotourism.manage.product.domain.ProductPriceStockDO">
+        SELECT * from product_price_stock WHERE `product_no` = #{productNo} and `date` = #{date}
+    </select>
+
+    <insert id="save" parameterType="com.ecotourism.manage.product.domain.ProductPriceStockDO" useGeneratedKeys="true" keyProperty="id">
+        insert into product_price_stock
+        (
+            `product_no`,
+            `date`,
+            `settlement_price`,
+            `sale_price`,
+            `sale_num`,
+            `stock_num`,
+            `create_user`,
+            `create_time`,
+            `update_user`,
+            `update_time`
+        )
+        values
+        (
+            #{productNo},
+            #{date},
+            #{settlementPrice},
+            #{salePrice},
+            #{saleNum},
+            #{stockNum},
+            #{createUser},
+            #{createTime},
+            #{updateUser},
+            #{updateTime}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.ecotourism.manage.product.domain.ProductPriceStockDO">
+        update product_price_stock
+        <set>
+            `settlement_price` = #{settlementPrice},
+            `sale_price` = #{salePrice},
+            `stock_num` = #{stockNum},
+            `update_user` = #{updateUser},
+            `update_time` = #{updateTime}
+        </set>
+        where `product_no` = #{productNo} and `date` = #{date}
+    </update>
+
+    <delete id="remove">
+        delete from product_price_stock where `product_no` = #{productNo} and `date` = #{date}
+    </delete>
+
+    <select id="getProductPriceStockByDates" resultType="com.ecotourism.manage.product.domain.ProductPriceStockDO">
+        select * from product_price_stock
+        where `product_no` = #{productNo} and `date` in
+        <foreach collection="dates" index="index" item="date" open="(" separator="," close=")">
+            #{date}
+        </foreach>
+    </select>
+
+    <delete id="deleteProductPriceStockByDates">
+        delete from product_price_stock where `product_no` = #{productNo} and `date` in
+        <foreach collection="dates" index="index" item="date" open="(" separator="," close=")">
+            #{date}
+        </foreach>
+    </delete>
+
+</mapper>

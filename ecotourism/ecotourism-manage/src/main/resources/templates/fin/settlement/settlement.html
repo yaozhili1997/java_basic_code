@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="fin:settlement:excel" type="button" class="btn  btn-primary"
+									onclick="expotExcel()">
+								<i class="fa fa-file-excel-o" aria-hidden="true"></i>导出
+							</button>
+						</div>
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">
+								<i class="fa fa-search" aria-hidden="true"></i>查询
+							</button>
+						</div>
+
+						<div class="pull-right search col-md-2">
+							<input id="endTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="结束时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="startTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="开始时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--时间类型--" name="timeType" id="timeType"
+									class="form-control chosen-select" tabindex="2">
+								<option  th:value="sell" th:text="售票"  ></option>
+								<option  th:value="refund" th:text="退票"  ></option>
+								<option  th:value="check" th:text="检票"  ></option>
+								<option  th:value="play" th:text="游玩"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--票种分组--" name="ticketGroup" id="ticketGroup"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 票种分组 --</option>
+								<option th:each="ticketGroupList : ${ticketGroupLists}" th:value="${ticketGroupList.value}" th:text="${ticketGroupList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--票种类型--" name="ticketType" id="ticketType"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 票种类型 --</option>
+								<option th:each="ticketTypeList : ${ticketTypeLists}" th:value="${ticketTypeList.value}" th:text="${ticketTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--票种定义--" name="ticketNo" id="ticketNo"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 票种定义 --</option>
+								<option th:each="ticketDefineList : ${ticketDefineLists}" th:value="${ticketDefineList.ticketNo}" th:text="${ticketDefineList.ticketName}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--产品名称--" name="productNo" id="productNo"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 产品名称 --</option>
+								<option th:each="spotTicketList : ${spotTicketLists}" th:value="${spotTicketList.productNo}" th:text="${spotTicketList.productName}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--退款状态--" name="refundStatus" id="refundStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 退款状态 --</option>
+								<option th:each="refundTypeList : ${refundTypeLists}" th:value="${refundTypeList.value}" th:text="${refundTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--订单状态--" name="orderStatus" id="orderStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 订单状态 --</option>
+								<option th:each="orderStateTypeList : ${orderStateTypeLists}" th:value="${orderStateTypeList.value}" th:text="${orderStateTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--支付状态--" name="payStatus" id="payStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 支付状态 --</option>
+								<option th:each="payStateTypeList : ${payStateTypeLists}" th:value="${payStateTypeList.value}" th:text="${payStateTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--景点--" name="spotNo" id="spotNo"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 景点 --</option>
+								<option th:each="spotManagementList : ${spotManagementLists}" th:value="${spotManagementList.spotNo}" th:text="${spotManagementList.spotName}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--分销商--" name="orderDistributor" id="orderDistributor"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 分销商 --</option>
+								<option th:each="cooperationDistributionList : ${cooperationDistributionLists}" th:value="${cooperationDistributionList.distributionNo}" th:text="${cooperationDistributionList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search nopadding">
+							<input id="searchName" type="text" class="form-control"
+								   placeholder="客户信息/订单信息">
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="fin:settlement:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="fin:settlement:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="fin:settlement:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/fin/settlement/settlement.js"></script>
+</body>
+</html>

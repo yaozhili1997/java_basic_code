@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.OrderRefundTicketDao">
+	<insert id="save" parameterType="com.ecotourism.oms.oms.domain.OrderRefundTicketDO" useGeneratedKeys="true" keyProperty="id">
+		insert into order_refund_ticket
+		(
+		`order_no`,
+		`customer_name`,
+		`customer_phone`,
+		`app_user`,
+		`app_time`,
+		`refund_time`,
+		`order_quantity`,
+		`refund_amount`,
+		`counter_fee`,
+		`refund_state`,
+		`create_user`,
+		`create_time`,
+		`review_state`,
+		`electronic_ticket`,
+		`bz`,
+		`company_no`
+		)
+		values
+		(
+		#{orderNo},
+		#{customerName},
+		#{customerPhone},
+		#{appUser},
+		#{appTime},
+		#{refundTime},
+		#{orderQuantity},
+		#{refundAmount},
+		#{counterFee},
+		#{refundState},
+		#{createUser},
+		#{createTime},
+		#{reviewState},
+		#{electronicTicket},
+		#{bz},
+		#{companyNo}
+		)
+	</insert>
+
+	<select id="queryRefundOrderByOrderNo" resultType="com.ecotourism.oms.oms.domain.RefundOrderInfoDO">
+		SELECT
+		order_no,
+		is_self,
+		piaogo_order_no,
+		url,
+		cid,
+		app_id,
+		app_key,
+		service_class,
+		A.three_order_id,
+		D.access_token,
+		A.order_quantity quantity,
+		A.uid
+		FROM
+			order_spot A
+				INNER JOIN base_ticket_type B ON A.ticket_no = B.ticket_no
+				LEFT JOIN base_supplier C ON B.ticket_supplier = C.supplier_no
+				LEFT JOIN token D ON C.app_id = D.aid
+				AND C.app_key = D.sid
+		WHERE
+		order_no = #{orderNo}
+		and electronic_ticket = #{electronicTicket}
+		AND order_status in ('004001','004009')
+		AND refund_status in ('002001','002007')
+		limit 1
+	</select>
+</mapper>

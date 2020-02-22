@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.application.dao.ApplicationOrderDao">
+
+	<select id="findOrderCount" resultType="int">
+		select count(*) from application_order where application_no = #{applicationNo} and order_no = #{orderNo}
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.api.application.domain.ApplicationOrderDO">
+		insert into application_order
+		(
+			customer_name, 
+			customer_phone, 
+			customer_user_id, 
+			order_no, 
+			out_trade_no, 
+			electronic_ticket, 
+			product_no, 
+			product_name, 
+			order_quantity, 
+			pay_price, 
+			total_amount, 
+			pay_type, 
+			pay_status, 
+			order_status, 
+			refund_status, 
+			purchase_time,
+			play_time,
+			open_id,
+			push_user_no,
+			sub_order_no,
+			application_no
+		)
+		values
+		(
+			#{customerName}, 
+			#{customerPhone}, 
+			#{customerUserId}, 
+			#{orderNo}, 
+			#{outTradeNo}, 
+			#{electronicTicket}, 
+			#{productNo}, 
+			#{productName}, 
+			#{orderQuantity}, 
+			#{payPrice}, 
+			#{totalAmount}, 
+			#{payType}, 
+			#{payStatus}, 
+			#{orderStatus}, 
+			#{refundStatus}, 
+			#{purchaseTime},
+			#{playTime},
+			#{openId},
+			#{pushUserNo},
+			#{subOrderNo},
+			#{applicationNo}
+		)
+	</insert>
+
+	<resultMap id="resultOrder" type="com.ecotourism.api.application.domain.OrderResult">
+		<result property="orderNo" column="order_no"/>
+		<result property="totalAmount" column="all_total_amount"/>
+		<result property="purchaseTime" column="purchase_time"/>
+		<result property="openId" column="open_id"/>
+		<result property="applicationNo" column="application_no"/>
+		<result property="payType" column="pay_type"/>
+		<result property="payStatus" column="pay_status"/>
+		<result property="pushUserNo" column="push_user_no"/>
+		<collection property="orders" ofType="com.ecotourism.api.application.domain.OrderDo">
+            <result property="subOrderNo" column="sub_order_no"/>
+            <result property="customerName" column="customer_name"/>
+            <result property="customerPhone" column="customer_phone"/>
+            <result property="customerUserId" column="customer_user_id"/>
+            <result property="productNo" column="product_no"/>
+            <result property="productName" column="product_name"/>
+            <result property="orderQuantity" column="order_quantity"/>
+            <result property="electronicTicket" column="electronic_ticket"/>
+            <result property="payPrice" column="pay_price"/>
+            <result property="totalAmount" column="total_amount"/>
+            <result property="refundAmount" column="refund_amount"/>
+            <result property="orderStatus" column="order_status"/>
+            <result property="refundStatus" column="refund_status"/>
+            <result property="playTime" column="play_time"/>
+            <result property="orderVoucherno" column="order_voucherno"/>
+            <result property="qrcodeUrl" column="qrcode_url"/>
+            <result property="productImg" column="product_img"/>
+            <result property="checkTime" column="check_time"/>
+            <result property="outRefundNo" column="out_refund_no"/>
+            <result property="country" column="country"/>
+            <result property="province" column="province"/>
+            <result property="city" column="city"/>
+            <result property="region" column="region"/>
+            <result property="detailAddress" column="detail_address"/>
+		</collection>
+	</resultMap>
+
+	<sql id="commonField">
+		a1.order_no,a1.all_total_amount,a1.purchase_time,a1.open_id,a1.application_no,a1.pay_type,a1.pay_status,a1.push_user_no,
+		a2.product_no,a2.product_name,a2.order_quantity,a2.pay_price,a2.refund_amount,a2.sub_order_no,
+		a2.total_amount,a2.order_status,a2.refund_status,a2.pay_type,a2.check_time,a2.out_refund_no,
+		a2.play_time,a2.order_voucherno,a2.qrcode_url,a2.electronic_ticket,
+		a2.customer_name,a2.customer_phone,a2.customer_user_id
+	</sql>
+
+	<select id="listOrders" resultMap="resultOrder">
+		SELECT <include refid="commonField"/>,
+		CONCAT(p.base_url,p.img_url) as product_img
+		,s.city,s.country,s.detail_address,s.province,s.region
+		FROM
+		(
+		SELECT order_no,open_id,application_no,SUM(total_amount) AS all_total_amount,purchase_time,pay_type,pay_status,push_user_no
+		FROM
+		application_order
+		where open_id=#{openId}
+		<if test="payStatus != null and payStatus != ''"> and pay_status = #{payStatus} </if>
+		<if test="orderStatus != null and orderStatus != ''"> and order_status = #{orderStatus} </if>
+		<if test="refundStatus != null and refundStatus != ''"> and refund_status = #{refundStatus} </if>
+		<if test="playTime != null and playTime != ''"> and DATE(play_time) = DATE(#{playTime}) </if>
+		GROUP BY order_no,open_id,application_no,pay_type,pay_status,purchase_time,push_user_no
+		order by purchase_time DESC
+		<if test="pageNumber != null and pageSize != null">
+			limit #{pageNumber}, #{pageSize}
+		</if>
+
+		) a1 LEFT JOIN application_order a2 on a1.order_no=a2.order_no
+		LEFT JOIN product_spot_ticket p on a2.product_no=p.product_no
+		LEFT JOIN shopping_address_order s on a2.sub_order_no=s.sub_order_no
+		order by a1.purchase_time DESC
+	</select>
+	<select id="getByOrderNo"  resultMap="resultOrder">
+		SELECT <include refid="commonField"/>,
+		CONCAT(p.base_url,p.img_url) as product_img
+		,s.city,s.country,s.detail_address,s.province,s.region
+		FROM
+		(
+		SELECT order_no,open_id,application_no,SUM(total_amount) AS all_total_amount,purchase_time,pay_type,pay_status,push_user_no
+		FROM
+		application_order
+		where order_no = #{orderNo} and application_no = #{applicationNo}
+		<if test="openId != null and openId != ''"> and open_id = #{openId} </if>
+		GROUP BY order_no,open_id,application_no,pay_type,pay_status,purchase_time,push_user_no
+		order by purchase_time DESC
+		) a1 LEFT JOIN application_order a2 on a1.order_no=a2.order_no
+		LEFT JOIN product_spot_ticket p on a2.product_no=p.product_no
+		LEFT JOIN shopping_address_order s on a2.sub_order_no=s.sub_order_no
+		<where>
+			<if test="productNo != null and productNo != ''"> and a2.product_no = #{productNo} </if>
+			<if test="subOrderNo != null and subOrderNo != ''"> and a2.sub_order_no = #{subOrderNo} </if>
+		</where>
+		order by a1.purchase_time DESC
+	</select>
+
+	<!--获取未支付订单-->
+	<select id="getNotPayByOrderNo"  resultMap="resultOrder">
+		SELECT <include refid="commonField"/>
+		FROM
+		(
+		SELECT order_no,open_id,application_no,SUM(total_amount) AS all_total_amount,purchase_time,pay_type,pay_status,push_user_no
+		FROM
+		application_order
+		where order_no = #{orderNo} and application_no = #{applicationNo} and pay_status='005002' and order_status='004001' and refund_status='002001'
+		GROUP BY order_no,open_id,application_no,pay_type,pay_status,purchase_time,push_user_no
+		order by purchase_time DESC
+		) a1 LEFT JOIN application_order a2 on a1.order_no=a2.order_no
+		order by a1.purchase_time DESC
+	</select>
+
+	<update id="updatePaySuccessByOrderNo">
+		update application_order set pay_status='005001',pay_type=#{payType}
+		where order_no = #{orderNo} and application_no = #{applicationNo} and pay_status='005002' and order_status='004001' and refund_status='002001'
+	</update>
+
+	<update id="updateOrderByOmsResult">
+		update application_order
+		<set>
+			order_status = #{orderStatus},
+			refund_status = #{refundStatus},
+			order_voucherno = #{orderVoucherno},
+			oms_result = #{omsResult},
+			electronic_ticket = #{electronicTicket},
+			qrcode_url = #{qrcodeUrl}
+		</set>
+		where order_no=#{orderNo} and application_no = #{applicationNo} and sub_order_no=#{subOrderNo}
+		and (electronic_ticket is null or electronic_ticket='')
+	</update>
+	<update id="updateOrderByOmsRefundResult">
+		update application_order
+		<set>
+			order_status = #{orderStatus},
+			refund_status = #{refundStatus},
+			refund_amount = #{refundAmount},
+			refund_time = now()
+		</set>
+		where order_no=#{orderNo} and sub_order_no=#{subOrderNo}
+	</update>
+	<update id="updateRefundStatusByRefundMoney">
+		update application_order
+		<set>
+			refund_status = #{refundStatus},
+			<if test="outRefundNo != null and outRefundNo != ''">out_refund_no = #{outRefundNo},</if>
+			refund_money_time = now()
+		</set>
+		where order_no=#{orderNo} and sub_order_no=#{subOrderNo}
+	</update>
+	<!--创建oms订单失败，订单修改-->
+	<update id="updateOrderByCreateOmsOrderError">
+		update application_order set order_status='004777',oms_result = #{omsResult} where order_no = #{orderNo}  and application_no = #{applicationNo}
+	</update>
+
+	<select id="findUserInfo" resultType="com.ecotourism.api.application.domain.ApplicationOrderDO">
+		SELECT
+			customer_name,
+			customer_phone,
+			customer_user_id
+		FROM
+			application_order
+		WHERE
+			open_id = #{value}
+		ORDER BY
+			purchase_time DESC
+		LIMIT 1
+	</select>
+
+
+	<insert id="saveOrderAddress" parameterType="com.ecotourism.api.api.domain.order.create.AddressParams" useGeneratedKeys="true" keyProperty="id">
+		insert into shopping_address_order
+		(
+			`order_no`,
+			`sub_order_no`,
+			`country`,
+			`province`,
+			`city`,
+			`region`,
+			`consignee_name`,
+			`consignee_phone`,
+			`detail_address`,
+			`create_time`,
+			`open_id`,
+			application_no
+		)
+		values
+		(
+			#{orderNo},
+			#{subOrderNo},
+			#{country},
+			#{province},
+			#{city},
+			#{region},
+			#{consigneeName},
+			#{consigneePhone},
+			#{detailAddress},
+			now(),
+			#{openId},
+			#{applicationNo}
+		)
+	</insert>
+
+
+	<select id="findOrderCountByProduct" resultType="int">
+		  select ifnull(SUM(order_quantity),0) from application_order where product_no=#{productNo}
+		  and DATE_FORMAT(purchase_time,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m')
+	</select>
+</mapper>

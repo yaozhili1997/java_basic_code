@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">景点名称：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择景点--" name="spotNo" id="spotNo"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择景点 --</option>
+										<option th:each="spot : ${spotlist}" th:value="${spot.spotNo}" th:text="${spot.spotName}"  ></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">票种编号：</label>
+								<div class="col-sm-4">
+									<input id="ticketNo" name="ticketNo" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">票种名称：</label>
+								<div class="col-sm-4">
+									<input id="ticketName" name="ticketName" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">票种供应商：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择供应商--" name="ticketSupplier" id="ticketSupplier"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择供应商 --</option>
+										<option th:each="supplier : ${supplierLists}" th:value="${supplier.supplierNo}" th:text="${supplier.supplierName}"  ></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">票种类型：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择类别--" name="ticketType" id="ticketType"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择类别 --</option>
+										<option th:each="tickettype : ${ticket_types}" th:value="${tickettype.value}" th:text="${tickettype.name}"  ></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">定价：</label>
+								<div class="col-sm-4">
+									<input id="ticketPrice" name="ticketPrice" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">取票后退票：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="afterTakeSceneRefund" name="afterTakeSceneRefund" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="afterTakeSceneRefund">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">过期退票：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="expiredRefund" name="expiredRefund" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="expiredRefund">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否上架：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="whetherShelves" name="whetherShelves" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="whetherShelves">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">所属产品类型：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择类别--" name="productType" id="productType"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择类别 --</option>
+										<option th:each="product_type : ${product_types}" th:value="${product_type.productTypeNo}" th:text="${product_type.productTypeName}"  ></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否自有：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="isSelf" name="isSelf" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="isSelf">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">票种简称：</label>
+								<div class="col-sm-4">
+									<input id="abbreviation" name="abbreviation" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/base/ticketType/add.js">
+	</script>
+</body>
+</html>

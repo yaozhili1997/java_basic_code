@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.CooperationPrestoreDao">
+
+	<select id="count" resultType="int">
+		SELECT COUNT(*) FROM cooperation_prestore
+	</select>
+	
+	<select id="list" resultType="com.ecotourism.oms.oms.domain.CooperationPrestoreDO">
+		SELECT
+		  `prestore_id`,
+		  `prestore_no`,
+		  `distribution_no`,
+		  `prestore_amount`,
+		  `up_recharge_amount`,
+		  `total_recharge_amount`,
+		  `balance_threshold`,
+		  `threshold_phone`,
+		  `threshold_status`,
+		  `create_user`,
+		  `create_time`,
+		  `update_user`,
+		  `update_time`,
+		  `company_no`
+		FROM  cooperation_prestore
+	</select>
+
+	<select id="get" resultType="com.ecotourism.oms.oms.domain.CooperationPrestoreDO">
+		SELECT
+		  `prestore_id`,
+		  `prestore_no`,
+		  `distribution_no`,
+		  `prestore_amount`,
+		  `up_recharge_amount`,
+		  `total_recharge_amount`,
+		  `balance_threshold`,
+		  `threshold_phone`,
+		  `threshold_status`,
+		  `create_user`,
+		  `create_time`,
+		  `update_user`,
+		  `update_time`,
+		  `company_no`
+		FROM  cooperation_prestore
+		WHERE distribution_no=#{value}
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.oms.oms.domain.CooperationPrestoreDO" useGeneratedKeys="true" keyProperty="prestore_id">
+		INSERT INTO cooperation_prestore
+		  (`prestore_no`,
+		  `distribution_no`,
+		  `prestore_amount`,
+		  `up_recharge_amount`,
+		  `total_recharge_amount`,
+		  `balance_threshold`,
+		  `threshold_phone`,
+		  `threshold_status`,
+		  `create_user`,
+		  `create_time`,
+		  `update_user`,
+		  `update_time`,
+		  `company_no`)
+		VALUES
+		  (#{prestoreNo},
+		  #{distributionNo},
+		  #{prestoreAmount},
+		  #{upRechargeAmount},
+		  #{totalRechargeAmount},
+		  #{balanceThreshold},
+		  #{thresholdPhone},
+		  #{thresholdStatus},
+		  #{createUser},
+		  #{createTime},
+		  #{updateUser},
+		  #{updateTime},
+		  #{companyNo}
+		  )
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.oms.oms.domain.CooperationPrestoreDO">
+		UPDATE cooperation_prestore
+		<set>
+			<if test="prestoreNo !=null">`prestore_no`=#{prestoreNo},</if>
+			<if test="distributionNo !=null">`distribution_no`=#{distributionNo},</if>
+			<if test="prestoreAmount !=null">`prestore_amount`=#{prestoreAmount},</if>
+			<if test="upRechargeAmount !=null">`up_recharge_amount`=#{upRechargeAmount},</if>
+			<if test="totalRechargeAmount !=null">`prestore_no`=#{totalRechargeAmount},</if>
+			<if test="balanceThreshold !=null">`balance_threshold`=#{balanceThreshold},</if>
+			<if test="thresholdPhone !=null">`threshold_phone`=#{thresholdPhone},</if>
+			<if test="thresholdStatus !=null">`threshold_status`=#{thresholdStatus},</if>
+			<if test="createUser !=null">`create_user`=#{createUser},</if>
+			<if test="createTime !=null">`create_time`=#{createTime},</if>
+			<if test="updateUser !=null">`update_user`=#{updateUser},</if>
+			<if test="updateTime !=null">`update_time`=#{updateTime},</if>
+			<if test="companyNo !=null">`company_no`=#{companyNo}</if>
+		</set>
+		WHERE prestore_id=#{prestoreId}
+	</update>
+
+	<delete id="remove" parameterType="int">
+		DELETE FROM cooperation_prestore WHERE prestore_id=#{id}
+	</delete>
+
+	<delete id="batchRemove">
+		DELETE FROM cooperation_prestore WHERE prestore_id IN
+		<foreach collection="array" item="prestoreId" open="(" separator="," close=")" >
+			#{ids}
+		</foreach>
+	</delete>
+
+	<!-- 充值修改 -->
+	<update id="updatePrestore" parameterType="com.ecotourism.oms.oms.domain.CooperationPrestoreDO">
+		update
+		cooperation_prestore
+		set
+		<if test="sellPrestoreAmount !=null and sellPrestoreAmount !=''">
+			prestore_amount=CONVERT(prestore_amount , DECIMAL(12,2))-#{sellPrestoreAmount}
+		</if>
+		<if test="refundPrestoreAmount !=null and refundPrestoreAmount !=''">
+			prestore_amount=CONVERT(prestore_amount , DECIMAL(12,2))+#{refundPrestoreAmount}
+		</if>
+		where
+		distribution_no = #{distributionNo}
+	</update>
+
+</mapper>

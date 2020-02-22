@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.report.dao.cluster.LineReportReadDao">
+
+	<select id="getTodayLineTotal" resultType="com.ecotourism.supplier.report.domain.LineReportDO">
+		SELECT
+			s.line_name lineName,
+			sum(ride_number) rideNumber
+		FROM
+			device_check_info d
+		INNER JOIN line_management s ON s.line_no = d.subordinate_line
+		WHERE
+			DATE_FORMAT(d.CHECK_TIME, "%Y-%m-%d") = DATE_FORMAT(SYSDATE(), "%Y-%m-%d")
+		    <if test="companyNo != null and companyNo != ''"> and d.company_no = #{companyNo} </if>
+		GROUP BY
+			s.line_name
+	</select>
+
+	<select id="getLineReport" resultType="com.ecotourism.supplier.report.domain.LineReportDO">
+		SELECT
+			c.line_name,
+			DATE_FORMAT(check_time, "%Y-%m-%d") check_time,
+			sum(a.ride_number) ride_number
+		FROM
+			device_check_info a
+		INNER JOIN device_car_equipment b ON a.check_equipment_no = b.device_no
+		LEFT JOIN line_management c ON a.subordinate_line = c.line_no
+		<where>
+			<if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}  ]]> </if>
+			<if test="startTime != null and startTime != ''"> <![CDATA[ and a.check_time >= #{startTime} ]]></if>
+			<if test="subordinateLine != null and subordinateLine != ''"> and a.subordinate_line = #{subordinateLine} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+		GROUP BY
+		c.line_name,
+		DATE_FORMAT(CHECK_TIME, "%Y-%m-%d")
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="getLineReportCount" resultType="int">
+		SELECT
+		count(*)
+		FROM
+			(
+		SELECT
+		c.line_name,
+		DATE_FORMAT(check_time, "%Y-%m-%d") check_time,
+		sum(a.ride_number) ride_number
+		FROM
+		device_check_info a
+		INNER JOIN device_car_equipment b ON a.check_equipment_no = b.device_no
+		LEFT JOIN line_management c ON a.subordinate_line = c.line_no
+		<where>
+			<if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}  ]]> </if>
+			<if test="startTime != null and startTime != ''"> <![CDATA[ and a.check_time >= #{startTime} ]]></if>
+			<if test="subordinateLine != null and subordinateLine != ''"> and a.subordinate_line = #{subordinateLine} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+		GROUP BY
+		c.line_name,
+		DATE_FORMAT(CHECK_TIME, "%Y-%m-%d")
+				) a
+	</select>
+	<select id="getLineReportSum" resultType="com.ecotourism.supplier.common.utils.PageTotal">
+		SELECT
+		sum(ride_number) totalNum
+		FROM
+		device_check_info a
+		INNER JOIN device_car_equipment b ON a.check_equipment_no = b.device_no
+		LEFT JOIN line_management c ON a.subordinate_line = c.line_no
+		<where>
+			<if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}  ]]> </if>
+			<if test="startTime != null and startTime != ''"> <![CDATA[ and a.check_time >= #{startTime} ]]></if>
+			<if test="subordinateLine != null and subordinateLine != ''"> and a.subordinate_line = #{subordinateLine} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+	</select>
+
+
+	<select id="getCarReport" resultType="com.ecotourism.supplier.report.domain.LineReportDO">
+		SELECT
+			b.device_name,
+			b.car_no,
+			b.vehicle_number,
+			DATE_FORMAT(check_time, "%Y-%m-%d") check_time,
+			a.check_equipment_no,
+			SUM(ride_number) ride_number
+		FROM
+		device_check_info a
+		INNER JOIN device_car_equipment b ON a.check_equipment_no = b.device_no
+		<where>
+			<if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}  ]]> </if>
+			<if test="startTime != null and startTime != ''"> <![CDATA[ and a.check_time >= #{startTime} ]]></if>
+			<if test="checkEquipmentNo != null and checkEquipmentNo != ''"> and a.check_equipment_no = #{checkEquipmentNo} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+		GROUP BY
+		b.device_name,
+		b.car_no,
+		b.vehicle_number,
+		DATE_FORMAT(check_time, "%Y-%m-%d"),
+		a.check_equipment_no
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="getCarReportCount" resultType="int">
+		SELECT
+		count(*)
+		FROM (
+		SELECT
+		b.device_name,
+		b.car_no,
+		b.vehicle_number,
+		DATE_FORMAT(check_time, "%Y-%m-%d") check_time,
+		a.check_equipment_no,
+		SUM(ride_number) ride_number
+		FROM
+		device_check_info a
+		INNER JOIN device_car_equipment b ON a.check_equipment_no = b.device_no
+		<where>
+			<if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}  ]]> </if>
+			<if test="startTime != null and startTime != ''"> <![CDATA[ and a.check_time >= #{startTime} ]]></if>
+			<if test="checkEquipmentNo != null and checkEquipmentNo != ''"> and a.check_equipment_no = #{checkEquipmentNo} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+		GROUP BY
+		b.device_name,
+		b.car_no,
+		b.vehicle_number,
+		DATE_FORMAT(check_time, "%Y-%m-%d"),
+		a.check_equipment_no
+				 ) a
+	</select>
+	<select id="getCarReportSum" resultType="com.ecotourism.supplier.common.utils.PageTotal">
+		SELECT
+		sum(ride_number) totalNum
+		FROM
+		device_check_info a
+		INNER JOIN device_car_equipment b ON a.check_equipment_no = b.device_no
+		<where>
+			<if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}  ]]> </if>
+			<if test="startTime != null and startTime != ''"> <![CDATA[ and a.check_time >= #{startTime} ]]></if>
+			<if test="checkEquipmentNo != null and checkEquipmentNo != ''"> and a.check_equipment_no = #{checkEquipmentNo} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
+	<head th:include="include :: header"><meta charset="utf-8" /></head>
+	<link rel="stylesheet" type="text/css" href="/css/calendar-pro.css" />
+	<script type="application/javascript" src="/js/calendar-pro.js"></script>
+	<script th:inline="javascript">
+        var orderNo = [[${orderNo}]];
+        function orderDetails() {
+            document.location = '/order/details?orderNo=' + orderNo;
+		}
+        function index() {
+			document.location = '/index';
+        }
+	</script>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">支付结果</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-clearfix" style="background-color: white; padding: 28px 0;">
+				<h4  class="mui-text-center" style="font-size: 16px;font-weight: 400;">
+					<span class="mui-icon mui-icon-checkmarkempty" style="color: #FF7362;border: 1px solid #FF7362;border-radius: 50%;font-size: 18px;"></span>
+					恭喜您，订单支付成功！
+				</h4>
+				<p class="mui-text-center" style="margin-top: 6px;">可在订单详情中查看出游信息。</p>
+			</div>
+
+			<p class="mui-text-center" style="color: #02ac85; font-size: 12px; padding: 22px;">
+				提示：订单是否生成以平台最终确认为准
+			</p>
+
+			<div class="mui-clearfix btn-box" style="width: 100%;padding: 0 20px;">
+				<button type="button" class="mui-btn mui-btn-danger mui-btn-block btn-detail" style="padding: 12px 0;font-size: 14px;" onclick="orderDetails()">
+					订单详情
+				</button>
+				<button type="button" class="mui-btn mui-btn-block mui-btn-outlined btn-main" style="padding: 12px 0;font-size: 14px;" onclick="document.location='/order/list'">
+					我的订单
+				</button>
+			</div>
+		</div>
+	</body>
+</html>

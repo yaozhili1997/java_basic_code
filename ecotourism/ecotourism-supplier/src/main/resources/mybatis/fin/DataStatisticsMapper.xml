@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.fin.dao.DataStatisticsDao">
+
+	<select id="list" resultType="com.ecotourism.supplier.fin.domain.DataStatisticsDO">
+		SELECT
+		c.spot_name spot_name,
+		b.`name` name,
+		sum(a.order_quantity) order_quantity,
+		sum(a.total_amount) total_amount
+		FROM
+		order_spot a
+		INNER JOIN cooperation_distribution b ON a.order_distributor = b.distribution_no
+		INNER JOIN base_spot_management c ON a.spot_no = c.spot_no
+		inner JOIN product_spot_ticket d on d.product_no = a.product_no
+		<include refid="whereSql"></include>
+		GROUP BY
+		c.spot_name,
+		b.`name`
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by c.spot_name desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from (
+		select c.spot_name spot_name,
+		b.`name` name from order_spot a
+		INNER JOIN cooperation_distribution b ON a.order_distributor = b.distribution_no
+		INNER JOIN base_spot_management c ON a.spot_no = c.spot_no
+		inner JOIN product_spot_ticket d on d.product_no = a.product_no
+		<include refid="whereSql"></include>
+		GROUP BY
+		c.spot_name,
+		b.`name`
+		) a
+	</select>
+	<sql id="whereSql">
+		<where>
+			a.company_no = #{companyNo}
+			<if test="payStatus != null and payStatus != ''"> and a.pay_status = #{payStatus} </if>
+			<if test="orderStatus != null and orderStatus != ''"> and a.order_status = #{orderStatus} </if>
+			<if test="refundStatus != null and refundStatus != ''"> and a.refund_status = #{refundStatus} </if>
+			<if test="orderDistributor != null and orderDistributor != ''"> and a.order_distributor = #{orderDistributor} </if>
+			<if test="spotNo != null and spotNo != ''"> and a.spot_no = #{spotNo} </if>
+			<if test="ticketType != null and ticketType != ''"> and a.ticket_type = #{ticketType} </if>
+			<if test="ticketNo != null and ticketNo != ''"> and a.ticket_no = #{ticketNo} </if>
+			<if test="ticketGroup != null and ticketGroup != ''"> and d.ticket_grouping = #{ticketGroup} </if>
+			<if test="productNo != null and productNo != ''"> and a.product_no = #{productNo} </if>
+			<if test="timeType != null and timeType != ''">
+				<if test="timeType == 'sell'">
+					<if test="startTime != null and startTime != ''"><![CDATA[ and a.purchase_time >= #{startTime}]]>   </if>
+					<if test="endTime != null and endTime != ''"> <![CDATA[ and a.purchase_time <= #{endTime}]]>   </if>
+				</if>
+				<if test="timeType == 'check'">
+					<if test="startTime != null and startTime != ''"><![CDATA[ and a.check_time >= #{startTime}]]>   </if>
+					<if test="endTime != null and endTime != ''"> <![CDATA[ and a.check_time <= #{endTime}]]>   </if>
+				</if>
+				<if test="timeType == 'refund'">
+					<if test="startTime != null and startTime != ''"><![CDATA[ and a.refund_time >= #{startTime}]]>   </if>
+					<if test="endTime != null and endTime != ''"> <![CDATA[ and a.refund_time <= #{endTime}]]>   </if>
+				</if>
+				<if test="timeType == 'play'">
+					<if test="startTime != null and startTime != ''"><![CDATA[ and a.play_time >= #{startTime}]]>   </if>
+					<if test="endTime != null and endTime != ''"> <![CDATA[ and a.play_time <= #{endTime}]]>   </if>
+				</if>
+			</if>
+		</where>
+	</sql>
+</mapper>

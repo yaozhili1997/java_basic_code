@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.ums.dao.OrderDao">
+
+	<select id="get" resultType="com.ecotourism.manage.ums.dao.OrderDao">
+		select order_id,customer_name,customer_phone,customer_user_id,order_no,out_trade_no,electronic_ticket
+		,product_no,product_name,order_quantity,pay_price,total_amount,refund_amount,pay_type,pay_status
+		,order_status,refund_status,purchase_time,play_time,order_voucherno,refund_time,refund_money_time
+		,out_refund_no,push_user_no,open_id,application_no,qrcode_url,oms_result,check_time from application_order where order_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.ums.domain.OrderDO">
+		select order_id,customer_name,customer_phone,customer_user_id,order_no
+		,out_trade_no,electronic_ticket,product_no,product_name,order_quantity,pay_price
+		,total_amount,refund_amount,(select `name` from sys_dict where type='pay_type' and `value` = pay_type  limit 1) as pay_type
+		,(select `name` from sys_dict where type='pay_state_type' and `value` = pay_status  limit 1) as pay_status
+		,(select `name` from sys_dict where type='order_status' and `value` = order_status  limit 1) as order_status
+		,(select `name` from sys_dict where type='refund_type' and `value` = refund_status  limit 1) as refund_status
+		,purchase_time
+		,play_time,order_voucherno,refund_time,refund_money_time,out_refund_no,push_user_no
+		,open_id,(SELECT user_name from payment_user where user_no= application_no) as application_no,qrcode_url,oms_result,check_time
+		from application_order
+		where 1=1 <include refid="commonWhereSql"/>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by order_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+ 	<select id="count" resultType="int">
+		select count(*) from application_order
+		 where 1=1 <include refid="commonWhereSql"/>
+	</select>
+
+	<select id="selectTotalCount" resultType="com.ecotourism.manage.common.utils.PageTotal">
+		select sum(order_quantity) as totalNum,sum(total_amount) as totalAmount,sum(refund_amount) as refundAmount from application_order
+		where 1=1 <include refid="commonWhereSql"/>
+	</select>
+
+	<sql id="commonWhereSql">
+			<if test="searchName != null and searchName != ''">
+				and (customer_name LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				customer_phone
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				customer_user_id
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				order_no=#{searchName}
+				or
+				electronic_ticket=#{searchName}
+				or
+				product_name
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				)
+			</if>
+			<if test="startTime != null and startTime != ''"><![CDATA[ and a.purchase_time >= #{startTime}]]>   </if>
+			<if test="endTime != null and endTime != ''"> <![CDATA[ and a.purchase_time <= #{endTime}]]>   </if>
+			<if test="orderId != null and orderId != ''"> and order_id = #{orderId} </if>
+			<if test="customerName != null and customerName != ''"> and customer_name = #{customerName} </if>
+			<if test="customerPhone != null and customerPhone != ''"> and customer_phone = #{customerPhone} </if>
+			<if test="customerUserId != null and customerUserId != ''"> and customer_user_id = #{customerUserId} </if>
+			<if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
+			<if test="outTradeNo != null and outTradeNo != ''"> and out_trade_no = #{outTradeNo} </if>
+			<if test="electronicTicket != null and electronicTicket != ''"> and electronic_ticket = #{electronicTicket} </if>
+			<if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+			<if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+			<if test="orderQuantity != null and orderQuantity != ''"> and order_quantity = #{orderQuantity} </if>
+			<if test="payPrice != null and payPrice != ''"> and pay_price = #{payPrice} </if>
+			<if test="totalAmount != null and totalAmount != ''"> and total_amount = #{totalAmount} </if>
+			<if test="refundAmount != null and refundAmount != ''"> and refund_amount = #{refundAmount} </if>
+			<if test="payType != null and payType != ''"> and pay_type = #{payType} </if>
+			<if test="payStatus != null and payStatus != ''"> and pay_status = #{payStatus} </if>
+			<if test="orderStatus != null and orderStatus != ''"> and order_status = #{orderStatus} </if>
+			<if test="refundStatus != null and refundStatus != ''"> and refund_status = #{refundStatus} </if>
+			<if test="purchaseTime != null and purchaseTime != ''"> and purchase_time = #{purchaseTime} </if>
+			<if test="playTime != null and playTime != ''"> and play_time = #{playTime} </if>
+			<if test="orderVoucherno != null and orderVoucherno != ''"> and order_voucherno = #{orderVoucherno} </if>
+			<if test="refundTime != null and refundTime != ''"> and refund_time = #{refundTime} </if>
+			<if test="refundMoneyTime != null and refundMoneyTime != ''"> and refund_money_time = #{refundMoneyTime} </if>
+			<if test="outRefundNo != null and outRefundNo != ''"> and out_refund_no = #{outRefundNo} </if>
+			<if test="pushUserNo != null and pushUserNo != ''"> and push_user_no = #{pushUserNo} </if>
+			<if test="openId != null and openId != ''"> and open_id = #{openId} </if>
+			<if test="applicationNo != null and applicationNo != ''"> and application_no = #{applicationNo} </if>
+			<if test="qrcodeUrl != null and qrcodeUrl != ''"> and qrcode_url = #{qrcodeUrl} </if>
+			<if test="omsResult != null and omsResult != ''"> and oms_result = #{omsResult} </if>
+			<if test="checkTime != null and checkTime != ''"> and check_time = #{checkTime} </if>
+	</sql>
+
+	<insert id="save" parameterType="com.ecotourism.manage.ums.domain.OrderDO" useGeneratedKeys="true" keyProperty="orderId">
+		insert into application_order
+		(
+			customer_name, 
+			customer_phone, 
+			customer_user_id, 
+			order_no, 
+			out_trade_no, 
+			electronic_ticket, 
+			product_no, 
+			product_name, 
+			order_quantity, 
+			pay_price, 
+			total_amount, 
+			refund_amount, 
+			pay_type, 
+			pay_status, 
+			order_status, 
+			refund_status, 
+			purchase_time, 
+			play_time, 
+			order_voucherno, 
+			refund_time, 
+			refund_money_time, 
+			out_refund_no, 
+			push_user_no, 
+			open_id, 
+			application_no, 
+			qrcode_url, 
+			oms_result, 
+			check_time
+		)
+		values
+		(
+			#{customerName}, 
+			#{customerPhone}, 
+			#{customerUserId}, 
+			#{orderNo}, 
+			#{outTradeNo}, 
+			#{electronicTicket}, 
+			#{productNo}, 
+			#{productName}, 
+			#{orderQuantity}, 
+			#{payPrice}, 
+			#{totalAmount}, 
+			#{refundAmount}, 
+			#{payType}, 
+			#{payStatus}, 
+			#{orderStatus}, 
+			#{refundStatus}, 
+			#{purchaseTime}, 
+			#{playTime}, 
+			#{orderVoucherno}, 
+			#{refundTime}, 
+			#{refundMoneyTime}, 
+			#{outRefundNo}, 
+			#{pushUserNo}, 
+			#{openId}, 
+			#{applicationNo}, 
+			#{qrcodeUrl}, 
+			#{omsResult}, 
+			#{checkTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.ums.domain.OrderDO">
+		update application_order 
+		<set>
+			<if test="customerName != null">customer_name = #{customerName}, </if>
+			<if test="customerPhone != null">customer_phone = #{customerPhone}, </if>
+			<if test="customerUserId != null">customer_user_id = #{customerUserId}, </if>
+			<if test="orderNo != null">order_no = #{orderNo}, </if>
+			<if test="outTradeNo != null">out_trade_no = #{outTradeNo}, </if>
+			<if test="electronicTicket != null">electronic_ticket = #{electronicTicket}, </if>
+			<if test="productNo != null">product_no = #{productNo}, </if>
+			<if test="productName != null">product_name = #{productName}, </if>
+			<if test="orderQuantity != null">order_quantity = #{orderQuantity}, </if>
+			<if test="payPrice != null">pay_price = #{payPrice}, </if>
+			<if test="totalAmount != null">total_amount = #{totalAmount}, </if>
+			<if test="refundAmount != null">refund_amount = #{refundAmount}, </if>
+			<if test="payType != null">pay_type = #{payType}, </if>
+			<if test="payStatus != null">pay_status = #{payStatus}, </if>
+			<if test="orderStatus != null">order_status = #{orderStatus}, </if>
+			<if test="refundStatus != null">refund_status = #{refundStatus}, </if>
+			<if test="purchaseTime != null">purchase_time = #{purchaseTime}, </if>
+			<if test="playTime != null">play_time = #{playTime}, </if>
+			<if test="orderVoucherno != null">order_voucherno = #{orderVoucherno}, </if>
+			<if test="refundTime != null">refund_time = #{refundTime}, </if>
+			<if test="refundMoneyTime != null">refund_money_time = #{refundMoneyTime}, </if>
+			<if test="outRefundNo != null">out_refund_no = #{outRefundNo}, </if>
+			<if test="pushUserNo != null">push_user_no = #{pushUserNo}, </if>
+			<if test="openId != null">open_id = #{openId}, </if>
+			<if test="applicationNo != null">application_no = #{applicationNo}, </if>
+			<if test="qrcodeUrl != null">qrcode_url = #{qrcodeUrl}, </if>
+			<if test="omsResult != null">oms_result = #{omsResult}, </if>
+			<if test="checkTime != null">check_time = #{checkTime}</if>
+		</set>
+		where order_id = #{orderId}
+	</update>
+	
+	<delete id="remove">
+		delete from application_order where order_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from application_order where order_id in 
+		<foreach item="orderId" collection="array" open="(" separator="," close=")">
+			#{orderId}
+		</foreach>
+	</delete>
+
+</mapper>

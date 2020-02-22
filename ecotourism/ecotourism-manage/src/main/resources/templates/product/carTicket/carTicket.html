@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="product:carTicket:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="product:carTicket:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--销售渠道--" name="distributionChannel" id="distributionChannel"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 销售渠道 --</option>
+								<option th:each="distributionChannelList : ${distributionChannelLists}" th:value="${distributionChannelList.value}" th:text="${distributionChannelList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--是否上架--" name="whetherShelves" id="whetherShelves"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 是否上架 --</option>
+								<option th:each="whetherShelvesList : ${whetherShelvesLists}" th:value="${whetherShelvesList.value}" th:text="${whetherShelvesList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--产品类型--" name="productSecondType" id="productSecondType"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 产品类型 --</option>
+								<option th:each="productTypeList : ${productTypeLists}" th:value="${productTypeList.productTypeNo}" th:text="${productTypeList.productTypeName}"  ></option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								   placeholder="产品名称">
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--票种分组--" name="ticketGrouping" id="ticketGrouping"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 票种分组 --</option>
+								<option th:each="ticketGroupList : ${ticketGroupLists}" th:value="${ticketGroupList.value}" th:text="${ticketGroupList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--票种类型--" name="ticketNo" id="ticketNo"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 票种类型 --</option>
+								<option th:each="ticketTypeList : ${ticketTypeLists}" th:value="${ticketTypeList.ticketNo}" th:text="${ticketTypeList.ticketName}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--可乘线路--" name="subordinateLine" id="subordinateLine"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 可乘线路 --</option>
+								<option th:each="managementList : ${managementLists}" th:value="${managementList.lineNo}" th:text="${managementList.lineName}"  ></option>
+							</select>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="product:carTicket:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="product:carTicket:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="product:carTicket:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/product/carTicket/carTicket.js"></script>
+</body>
+</html>

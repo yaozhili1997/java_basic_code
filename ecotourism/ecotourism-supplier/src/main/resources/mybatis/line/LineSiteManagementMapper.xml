@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.line.dao.LineSiteManagementDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.line.domain.LineSiteManagementDO">
+		select `id`,`line_no`,`site_no`,`site_name`,`gps_no`,`longitude`,`latitude`,`site_type`,`site_order`,`whether_shelves`,`company_no` from line_site_management where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.line.domain.LineSiteManagementDO">
+		select `id`,`line_no`,`site_no`,`site_name`,`gps_no`,`longitude`,`latitude`,`site_type`,`site_order`,`whether_shelves`,`company_no` from line_site_management
+        <where>
+				  company_no = #{companyNo}
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="lineNo != null and lineNo != ''"> and line_no = #{lineNo} </if>
+		  		  <if test="siteNo != null and siteNo != ''"> and site_no = #{siteNo} </if>
+		  		  <if test="siteName != null and siteName != ''"> and site_name = #{siteName} </if>
+		  		  <if test="gpsNo != null and gpsNo != ''"> and gps_no = #{gpsNo} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="siteType != null and siteType != ''"> and site_type = #{siteType} </if>
+		  		  <if test="siteOrder != null and siteOrder != ''"> and site_order = #{siteOrder} </if>
+		  		  <if test="whetherShelves != null and whetherShelves != ''"> and whether_shelves = #{whetherShelves} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from line_site_management
+		 <where>
+			      company_no = #{companyNo}
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="lineNo != null and lineNo != ''"> and line_no = #{lineNo} </if>
+		  		  <if test="siteNo != null and siteNo != ''"> and site_no = #{siteNo} </if>
+		  		  <if test="siteName != null and siteName != ''"> and site_name = #{siteName} </if>
+		  		  <if test="gpsNo != null and gpsNo != ''"> and gps_no = #{gpsNo} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="siteType != null and siteType != ''"> and site_type = #{siteType} </if>
+		  		  <if test="siteOrder != null and siteOrder != ''"> and site_order = #{siteOrder} </if>
+		  		  <if test="whetherShelves != null and whetherShelves != ''"> and whether_shelves = #{whetherShelves} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.line.domain.LineSiteManagementDO" useGeneratedKeys="true" keyProperty="id">
+		insert into line_site_management
+		(
+			`line_no`, 
+			`site_no`, 
+			`site_name`, 
+			`gps_no`, 
+			`longitude`, 
+			`latitude`, 
+			`site_type`, 
+			`site_order`, 
+			`whether_shelves`, 
+			`company_no`
+		)
+		values
+		(
+			#{lineNo}, 
+			#{siteNo}, 
+			#{siteName}, 
+			#{gpsNo}, 
+			#{longitude}, 
+			#{latitude}, 
+			#{siteType}, 
+			#{siteOrder}, 
+			#{whetherShelves}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.line.domain.LineSiteManagementDO">
+		update line_site_management 
+		<set>
+			<if test="lineNo != null">`line_no` = #{lineNo}, </if>
+			<if test="siteNo != null">`site_no` = #{siteNo}, </if>
+			<if test="siteName != null">`site_name` = #{siteName}, </if>
+			<if test="gpsNo != null">`gps_no` = #{gpsNo}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="siteType != null">`site_type` = #{siteType}, </if>
+			<if test="siteOrder != null">`site_order` = #{siteOrder}, </if>
+			<if test="whetherShelves != null">`whether_shelves` = #{whetherShelves}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from line_site_management where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from line_site_management where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

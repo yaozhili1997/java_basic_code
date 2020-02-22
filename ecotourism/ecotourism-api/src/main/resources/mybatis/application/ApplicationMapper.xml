@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.application.dao.ApplicationDao">
+
+	<select id="get" resultType="com.ecotourism.api.application.domain.ApplicationDO">
+		select id,user_no,user_name,app_id,app_key,wechat_id,alipay_id,notice_base_url
+		,distribution_no,authorized_address,base_url_no,img_no,version,bz
+		,available,create_time,update_time,create_user,update_user,company_no
+		 from payment_user where user_no = #{value} and available='1'
+	</select>
+    <select id="getDistribution" resultType="com.ecotourism.api.application.domain.DistributionDO">
+        select distribution_no,name,customer_service_phone,admin_login_id
+        ,app_secret,app_id,pay_type,whether_more_encode,sale_channel_code
+        from cooperation_distribution where distribution_no = #{value} and api_is_open=1 and enable=1 limit 1
+    </select>
+	<select id="getApplyByOutTradeNo" resultType="com.ecotourism.api.application.domain.DistributionDO">
+		SELECT p.* from application_order a LEFT JOIN payment_user p on a.application_no=p.user_no
+		where a.out_trade_no=#{value}  ORDER BY a.purchase_time desc limit 1
+	</select>
+</mapper>

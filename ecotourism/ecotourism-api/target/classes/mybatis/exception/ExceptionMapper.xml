@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.exception.dao.ExceptionDao">
+
+	<insert id="save" parameterType="com.ecotourism.api.exception.domain.ExceptionDO" useGeneratedKeys="true" keyProperty="id">
+		insert into exception
+		(
+			batch_number,
+			api_code,
+			api_name,
+			sysresource,
+			req_param,
+			ex_url, 
+			operator, 
+			exception_msg, 
+			create_time
+		)
+		values
+		(
+			#{batchNumber},
+			#{apiCode},
+			#{apiName},
+			#{sysresource},
+			#{reqParam},
+			#{exUrl}, 
+			#{operator}, 
+			#{exceptionMsg}, 
+			#{createTime}
+		)
+	</insert>
+
+</mapper>

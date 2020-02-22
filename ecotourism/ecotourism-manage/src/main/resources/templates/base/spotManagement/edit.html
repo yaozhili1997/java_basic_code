@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="base/spotManagement/include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="spotId" name="spotId" th:value="${spotManagement.spotId}"  type="hidden">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">景点名称：</label>
+								<div class="col-sm-4">
+									<input id="spotName" name="spotName" th:value="${spotManagement.spotName}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">景点电话：</label>
+								<div class="col-sm-4">
+									<input id="spotPhone" name="spotPhone" th:value="${spotManagement.spotPhone}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">所属景区：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择景区--" name="areaNo" id="areaNo"
+											class="form-control chosen-select" tabindex="2" required>
+										<option value="">--选择景区--</option>
+										<option th:each="areaList : ${areaLists}" th:value="${areaList.areaNo}" th:text="${areaList.areaName}"  th:if="${areaList.areaNo eq spotManagement.areaNo}" th:selected="selected"></option>
+										<option th:each="areaList : ${areaLists}" th:value="${areaList.areaNo}" th:text="${areaList.areaName}"  th:if="${areaList.areaNo ne spotManagement.areaNo}" ></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">是否可用：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="available" name="available" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${spotManagement.available=='1'}>
+										<label class="onoffswitch-label" for="available">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">开园时间：</label>
+								<div class="col-sm-4">
+									<input id="openingHours" name="openingHours" th:value="${spotManagement.openingHours}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">闭园时间：</label>
+								<div class="col-sm-4">
+									<input id="closingHours" name="closingHours" th:value="${spotManagement.closingHours}"  class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">停止售票时间：</label>
+								<div class="col-sm-4">
+									<input id="stopSellingTicketsTime" name="stopSellingTicketsTime" th:value="${spotManagement.stopSellingTicketsTime}"  class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">停止检票时间：</label>
+								<div class="col-sm-4">
+									<input id="stopCheckingTime" name="stopCheckingTime" th:value="${spotManagement.stopCheckingTime}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否闭园：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="whetherClose" name="whetherClose" checked="" type="checkbox" value="1" class="onoffswitch-checkbox" th:checked=${spotManagement.whetherClose=='1'}>
+										<label class="onoffswitch-label" for="whetherClose">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">闭园日期：</label>
+								<div class="col-sm-4">
+									<input id="closeDate" name="closeDate" th:value="${spotManagement.closeDate}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">景点介绍：</label>
+								<div class="col-sm-10">
+									<textarea id="spotIntroduct" th:text="${spotManagement.spotIntroduct}" name="spotIntroduct" class="form-control" type="text"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="base/spotManagement/include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/base/spotManagement/edit.js">
+	</script>
+</body>
+</html>

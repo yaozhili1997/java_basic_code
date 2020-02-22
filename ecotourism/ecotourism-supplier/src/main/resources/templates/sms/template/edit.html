@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="templateId" name="templateId" th:value="${template.templateId}"  type="hidden">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">模板名称：</label>
+								<div class="col-sm-4">
+									<input id="templateName" name="templateName" th:value="${template.templateName}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">发送供应商：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择供应商--" name="supplierNo" id="supplierNo"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择供应商 --</option>
+										<option th:each="smsSupplierList : ${smsSupplierLists}" th:value="${smsSupplierList.supplierNo}" th:text="${smsSupplierList.supplierName}" th:if="${smsSupplierList.supplierNo eq template.supplierNo}" th:selected="selected"  ></option>
+										<option th:each="smsSupplierList : ${smsSupplierLists}" th:value="${smsSupplierList.supplierNo}" th:text="${smsSupplierList.supplierName}"  th:if="${smsSupplierList.supplierNo ne template.supplierNo}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">彩信标题：</label>
+								<div class="col-sm-4">
+									<input id="mmsTitle" name="mmsTitle" th:value="${template.mmsTitle}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">发送方式：</label>
+								<div class="col-sm-4">
+									<label class="radio-inline">
+										<input type="radio" th:field="*{template.sendWay}" name="sendWay" value="sms" /> 短信
+									</label>
+									<label class="radio-inline">
+										<input type="radio" th:field="*{template.sendWay}" name="sendWay" value="mms" /> 彩信
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">是否可用：</label>
+								<div class="col-sm-4">
+									<label class="radio-inline">
+										<input type="radio" th:field="*{template.enable}" name="enable" value="012001" /> 启用
+									</label>
+									<label class="radio-inline">
+										<input type="radio" th:field="*{template.enable}" name="enable" value="012002" /> 禁用
+									</label>
+								</div>
+								<!--
+								<label class="col-sm-2 control-label">所属公司：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择公司--" name="companyNo" id="companyNo"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择公司 --</option>
+										<option th:each="companyList : ${companyLists}" th:value="${companyList.bianma}" th:text="${companyList.name}" th:if="${companyList.bianma eq template.companyNo}" th:selected="selected" ></option>
+										<option th:each="companyList : ${companyLists}" th:value="${companyList.bianma}" th:text="${companyList.name}" th:if="${companyList.bianma ne template.companyNo}" ></option>
+									</select>
+								</div>-->
+							</div>
+							<div class="form-group" style="height: auto;">
+								<label class="col-sm-2 control-label">标签：</label>
+								<div class="col-sm-10">
+									<span th:each="labelList : ${labelLists}" th:value="${labelList.labelValue}" th:text="${labelList.labelName}" class="label label-primary"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">模板内容：</label>
+								<div class="col-sm-10">
+									<textarea id="content" name="content" th:text="${template.content}" class="form-control" required></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/sms/template/edit.js">
+	</script>
+</body>
+</html>

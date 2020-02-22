@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.RefundStrategyDetailsDao">
+
+	<select id="get" resultType="com.ecotourism.oms.oms.domain.RefundStrategyDetailsDO">
+		select `strategy_detail_id`,`strategy_detail_no`,`strategy_detail_name`,`strategy_detail_time`,`strategy_no`,`refund_proportion`,`remarks` from base_refund_strategy_details where strategy_detail_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.oms.oms.domain.RefundStrategyDetailsDO">
+		select `strategy_detail_id`,`strategy_detail_no`,`strategy_detail_name`,`strategy_detail_time`,`strategy_no`,`refund_proportion`,`remarks` from base_refund_strategy_details
+        <where>
+				  company_no = #{companyNo}
+				  <if test="searchName != null and searchName != ''">
+					and (
+					strategyDetailName LIKE
+					CONCAT(CONCAT('', #{searchName}),'%')
+					)
+				  </if>
+			<if test="strategyNo != null and strategyNo != ''"> and strategy_no = #{strategyNo}</if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by strategy_detail_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+ 	<select id="count" resultType="int">
+		select count(*) from base_refund_strategy_details
+		 <where>
+				 company_no = #{companyNo}
+				 <if test="searchName != null and searchName != ''">
+					 and (
+					 strategyDetailName LIKE
+					 CONCAT(CONCAT('', #{searchName}),'%')
+					 )
+				 </if>
+			 <if test="strategyNo != null and strategyNo != ''"> and strategy_no = #{strategyNo}</if>
+		 </where>
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.oms.oms.domain.RefundStrategyDetailsDO" useGeneratedKeys="true" keyProperty="strategyDetailId">
+		insert into base_refund_strategy_details
+		(
+			`strategy_detail_no`,
+			`strategy_detail_name`,
+			`strategy_detail_time`,
+			`strategy_no`,
+			`refund_proportion`,
+			`remarks`,
+			`company_no`
+		)
+		values
+		(
+			#{strategyDetailNo},
+			#{strategyDetailName},
+			#{strategyDetailTime},
+			#{strategyNo},
+			#{refundProportion},
+			#{remarks},
+			#{companyNo}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.oms.oms.domain.RefundStrategyDetailsDO">
+		update base_refund_strategy_details
+		<set>
+			<if test="strategyDetailNo != null">`strategy_detail_no` = #{strategyDetailNo}, </if>
+			<if test="strategyDetailName != null">`strategy_detail_name` = #{strategyDetailName}, </if>
+			<if test="strategyDetailTime != null">`strategy_detail_time` = #{strategyDetailTime}, </if>
+			<if test="strategyNo != null">`strategy_no` = #{strategyNo}, </if>
+			<if test="refundProportion != null">`refund_proportion` = #{refundProportion}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}</if>
+		</set>
+		where strategy_detail_id = #{strategyDetailId}
+	</update>
+
+	<delete id="remove">
+		delete from base_refund_strategy_details where strategy_detail_id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from base_refund_strategy_details where strategy_detail_id in
+		<foreach item="strategyDetailId" collection="array" open="(" separator="," close=")">
+			#{strategyDetailId}
+		</foreach>
+	</delete>
+
+	<select id="getRefundStrategy" resultType="com.ecotourism.oms.oms.domain.RefundStrategyDetailsDO">
+		select
+		*
+		from
+		base_refund_strategy_details
+		where strategy_details_no = #{value}
+		limit 1
+	</select>
+
+</mapper>

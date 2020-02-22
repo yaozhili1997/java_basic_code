@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.OmsApiDictionaryDao">
+
+	<select id="get" resultType="com.ecotourism.oms.oms.domain.OmsApiDictionaryDO">
+		SELECT
+			`id`,
+			`apino`,
+			`apiurl`,
+			`apiexplain`,
+			`version`,
+			`distribution_no`,
+			`enabled`
+		FROM
+			interface_oms_api_dictionary
+		WHERE
+			apiurl = #{apiurl}
+			and distribution_no = #{distributionNo}
+			and enabled = #{enabled}
+	</select>
+
+
+</mapper>

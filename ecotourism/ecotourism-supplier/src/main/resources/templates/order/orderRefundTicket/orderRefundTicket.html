@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="order:orderRefundTicket:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="order:orderRefundTicket:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">
+								<i class="fa fa-search" aria-hidden="true"></i>查询
+							</button>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--退款状态--" name="refundState" id="refundState"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 退款状态 --</option>
+								<option th:each="refundTypeList : ${refundTypeLists}" th:value="${refundTypeList.value}" th:text="${refundTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--审核状态--" name="reviewState" id="reviewState"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 审核状态 --</option>
+								<option th:each="reviewTypeList : ${reviewTypeLists}" th:value="${reviewTypeList.value}" th:text="${reviewTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="applyEndTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="申请结束时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="applyStartTime" type="text" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="申请开始时间">
+						</div>
+						<div class="pull-right search col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								   placeholder="订单号/电子票号">
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="order:orderRefundTicket:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="order:orderRefundTicket:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="order:orderRefundTicket:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/order/orderRefundTicket/orderRefundTicket.js"></script>
+</body>
+</html>

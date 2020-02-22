@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header">
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+														<div class="form-group">
+								<label class="col-sm-2 control-label">合作商名称：</label>
+								<div class="col-sm-2">
+									<input id="name" name="name" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">合作商类型：</label>
+								<div class="col-sm-2">
+									<select data-placeholder="--合作商类型--" name="type" id="type"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 合作商类型 --</option>
+										<option th:each="distributionType : ${distributionTypeList}" th:value="${distributionType.value}" th:text="${distributionType.name}"  ></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">销售渠道：</label>
+								<div class="col-sm-2">
+									<select data-placeholder="--销售渠道--" name="saleChannelCode" id="saleChannelCode"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 销售渠道 --</option>
+										<option th:each="distributionChannel : ${distributionChannelLists}" th:value="${distributionChannel.value}" th:text="${distributionChannel.name}"  ></option>
+									</select>
+								</div>
+							</div>
+														<div class="form-group">
+								<label class="col-sm-2 control-label">联系人：</label>
+								<div class="col-sm-2">
+									<input id="contactName" name="contactName" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">联系方式：</label>
+								<div class="col-sm-2">
+									<input id="contactMobile" name="contactMobile" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">联系地址：</label>
+								<div class="col-sm-2">
+									<input id="contactAddress" name="contactAddress" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">
+								<label class="col-sm-2 control-label">QQ：</label>
+								<div class="col-sm-2">
+									<input id="contactQq" name="contactQq" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">开户行：</label>
+								<div class="col-sm-2">
+									<input id="bank" name="bank" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">开户账号：</label>
+								<div class="col-sm-2">
+									<input id="bankAccount" name="bankAccount" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">
+								<label class="col-sm-2 control-label">appID：</label>
+								<div class="col-sm-2" style="position: relative;">
+									<input id="appId" name="appId" readonly class="form-control" type="text">
+									<button style="position: absolute;right:-40px;top: 0;z-index: 6000;" onclick="createAppId('appId',16);" type="button" class="btn btn-danger">生成</button>
+								</div>
+								<label class="col-sm-2 control-label">appSecret：</label>
+								<div class="col-sm-2" style="position: relative;">
+									<input id="appSecret" name="appSecret" readonly class="form-control" type="text">
+									<button style="position: absolute;right:-40px;top: 0;z-index: 6000;" onclick="createKey('appSecret',24);" type="button" class="btn btn-danger">生成</button>
+								</div>
+								<label class="col-sm-2 control-label">支付方式：</label>
+								<div class="col-sm-2">
+									<select data-placeholder="--支付方式--" name="payType" id="payType"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 支付方式 --</option>
+										<option value="006005">签单</option>
+										<option value="006004">预存</option>
+										<!--<option th:each="payType : ${payTypeLists}" th:value="${payType.value}" th:text="${payType.name}"  ></option>-->
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">签约开始日期：</label>
+								<div class="col-sm-2">
+										<input id="startDate" name="startDate" autocomplete="off" type="text" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon form-control" placeholder="开始日期">
+								</div>
+								<label class="col-sm-2 control-label">签约结束日期：</label>
+								<div class="col-sm-2">
+									<input id="endDate" name="endDate" autocomplete="off" type="text" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon form-control" placeholder="结束日期">
+								</div>
+								<label class="col-sm-2 control-label">预定当天票：</label>
+								<div class="col-sm-2">
+									<div class="onoffswitch">
+										<input id="bookToday" name="bookToday" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="bookToday">
+											<span class="onoffswitch-inner-dynamic3" data-on="支持" data-off="不支持"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">验证ip：</label>
+								<div class="col-sm-2">
+									<div class="onoffswitch">
+										<input id="whetherCheckIp" name="whetherCheckIp" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox" th:checked=false>
+										<label class="onoffswitch-label" for="whetherCheckIp">
+											<span class="onoffswitch-inner-dynamic3" data-on="验证" data-off="不验证"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">ip白名单：</label>
+								<div class="col-sm-2">
+									<input id="ips" name="ips" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">过期退票：</label>
+								<div class="col-sm-2">
+									<div class="onoffswitch">
+										<input id="expiredRefund" name="expiredRefund" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="expiredRefund">
+											<span class="onoffswitch-inner-dynamic3" data-on="支持" data-off="不支持"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">取票后退票：</label>
+								<div class="col-sm-2">
+									<div class="onoffswitch">
+										<input id="afterTakeSceneRefund" name="afterTakeSceneRefund" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="afterTakeSceneRefund">
+											<span class="onoffswitch-inner-dynamic3" data-on="支持" data-off="不支持"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">发送短信：</label>
+								<div class="col-sm-2">
+									<div class="onoffswitch">
+										<input id="whetherSendSms" name="whetherSendSms" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox" th:checked=false>
+										<label class="onoffswitch-label" for="whetherSendSms">
+											<span class="onoffswitch-inner-dynamic3" data-on="发送" data-off="不发送"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+								<label class="col-sm-2 control-label">是否开通接口：</label>
+								<div class="col-sm-2">
+									<div class="onoffswitch">
+										<input id="apiIsOpen" name="apiIsOpen" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox">
+										<label class="onoffswitch-label" for="apiIsOpen">
+											<span class="onoffswitch-inner-dynamic" data-on="开启" data-off="关闭"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/cooperation/distribution/add.js">
+	</script>
+</body>
+</html>

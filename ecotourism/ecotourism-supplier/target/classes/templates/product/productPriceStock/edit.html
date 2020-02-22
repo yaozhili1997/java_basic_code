@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="product/carAddTicket/include :: header"></head>
+<style>
+	.flex {
+		display: flex;
+	}
+	.text-inline {
+		display: inline-block;
+		margin-top: 5px;
+		margin-bottom: 10px;
+		color: #737373;
+	}
+	.date-calendar {
+		border: 1px solid #ccd2df;
+		min-width: 900px;
+	}
+	.date-calendar-header {
+		border-bottom: 1px solid #ccd2df;
+		text-align: center;
+		position: relative;
+		padding: 10px;
+	}
+	.date-calendar-header .month-change-last {
+		position: absolute;
+		left: 10px;
+	}
+	.date-calendar-header .month-change-next {
+		position: absolute;
+		right: 10px;
+	}
+	.selected-month-text {
+		display: inline-block;
+		color: #737373;
+		vertical-align: -1px;
+		font-size: 16px;
+		margin-right: 10px;
+	}
+	.date-calendar-week-line .title {
+		text-align: center;
+		padding: 10px 0 12px 0;
+		border-bottom: 1px solid #ccd2df;
+		flex:1;
+	}
+	.date-calendar-week-line .title>label {
+		padding-top: 0;
+		margin-right: 0;
+	}
+	.date-calendar-line:not(:last-child) {
+		border-bottom: 1px solid #ccd2df;
+	}
+	.date-calendar-day {
+		box-sizing: border-box;
+		height: 150px;
+		padding: 5px 10px;
+		flex:1;
+	}
+	.date-calendar-day:not(:last-child) {
+		border-right: 1px solid #ccd2df;
+	}
+	.date-calendar-day.selected {
+		color: #fff;
+		background: #1ab394;
+	}
+	.date-calendar-day .day-text {
+		font-size: 14px;
+		font-weight: bold;
+	}
+	.date-calendar-day .day-text.today {
+		color: red;
+	}
+	.stock-type-select .radio-inline {
+		vertical-align: 0;
+		padding-top: 0;
+	}
+	.total-stock-num-wrap {
+		visibility: hidden;
+	}
+	.show-total-stock-num .total-stock-num-wrap {
+		visibility: visible;
+	}
+</style>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-content">
+					<form class="form-horizontal m-t" id="signupForm">
+						<input id="productNo" name="productNo" th:value="${spotTicket.productNo}"  type="hidden">
+						<input id="payPrice" name="payPrice" th:value="${spotTicket.payPrice}"  type="hidden">
+						<div class="col-sm-12">
+							<h4 style="color: green">产品价格库存日历</h4>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">产品名称：</label>
+							<div class="col-sm-9">
+								<p class="text-inline" th:text="${spotTicket.productName}">${spotTicket.productName}</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">库存模式：</label>
+							<div class="col-sm-9 stock-type-select">
+								<label class="radio-inline">
+									<input name="stockType" type="radio" value="0">不限库存
+								</label>
+								<label class="radio-inline">
+									<input name="stockType" type="radio" value="1">总库存
+								</label>
+								<label class="radio-inline">
+									<input name="stockType" type="radio" value="2">日库存
+								</label>
+								<span class="total-stock-num-wrap">
+									<span class="text-inline">剩余总库存</span>
+									<input name="totalStockNum" id="totalStockNum" style="width: 80px;display: inline;margin: 0 5px;padding: 6px 4px;" type="number" class="form-control" th:value="${spotTicket.totalStockNum - spotTicket.totalStockSaleNum}"/>
+									<span class="text-inline">张 已售 <span style="color: red;" th:text="${spotTicket.totalStockSaleNum}"></span> 张</span>
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">日期价格：</label>
+							<div class="col-sm-9">
+								<div class="date-calendar">
+									<div class="date-calendar-header">
+										<div class="month-change-last">
+											<span class="btn btn-default btn-outline btn-sm" style="width: 80px;" ><i class="fa fa-angle-left" style="font-size: 14px;"></i> <span class="month-text"></span>月</span>
+										</div>
+										<div class="month-change-next">
+											<span class="btn btn-default btn-outline btn-sm" style="width: 80px;" ><span class="month-text"></span>月 <i class="fa fa-angle-right" style="font-size: 14px;"></i></span>
+										</div>
+										<div class="header-center">
+											<sapn class="selected-month-text"></sapn>
+											<label class="checkbox-inline" style="padding-top: 0px;vertical-align: middle;">
+												<input type="checkbox" id="checkAll">全选
+											</label>
+											<span class="btn btn-primary btn-sm" onclick="deletePriceStock()">删除选中日期</span>
+										</div>
+									</div>
+									<div class="date-calendar-week-line flex">
+										<div class="title">
+											<label class="checkbox-inline">
+												<input type="checkbox" value="1">周一
+											</label>
+										</div>
+										<div class="title">
+											<label class="checkbox-inline">
+												<input type="checkbox" value="2">周二
+											</label>
+										</div>
+										<div class="title">
+											<label class="checkbox-inline">
+												<input type="checkbox" value="3">周三
+											</label>
+										</div>
+										<div class="title">
+											<label class="checkbox-inline">
+												<input type="checkbox" value="4">周四
+											</label>
+										</div>
+										<div class="title">
+											<label class="checkbox-inline">
+												<input type="checkbox" value="5">周五
+											</label>
+										</div>
+										<div class="title">
+											<label class="checkbox-inline">
+												<input type="checkbox" value="6">周六
+											</label>
+										</div>
+										<div class="title">
+											<label class="checkbox-inline">
+												<input type="checkbox" value="0">周日
+											</label>
+										</div>
+									</div>
+									<div class="date-calendar-body">
+									</div>
+								</div>
+								<div>
+									<div style="padding: 10px 0;font-size: 14px;font-weight: bold;">
+										价格库存设置
+									</div>
+									<table class="table table-bordered" style="width:750px;">
+										<thead>
+										<tr>
+											<th style="text-align: center;">销售价</th>
+											<th style="text-align: center;">结算价</th>
+											<th style="text-align: center;">库存</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr>
+											<td style="text-align: center;">
+												<div class="input-group">
+													<input style="width: 250px;" type="number" class="form-control" id="salePrice" th:value="${spotTicket.payPrice}" placeholder="请输入销售价格"/>
+												</div>
+											</td>
+											<td style="text-align: center;">
+												<div class="input-group">
+													<input style="width: 250px;" type="number" class="form-control" id="settlementPrice" th:value="${spotTicket.payPrice}" placeholder="请输入结算价格"/>
+												</div>
+											</td>
+											<td style="text-align: center;">
+												<div class="input-group">
+													<input style="width: 250px;" type="number" class="form-control" id="stockNum" value="0" placeholder="请输入库存数量"/>
+												</div>
+											</td>
+										</tr>
+										</tbody>
+									</table>
+									<div style="padding: 10px 0;">
+										<button type="button" class="btn btn-primary btn-lg" onclick="save()">保存价格库存</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:include="product/carAddTicket/include::footer"></div>
+<script type="text/javascript" src="/js/appjs/productPriceStock/edit.js"></script>
+<script type="text/javascript" src="/js/utils.js"></script>
+<script th:inline="javascript">
+	$(function() {
+        var stockType = [[${spotTicket.stockType != null ? spotTicket.stockType : 0}]];
+        $('[name="stockType"][value="' + stockType + '"]').prop('checked', true).trigger('click');
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.SpotTicketDao">
+
+	<select id="get" resultType="com.ecotourism.oms.oms.domain.SpotTicketDO">
+		SELECT
+			product_id,
+			a.ticket_no,
+			product_no,
+			term_no,
+			product_name,
+			distribution_channel,
+			pay_type,
+			pay_price,
+			order_cancel,
+			whether_user_phone,
+			whether_user_id,
+			whether_make,
+			certificate_exchange,
+			park_way,
+			park_address,
+			tick_type,
+			use_explain,
+			whether_refund,
+			whether_examine,
+			refund_explain,
+			cost_includes,
+			cost_not_includes,
+			whether_user_name,
+			a.whether_shelves,
+			template_sms_no,
+			template_mms_no,
+			settlement_price,
+			ticket_grouping,
+			effective_days,
+			whether_shelves_advance,
+			advance_start_date,
+			advance_end_date,
+			user_role_id,
+			template_no,
+			img_url,
+			whether_sure_ride,
+			subordinate_line,
+			whether_refund_strategy,
+			 a.strategy_no,
+			 a.base_url,
+			 a.is_entity,
+			refund_strategy_detail_no,
+			whether_limit_sell,
+			sell_date_type,
+			limit_sell_num,
+			product_provider,
+			car_fee,
+			a.product_type,
+			 a.company_no,
+			whether_limit_stock,
+			product_second_type,
+			 a.product_type_name,
+			 b.spot_no spot_no,
+			 b.is_self is_self,
+			 b.ticket_supplier ticket_supplier,
+			 b.after_take_scene_refund,
+			 b.expired_refund,
+		     a.stock_type,
+		     a.total_stock_num,
+		     a.total_stock_sale_num
+		FROM
+		product_spot_ticket a
+		left join base_ticket_type b ON
+		a.ticket_no = b.ticket_no
+		WHERE
+			product_no = #{value}
+	</select>
+
+	<!-- 列出所有产品信息 -->
+	<select id="queryProductsInfo"  resultType="com.ecotourism.oms.oms.domain.SpotTicketDO">
+		SELECT
+			a.*, b.ticket_price,
+			b.is_self,
+			b.ticket_delivery,
+			d.term_time,
+			d.term_use_type,
+			d.effective_start_date,
+			d.effective_end_date,
+			d.whether_limit_number,
+			d.frequency
+		FROM
+			product_spot_ticket a
+		LEFT JOIN base_ticket_type b ON a.ticket_no = b.ticket_no
+		LEFT JOIN base_term_management d ON a.term_no = d.term_no
+		WHERE
+			a.distribution_channel = #{distributionChannel}
+		AND a.whether_shelves = '1'
+		AND b.whether_shelves = '1'
+		AND d.available = '1'
+	</select>
+
+	<update id="update" parameterType="com.ecotourism.oms.oms.domain.ProductStock">
+		UPDATE product_spot_ticket
+		SET total_stock_sale_num = total_stock_sale_num + #{saleNum}
+		WHERE
+			product_no = #{productNo}
+	</update>
+
+	<update id="updateRefundStock" parameterType="com.ecotourism.oms.oms.domain.ProductStock">
+		UPDATE product_spot_ticket
+		SET total_stock_sale_num = total_stock_sale_num - #{saleNum}
+		WHERE
+			product_no = #{productNo}
+	</update>
+</mapper>

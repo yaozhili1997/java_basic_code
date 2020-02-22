@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.inter.dao.OmsApiDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.inter.domain.OmsApiDO">
+		select `id`,`apino`,`apiname`,`apiurl`,`apiexplain`,`version`,`enabled`,`createuser`,`creratetime`,`updateuser`,`updatetime` from interface_oms_api where id = #{value}
+	</select>
+
+	<select id="getByApino" resultType="com.ecotourism.supplier.inter.domain.OmsApiDO">
+		select `id`,`apino`,`apiname`,`apiurl`,`apiexplain`,`version`,`enabled`,`createuser`,`creratetime`,`updateuser`,`updatetime` from interface_oms_api where apino = #{value} limit 1
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.inter.domain.OmsApiDO">
+		select `id`,`apino`,`apiname`,`apiurl`,`apiexplain`,`version`,`enabled`,`createuser`,`creratetime`,`updateuser`,`updatetime` from interface_oms_api
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="apino != null and apino != ''"> and apino = #{apino} </if>
+		  		  <if test="apiname != null and apiname != ''"> and apiname = #{apiname} </if>
+		  		  <if test="apiurl != null and apiurl != ''"> and apiurl = #{apiurl} </if>
+		  		  <if test="apiexplain != null and apiexplain != ''"> and apiexplain = #{apiexplain} </if>
+		  		  <if test="version != null and version != ''"> and version = #{version} </if>
+		  		  <if test="enabled != null and enabled != ''"> and enabled = #{enabled} </if>
+		  		  <if test="createuser != null and createuser != ''"> and createuser = #{createuser} </if>
+		  		  <if test="creratetime != null and creratetime != ''"> and creratetime = #{creratetime} </if>
+		  		  <if test="updateuser != null and updateuser != ''"> and updateuser = #{updateuser} </if>
+		  		  <if test="updatetime != null and updatetime != ''"> and updatetime = #{updatetime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from interface_oms_api
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="apino != null and apino != ''"> and apino = #{apino} </if>
+		  		  <if test="apiname != null and apiname != ''"> and apiname = #{apiname} </if>
+		  		  <if test="apiurl != null and apiurl != ''"> and apiurl = #{apiurl} </if>
+		  		  <if test="apiexplain != null and apiexplain != ''"> and apiexplain = #{apiexplain} </if>
+		  		  <if test="version != null and version != ''"> and version = #{version} </if>
+		  		  <if test="enabled != null and enabled != ''"> and enabled = #{enabled} </if>
+		  		  <if test="createuser != null and createuser != ''"> and createuser = #{createuser} </if>
+		  		  <if test="creratetime != null and creratetime != ''"> and creratetime = #{creratetime} </if>
+		  		  <if test="updateuser != null and updateuser != ''"> and updateuser = #{updateuser} </if>
+		  		  <if test="updatetime != null and updatetime != ''"> and updatetime = #{updatetime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.inter.domain.OmsApiDO" useGeneratedKeys="true" keyProperty="id">
+		insert into interface_oms_api
+		(
+			`apino`, 
+			`apiname`, 
+			`apiurl`, 
+			`apiexplain`, 
+			`version`, 
+			`enabled`, 
+			`createuser`, 
+			`creratetime`, 
+			`updateuser`, 
+			`updatetime`
+		)
+		values
+		(
+			#{apino}, 
+			#{apiname}, 
+			#{apiurl}, 
+			#{apiexplain}, 
+			#{version}, 
+			#{enabled}, 
+			#{createuser}, 
+			#{creratetime}, 
+			#{updateuser}, 
+			#{updatetime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.inter.domain.OmsApiDO">
+		update interface_oms_api 
+		<set>
+			<if test="apino != null">`apino` = #{apino}, </if>
+			<if test="apiname != null">`apiname` = #{apiname}, </if>
+			<if test="apiurl != null">`apiurl` = #{apiurl}, </if>
+			<if test="apiexplain != null">`apiexplain` = #{apiexplain}, </if>
+			<if test="version != null">`version` = #{version}, </if>
+			<if test="enabled != null">`enabled` = #{enabled}, </if>
+			<if test="createuser != null">`createuser` = #{createuser}, </if>
+			<if test="creratetime != null">`creratetime` = #{creratetime}, </if>
+			<if test="updateuser != null">`updateuser` = #{updateuser}, </if>
+			<if test="updatetime != null">`updatetime` = #{updatetime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from interface_oms_api where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from interface_oms_api where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

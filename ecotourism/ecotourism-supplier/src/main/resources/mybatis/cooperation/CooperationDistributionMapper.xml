@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.cooperation.dao.CooperationDistributionDao">
+
+	<sql id="commonFieldSql">
+		`id`,`distribution_no`,`name`,`type`,`type` as typeName,`province`,`city`,`contact_address`,`contact_name`
+		,`contact_mobile`,`customer_service_phone`,`contact_qq`,`bank`,`bank_account`,`admin_login_id`
+		,`api_is_open`,`expired_take`,`part_take`,`expired_refund`,`book_today`,`after_take_scene_refund`
+		,`app_secret`,`app_id`,`sale_channel_code`,`pay_type`,`allow_max_user_num`,`delay_entry_time`
+		,`deposit`,`start_date`,`end_date`,`enable`,`create_time`,`update_time`,`create_user`,`update_user`
+		,`whether_print`,`whether_send_sms`,`notice_url`,`whether_refund`,`whether_auto_refund_out_time`
+		,`whether_use_car`,`car_price`,`whether_check_ip`,`ips`,`authorized_address`,`company_no`
+		,`whether_more_encode`,
+		(select name from sys_dict s where s.value=sale_channel_code and s.company_no=company_no limit 1) as sale_channel_code_name,
+		(select name from sys_dict s where s.value=pay_type and s.company_no=company_no limit 1) as pay_type_name,
+		(select name from sys_dict s where s.value=typeName and s.company_no=company_no limit 1) as type_name
+	</sql>
+
+	<select id="get" resultType="com.ecotourism.supplier.cooperation.domain.CooperationDistributionDO">
+		select <include refid="commonFieldSql"/> from cooperation_distribution where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.cooperation.domain.CooperationDistributionDO">
+		select <include refid="commonFieldSql"/> from cooperation_distribution
+		<where>  company_no = #{companyNo}
+			<if test="searchName != null and searchName != ''">
+				and (distribution_no = #{searchName} or
+				contact_mobile = #{searchName} or
+				app_id = #{searchName} or
+				bank_account = #{searchName} or
+				`name` like CONCAT(#{searchName},'%') or
+				contact_name like CONCAT(#{searchName},'%') or
+				contact_address like CONCAT(#{searchName},'%')
+				)
+			</if>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="distributionNo != null and distributionNo != ''"> and distribution_no = #{distributionNo} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="type != null and type != ''"> and type = #{type} </if>
+			<if test="province != null and province != ''"> and province = #{province} </if>
+			<if test="city != null and city != ''"> and city = #{city} </if>
+			<if test="contactAddress != null and contactAddress != ''"> and contact_address = #{contactAddress} </if>
+			<if test="contactName != null and contactName != ''"> and contact_name = #{contactName} </if>
+			<if test="contactMobile != null and contactMobile != ''"> and contact_mobile = #{contactMobile} </if>
+			<if test="customerServicePhone != null and customerServicePhone != ''"> and customer_service_phone = #{customerServicePhone} </if>
+			<if test="contactQq != null and contactQq != ''"> and contact_qq = #{contactQq} </if>
+			<if test="bank != null and bank != ''"> and bank = #{bank} </if>
+			<if test="bankAccount != null and bankAccount != ''"> and bank_account = #{bankAccount} </if>
+			<if test="adminLoginId != null and adminLoginId != ''"> and admin_login_id = #{adminLoginId} </if>
+			<if test="apiIsOpen != null and apiIsOpen != ''"> and api_is_open = #{apiIsOpen} </if>
+			<if test="expiredTake != null and expiredTake != ''"> and expired_take = #{expiredTake} </if>
+			<if test="partTake != null and partTake != ''"> and part_take = #{partTake} </if>
+			<if test="expiredRefund != null and expiredRefund != ''"> and expired_refund = #{expiredRefund} </if>
+			<if test="bookToday != null and bookToday != ''"> and book_today = #{bookToday} </if>
+			<if test="afterTakeSceneRefund != null and afterTakeSceneRefund != ''"> and after_take_scene_refund = #{afterTakeSceneRefund} </if>
+			<if test="appSecret != null and appSecret != ''"> and app_secret = #{appSecret} </if>
+			<if test="appId != null and appId != ''"> and app_id = #{appId} </if>
+			<if test="saleChannelCode != null and saleChannelCode != ''"> and sale_channel_code = #{saleChannelCode} </if>
+			<if test="payType != null and payType != ''"> and pay_type = #{payType} </if>
+			<if test="allowMaxUserNum != null and allowMaxUserNum != ''"> and allow_max_user_num = #{allowMaxUserNum} </if>
+			<if test="delayEntryTime != null and delayEntryTime != ''"> and delay_entry_time = #{delayEntryTime} </if>
+			<if test="deposit != null and deposit != ''"> and deposit = #{deposit} </if>
+			<if test="startDate != null and startDate != ''"> and start_date = #{startDate} </if>
+			<if test="endDate != null and endDate != ''"> and end_date = #{endDate} </if>
+			<if test="enable != null and enable != ''"> and enable = #{enable} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+			<if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+			<if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+			<if test="whetherPrint != null and whetherPrint != ''"> and whether_print = #{whetherPrint} </if>
+			<if test="whetherSendSms != null and whetherSendSms != ''"> and whether_send_sms = #{whetherSendSms} </if>
+			<if test="noticeUrl != null and noticeUrl != ''"> and notice_url = #{noticeUrl} </if>
+			<if test="whetherRefund != null and whetherRefund != ''"> and whether_refund = #{whetherRefund} </if>
+			<if test="whetherAutoRefundOutTime != null and whetherAutoRefundOutTime != ''"> and whether_auto_refund_out_time = #{whetherAutoRefundOutTime} </if>
+			<if test="whetherUseCar != null and whetherUseCar != ''"> and whether_use_car = #{whetherUseCar} </if>
+			<if test="carPrice != null and carPrice != ''"> and car_price = #{carPrice} </if>
+			<if test="whetherCheckIp != null and whetherCheckIp != ''"> and whether_check_ip = #{whetherCheckIp} </if>
+			<if test="ips != null and ips != ''"> and ips = #{ips} </if>
+			<if test="authorizedAddress != null and authorizedAddress != ''"> and authorized_address = #{authorizedAddress} </if>
+			<if test="whetherMoreEncode != null and whetherMoreEncode != ''"> and whether_more_encode = #{whetherMoreEncode} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from cooperation_distribution
+		<where> company_no = #{companyNo}
+			<if test="searchName != null and searchName != ''">
+				and (distribution_no = #{searchName} or
+				contact_mobile = #{searchName} or
+				app_id = #{searchName} or
+				bank_account = #{searchName} or
+				`name` like CONCAT(#{searchName},'%') or
+				contact_name like CONCAT(#{searchName},'%') or
+				contact_address like CONCAT(#{searchName},'%')
+				)
+			</if>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="distributionNo != null and distributionNo != ''"> and distribution_no = #{distributionNo} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="type != null and type != ''"> and type = #{type} </if>
+			<if test="province != null and province != ''"> and province = #{province} </if>
+			<if test="city != null and city != ''"> and city = #{city} </if>
+			<if test="contactAddress != null and contactAddress != ''"> and contact_address = #{contactAddress} </if>
+			<if test="contactName != null and contactName != ''"> and contact_name = #{contactName} </if>
+			<if test="contactMobile != null and contactMobile != ''"> and contact_mobile = #{contactMobile} </if>
+			<if test="customerServicePhone != null and customerServicePhone != ''"> and customer_service_phone = #{customerServicePhone} </if>
+			<if test="contactQq != null and contactQq != ''"> and contact_qq = #{contactQq} </if>
+			<if test="bank != null and bank != ''"> and bank = #{bank} </if>
+			<if test="bankAccount != null and bankAccount != ''"> and bank_account = #{bankAccount} </if>
+			<if test="adminLoginId != null and adminLoginId != ''"> and admin_login_id = #{adminLoginId} </if>
+			<if test="apiIsOpen != null and apiIsOpen != ''"> and api_is_open = #{apiIsOpen} </if>
+			<if test="expiredTake != null and expiredTake != ''"> and expired_take = #{expiredTake} </if>
+			<if test="partTake != null and partTake != ''"> and part_take = #{partTake} </if>
+			<if test="expiredRefund != null and expiredRefund != ''"> and expired_refund = #{expiredRefund} </if>
+			<if test="bookToday != null and bookToday != ''"> and book_today = #{bookToday} </if>
+			<if test="afterTakeSceneRefund != null and afterTakeSceneRefund != ''"> and after_take_scene_refund = #{afterTakeSceneRefund} </if>
+			<if test="appSecret != null and appSecret != ''"> and app_secret = #{appSecret} </if>
+			<if test="appId != null and appId != ''"> and app_id = #{appId} </if>
+			<if test="saleChannelCode != null and saleChannelCode != ''"> and sale_channel_code = #{saleChannelCode} </if>
+			<if test="payType != null and payType != ''"> and pay_type = #{payType} </if>
+			<if test="allowMaxUserNum != null and allowMaxUserNum != ''"> and allow_max_user_num = #{allowMaxUserNum} </if>
+			<if test="delayEntryTime != null and delayEntryTime != ''"> and delay_entry_time = #{delayEntryTime} </if>
+			<if test="deposit != null and deposit != ''"> and deposit = #{deposit} </if>
+			<if test="startDate != null and startDate != ''"> and start_date = #{startDate} </if>
+			<if test="endDate != null and endDate != ''"> and end_date = #{endDate} </if>
+			<if test="enable != null and enable != ''"> and enable = #{enable} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+			<if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+			<if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+			<if test="whetherPrint != null and whetherPrint != ''"> and whether_print = #{whetherPrint} </if>
+			<if test="whetherSendSms != null and whetherSendSms != ''"> and whether_send_sms = #{whetherSendSms} </if>
+			<if test="noticeUrl != null and noticeUrl != ''"> and notice_url = #{noticeUrl} </if>
+			<if test="whetherRefund != null and whetherRefund != ''"> and whether_refund = #{whetherRefund} </if>
+			<if test="whetherAutoRefundOutTime != null and whetherAutoRefundOutTime != ''"> and whether_auto_refund_out_time = #{whetherAutoRefundOutTime} </if>
+			<if test="whetherUseCar != null and whetherUseCar != ''"> and whether_use_car = #{whetherUseCar} </if>
+			<if test="carPrice != null and carPrice != ''"> and car_price = #{carPrice} </if>
+			<if test="whetherCheckIp != null and whetherCheckIp != ''"> and whether_check_ip = #{whetherCheckIp} </if>
+			<if test="ips != null and ips != ''"> and ips = #{ips} </if>
+			<if test="authorizedAddress != null and authorizedAddress != ''"> and authorized_address = #{authorizedAddress} </if>
+			<if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+			<if test="whetherMoreEncode != null and whetherMoreEncode != ''"> and whether_more_encode = #{whetherMoreEncode} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.supplier.cooperation.domain.CooperationDistributionDO" useGeneratedKeys="true" keyProperty="id">
+		insert into cooperation_distribution
+		(
+			`distribution_no`,
+			`name`,
+			`type`,
+			`province`,
+			`city`,
+			`contact_address`,
+			`contact_name`,
+			`contact_mobile`,
+			`customer_service_phone`,
+			`contact_qq`,
+			`bank`,
+			`bank_account`,
+			`admin_login_id`,
+			`api_is_open`,
+			`expired_take`,
+			`part_take`,
+			`expired_refund`,
+			`book_today`,
+			`after_take_scene_refund`,
+			`app_secret`,
+			`app_id`,
+			`sale_channel_code`,
+			`pay_type`,
+			`allow_max_user_num`,
+			`delay_entry_time`,
+			`deposit`,
+			`start_date`,
+			`end_date`,
+			`enable`,
+			`create_time`,
+			`update_time`,
+			`create_user`,
+			`update_user`,
+			`whether_print`,
+			`whether_send_sms`,
+			`notice_url`,
+			`whether_refund`,
+			`whether_auto_refund_out_time`,
+			`whether_use_car`,
+			`car_price`,
+			`whether_check_ip`,
+			`ips`,
+			`authorized_address`,
+			`company_no`,
+			`whether_more_encode`
+		)
+		values
+		(
+			#{distributionNo},
+			#{name},
+			#{type},
+			#{province},
+			#{city},
+			#{contactAddress},
+			#{contactName},
+			#{contactMobile},
+			#{customerServicePhone},
+			#{contactQq},
+			#{bank},
+			#{bankAccount},
+			#{adminLoginId},
+			#{apiIsOpen},
+			#{expiredTake},
+			#{partTake},
+			#{expiredRefund},
+			#{bookToday},
+			#{afterTakeSceneRefund},
+			#{appSecret},
+			#{appId},
+			#{saleChannelCode},
+			#{payType},
+			#{allowMaxUserNum},
+			#{delayEntryTime},
+			#{deposit},
+			#{startDate},
+			#{endDate},
+			#{enable},
+			#{createTime},
+			#{updateTime},
+			#{createUser},
+			#{updateUser},
+			#{whetherPrint},
+			#{whetherSendSms},
+			#{noticeUrl},
+			#{whetherRefund},
+			#{whetherAutoRefundOutTime},
+			#{whetherUseCar},
+			#{carPrice},
+			#{whetherCheckIp},
+			#{ips},
+			#{authorizedAddress},
+			#{companyNo},
+			#{whetherMoreEncode}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.supplier.cooperation.domain.CooperationDistributionDO">
+		update cooperation_distribution
+		<set>
+			<if test="distributionNo != null">`distribution_no` = #{distributionNo}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="contactAddress != null">`contact_address` = #{contactAddress}, </if>
+			<if test="contactName != null">`contact_name` = #{contactName}, </if>
+			<if test="contactMobile != null">`contact_mobile` = #{contactMobile}, </if>
+			<if test="customerServicePhone != null">`customer_service_phone` = #{customerServicePhone}, </if>
+			<if test="contactQq != null">`contact_qq` = #{contactQq}, </if>
+			<if test="bank != null">`bank` = #{bank}, </if>
+			<if test="bankAccount != null">`bank_account` = #{bankAccount}, </if>
+			<if test="adminLoginId != null">`admin_login_id` = #{adminLoginId}, </if>
+			<if test="apiIsOpen != null">`api_is_open` = #{apiIsOpen}, </if>
+			<if test="expiredTake != null">`expired_take` = #{expiredTake}, </if>
+			<if test="partTake != null">`part_take` = #{partTake}, </if>
+			<if test="expiredRefund != null">`expired_refund` = #{expiredRefund}, </if>
+			<if test="bookToday != null">`book_today` = #{bookToday}, </if>
+			<if test="afterTakeSceneRefund != null">`after_take_scene_refund` = #{afterTakeSceneRefund}, </if>
+			<if test="appSecret != null">`app_secret` = #{appSecret}, </if>
+			<if test="appId != null">`app_id` = #{appId}, </if>
+			<if test="saleChannelCode != null">`sale_channel_code` = #{saleChannelCode}, </if>
+			<if test="payType != null">`pay_type` = #{payType}, </if>
+			<if test="allowMaxUserNum != null">`allow_max_user_num` = #{allowMaxUserNum}, </if>
+			<if test="delayEntryTime != null">`delay_entry_time` = #{delayEntryTime}, </if>
+			<if test="deposit != null">`deposit` = #{deposit}, </if>
+			<if test="startDate != null">`start_date` = #{startDate}, </if>
+			<if test="endDate != null">`end_date` = #{endDate}, </if>
+			<if test="enable != null">`enable` = #{enable}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="whetherPrint != null">`whether_print` = #{whetherPrint}, </if>
+			<if test="whetherSendSms != null">`whether_send_sms` = #{whetherSendSms}, </if>
+			<if test="noticeUrl != null">`notice_url` = #{noticeUrl}, </if>
+			<if test="whetherRefund != null">`whether_refund` = #{whetherRefund}, </if>
+			<if test="whetherAutoRefundOutTime != null">`whether_auto_refund_out_time` = #{whetherAutoRefundOutTime}, </if>
+			<if test="whetherUseCar != null">`whether_use_car` = #{whetherUseCar}, </if>
+			<if test="carPrice != null">`car_price` = #{carPrice}, </if>
+			<if test="whetherCheckIp != null">`whether_check_ip` = #{whetherCheckIp}, </if>
+			<if test="ips != null">`ips` = #{ips}, </if>
+			<if test="authorizedAddress != null">`authorized_address` = #{authorizedAddress}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}, </if>
+			<if test="whetherMoreEncode != null">`whether_more_encode` = #{whetherMoreEncode}</if>
+		</set>
+		where id = #{id}
+	</update>
+	<delete id="remove">
+		delete from cooperation_distribution where id = #{id}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from cooperation_distribution where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="listAll" resultType="com.ecotourism.supplier.cooperation.domain.CooperationDistributionDO">
+		SELECT
+			`distribution_no`,
+			`name`
+		FROM
+	cooperation_distribution
+	</select>
+
+	<select id="listEnableCoo" resultType="com.ecotourism.supplier.cooperation.domain.CooperationDistributionDO">
+		SELECT
+		*
+		FROM
+		cooperation_distribution
+		WHERE
+		api_is_open = '1'
+		AND ENABLE = '1'
+		AND DATE(NOW())  &gt;= DATE(start_date)
+		AND DATE(NOW()) &lt;= DATE(end_date)
+	</select>
+
+	<select id="findNo" resultType="int">
+		select count(id) from cooperation_distribution where distribution_no=#{value}
+	</select>
+	<select id="findCid" resultType="int">
+		select count(id) from cooperation_distribution where admin_login_id=#{value}
+	</select>
+</mapper>
