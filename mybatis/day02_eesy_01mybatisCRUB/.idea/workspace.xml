@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d335a325-ef89-4a8e-817d-a579a39b9455" name="默认更改列表" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Tag Library Descriptor" />
+        <option value="FxmlFile" />
+        <option value="mybatis-cfg.xml" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="JRebelWorkspace">
+    <option name="jrebelEnabledAutocompile" value="true" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Xn1MMZbES5utzFbuQXc6WSqTdW" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="com.zeroturnaround.javarebel.idea.plugin.settings.JRebelSettingsComponent" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\code\mybatis\day02_eesy_01mybatisCRUB\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.MybatisTest.testFindAll">
+    <configuration name="MybatisTest.testFindAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02_eesy_01mybatisCRUB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.test" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.test.MybatisTest" />
+      <option name="METHOD_NAME" value="testFindAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MybatisTest.testFindByName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02_eesy_01mybatisCRUB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.test" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.test.MybatisTest" />
+      <option name="METHOD_NAME" value="testFindByName" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MybatisTest.testFindByVo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02_eesy_01mybatisCRUB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.test" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.test.MybatisTest" />
+      <option name="METHOD_NAME" value="testFindByVo" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MybatisTest.testSave" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02_eesy_01mybatisCRUB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.test" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.test.MybatisTest" />
+      <option name="METHOD_NAME" value="testSave" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MybatisTest.testTotalById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="day02_eesy_01mybatisCRUB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.test" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.test.MybatisTest" />
+      <option name="METHOD_NAME" value="testTotalById" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.MybatisTest.testFindAll" />
+        <item itemvalue="JUnit.MybatisTest.testSave" />
+        <item itemvalue="JUnit.MybatisTest.testFindByVo" />
+        <item itemvalue="JUnit.MybatisTest.testFindByName" />
+        <item itemvalue="JUnit.MybatisTest.testTotalById" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d335a325-ef89-4a8e-817d-a579a39b9455" name="默认更改列表" comment="" />
+      <created>1581666995152</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581666995152</updated>
+      <workItem from="1581666997298" duration="906000" />
+      <workItem from="1581668023209" duration="12392000" />
+      <workItem from="1581688628280" duration="1611000" />
+      <workItem from="1581690617608" duration="359000" />
+      <workItem from="1581691022554" duration="981000" />
+      <workItem from="1581744980494" duration="2737000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="593" y="220" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1581667499186">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="593" y="220" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.834@0.0.1536.834" timestamp="1581667499186" />
+    <state x="574" y="102" key="#com.intellij.ide.util.MemberChooser" timestamp="1581745591315">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="574" y="102" key="#com.intellij.ide.util.MemberChooser/0.0.1536.834@0.0.1536.834" timestamp="1581745591315" />
+    <state x="361" y="76" key="#项目结构" timestamp="1581667290240">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="361" y="76" key="#项目结构/0.0.1536.834@0.0.1536.834" timestamp="1581667290240" />
+    <state x="549" y="99" key="FileChooserDialogImpl" timestamp="1581688374926">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="549" y="99" key="FileChooserDialogImpl/0.0.1536.834@0.0.1536.834" timestamp="1581688374926" />
+    <state width="1493" height="213" key="GridCell.Tab.0.bottom" timestamp="1581750535440">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="213" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1581750535440" />
+    <state width="1493" height="213" key="GridCell.Tab.0.center" timestamp="1581750535440">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="213" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1581750535440" />
+    <state width="1493" height="213" key="GridCell.Tab.0.left" timestamp="1581750535440">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="213" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1581750535440" />
+    <state width="1493" height="213" key="GridCell.Tab.0.right" timestamp="1581750535440">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="213" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1581750535440" />
+    <state width="1493" height="265" key="GridCell.Tab.1.bottom" timestamp="1581689273806">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="265" key="GridCell.Tab.1.bottom/0.0.1536.834@0.0.1536.834" timestamp="1581689273806" />
+    <state width="1493" height="265" key="GridCell.Tab.1.center" timestamp="1581689273806">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="265" key="GridCell.Tab.1.center/0.0.1536.834@0.0.1536.834" timestamp="1581689273806" />
+    <state width="1493" height="265" key="GridCell.Tab.1.left" timestamp="1581689273806">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="265" key="GridCell.Tab.1.left/0.0.1536.834@0.0.1536.834" timestamp="1581689273806" />
+    <state width="1493" height="265" key="GridCell.Tab.1.right" timestamp="1581689273806">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="265" key="GridCell.Tab.1.right/0.0.1536.834@0.0.1536.834" timestamp="1581689273806" />
+    <state x="270" y="0" key="SettingsEditor" timestamp="1581689362799">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="270" y="0" key="SettingsEditor/0.0.1536.834@0.0.1536.834" timestamp="1581689362799" />
+    <state x="178" y="113" key="new project wizard" timestamp="1581750532935">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="178" y="113" key="new project wizard/0.0.1536.834@0.0.1536.834" timestamp="1581750532935" />
+    <state x="431" y="155" width="672" height="678" key="search.everywhere.popup" timestamp="1581746311308">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="431" y="155" width="672" height="678" key="search.everywhere.popup/0.0.1536.834@0.0.1536.834" timestamp="1581746311308" />
+  </component>
+</project>

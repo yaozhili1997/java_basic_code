@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.img.dao.ImgDao">
+
+	<select id="get" resultType="com.ecotourism.manage.img.domain.ImgDO">
+		select `id`,`img_no`,`img_url`,`create_time`,`create_user`,`company_no` from img where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.img.domain.ImgDO">
+		select `id`,`img_no`,`img_url`,`create_time`,`create_user`,`company_no` from img
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="imgNo != null and imgNo != ''"> and img_no = #{imgNo} </if>
+		  		  <if test="imgUrl != null and imgUrl != ''"> and img_url = #{imgUrl} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from img
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="imgNo != null and imgNo != ''"> and img_no = #{imgNo} </if>
+		  		  <if test="imgUrl != null and imgUrl != ''"> and img_url = #{imgUrl} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.img.domain.ImgDO" useGeneratedKeys="true" keyProperty="id">
+		insert into img
+		(
+			`img_no`, 
+			`img_url`, 
+			`create_time`, 
+			`create_user`, 
+			`company_no`
+		)
+		values
+		(
+			#{imgNo}, 
+			#{imgUrl}, 
+			#{createTime}, 
+			#{createUser}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.img.domain.ImgDO">
+		update img 
+		<set>
+			<if test="imgNo != null">`img_no` = #{imgNo}, </if>
+			<if test="imgUrl != null">`img_url` = #{imgUrl}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from img where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from img where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.sms.dao.SmsSupplierDao">
+
+	<select id="get" resultType="com.ecotourism.manage.sms.domain.SmsSupplierDO">
+		select `supplier_id`,`supplier_no`,`supplier_name`,`sender_class`,`balance_class`,`account`,`password`,`appkey`,`remain_num`,`used_num`,`supply_price`,`sell_price`,`enable`,`is_default`,`create_time`,`update_time`,`create_user`,`update_user`,`sprdid` from sms_supplier where supplier_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.sms.domain.SmsSupplierDO">
+		select `supplier_id`,`supplier_no`,`supplier_name`,`sender_class`,`balance_class`,`account`,`password`,`appkey`,`remain_num`,`used_num`,`supply_price`,`sell_price`,`enable`,`is_default`,`create_time`,`update_time`,`create_user`,`update_user`,`sprdid` from sms_supplier
+        <where>  
+		  		  <if test="supplierId != null and supplierId != ''"> and supplier_id = #{supplierId} </if>
+		  		  <if test="supplierNo != null and supplierNo != ''"> and supplier_no = #{supplierNo} </if>
+		  		  <if test="supplierName != null and supplierName != ''"> and supplier_name = #{supplierName} </if>
+		  		  <if test="senderClass != null and senderClass != ''"> and sender_class = #{senderClass} </if>
+		  		  <if test="balanceClass != null and balanceClass != ''"> and balance_class = #{balanceClass} </if>
+		  		  <if test="account != null and account != ''"> and account = #{account} </if>
+		  		  <if test="password != null and password != ''"> and password = #{password} </if>
+		  		  <if test="appkey != null and appkey != ''"> and appkey = #{appkey} </if>
+		  		  <if test="remainNum != null and remainNum != ''"> and remain_num = #{remainNum} </if>
+		  		  <if test="usedNum != null and usedNum != ''"> and used_num = #{usedNum} </if>
+		  		  <if test="supplyPrice != null and supplyPrice != ''"> and supply_price = #{supplyPrice} </if>
+		  		  <if test="sellPrice != null and sellPrice != ''"> and sell_price = #{sellPrice} </if>
+		  		  <if test="enable != null and enable != ''"> and enable = #{enable} </if>
+		  		  <if test="isDefault != null and isDefault != ''"> and is_default = #{isDefault} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="sprdid != null and sprdid != ''"> and sprdid = #{sprdid} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by supplier_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sms_supplier
+		 <where>  
+		  		  <if test="supplierId != null and supplierId != ''"> and supplier_id = #{supplierId} </if>
+		  		  <if test="supplierNo != null and supplierNo != ''"> and supplier_no = #{supplierNo} </if>
+		  		  <if test="supplierName != null and supplierName != ''"> and supplier_name = #{supplierName} </if>
+		  		  <if test="senderClass != null and senderClass != ''"> and sender_class = #{senderClass} </if>
+		  		  <if test="balanceClass != null and balanceClass != ''"> and balance_class = #{balanceClass} </if>
+		  		  <if test="account != null and account != ''"> and account = #{account} </if>
+		  		  <if test="password != null and password != ''"> and password = #{password} </if>
+		  		  <if test="appkey != null and appkey != ''"> and appkey = #{appkey} </if>
+		  		  <if test="remainNum != null and remainNum != ''"> and remain_num = #{remainNum} </if>
+		  		  <if test="usedNum != null and usedNum != ''"> and used_num = #{usedNum} </if>
+		  		  <if test="supplyPrice != null and supplyPrice != ''"> and supply_price = #{supplyPrice} </if>
+		  		  <if test="sellPrice != null and sellPrice != ''"> and sell_price = #{sellPrice} </if>
+		  		  <if test="enable != null and enable != ''"> and enable = #{enable} </if>
+		  		  <if test="isDefault != null and isDefault != ''"> and is_default = #{isDefault} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="sprdid != null and sprdid != ''"> and sprdid = #{sprdid} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.sms.domain.SmsSupplierDO" useGeneratedKeys="true" keyProperty="supplierId">
+		insert into sms_supplier
+		(
+			`supplier_no`, 
+			`supplier_name`, 
+			`sender_class`, 
+			`balance_class`, 
+			`account`, 
+			`password`, 
+			`appkey`, 
+			`remain_num`, 
+			`used_num`, 
+			`supply_price`, 
+			`sell_price`, 
+			`enable`, 
+			`is_default`, 
+			`create_time`, 
+			`update_time`, 
+			`create_user`, 
+			`update_user`, 
+			`sprdid`
+		)
+		values
+		(
+			#{supplierNo}, 
+			#{supplierName}, 
+			#{senderClass}, 
+			#{balanceClass}, 
+			#{account}, 
+			#{password}, 
+			#{appkey}, 
+			#{remainNum}, 
+			#{usedNum}, 
+			#{supplyPrice}, 
+			#{sellPrice}, 
+			#{enable}, 
+			#{isDefault}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{sprdid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.sms.domain.SmsSupplierDO">
+		update sms_supplier 
+		<set>
+			<if test="supplierNo != null">`supplier_no` = #{supplierNo}, </if>
+			<if test="supplierName != null">`supplier_name` = #{supplierName}, </if>
+			<if test="senderClass != null">`sender_class` = #{senderClass}, </if>
+			<if test="balanceClass != null">`balance_class` = #{balanceClass}, </if>
+			<if test="account != null">`account` = #{account}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="appkey != null">`appkey` = #{appkey}, </if>
+			<if test="remainNum != null">`remain_num` = #{remainNum}, </if>
+			<if test="usedNum != null">`used_num` = #{usedNum}, </if>
+			<if test="supplyPrice != null">`supply_price` = #{supplyPrice}, </if>
+			<if test="sellPrice != null">`sell_price` = #{sellPrice}, </if>
+			<if test="enable != null">`enable` = #{enable}, </if>
+			<if test="isDefault != null">`is_default` = #{isDefault}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="sprdid != null">`sprdid` = #{sprdid}</if>
+		</set>
+		where supplier_id = #{supplierId}
+	</update>
+	
+	<delete id="remove">
+		delete from sms_supplier where supplier_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sms_supplier where supplier_id in 
+		<foreach item="supplierId" collection="array" open="(" separator="," close=")">
+			#{supplierId}
+		</foreach>
+	</delete>
+
+</mapper>

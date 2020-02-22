@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="report:pushUser:excel" type="button" class="btn  btn-primary"
+									onclick="expotExcel()">
+								<i class="fa fa-file-excel-o" aria-hidden="true"></i>导出
+							</button>
+						</div>
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="endTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="结束时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="startTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="开始时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--用户名称--" name="userNo" id="userNo"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 用户名称 --</option>
+								<option th:each="pushUserList : ${pushUserLists}" th:value="${pushUserList.userNo}" th:text="${pushUserList.userName}"></option>
+							</select>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_excel_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="report:pushUser:excel">
+			<script type="text/javascript">
+				s_excel_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="report:line:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="report:line:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/report/pushUser/pushUser.js"></script>
+</body>
+</html>

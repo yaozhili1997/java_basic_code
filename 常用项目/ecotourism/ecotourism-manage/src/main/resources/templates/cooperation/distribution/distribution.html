@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:shiro="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="cooperation:distribution:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--合作商类型--" name="type" id="type"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 合作商类型 --</option>
+								<option th:each="distributionType : ${distributionTypeList}" th:value="${distributionType.value}" th:text="${distributionType.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--销售渠道--" name="saleChannelCode" id="saleChannelCode"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 销售渠道 --</option>
+								<option th:each="distributionChannel : ${distributionChannelLists}" th:value="${distributionChannel.value}" th:text="${distributionChannel.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--支付方式--" name="payType" id="payType"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 支付方式 --</option>
+								<option value="006005">签单</option>
+								<option value="006004">预存</option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--开通接口--" name="apiIsOpen" id="apiIsOpen"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 开通接口 --</option>
+								<option value="1">开通</option>
+								<option value="0">关闭</option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--发送短信--" name="whetherSendSms" id="whetherSendSms"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 发送短信 --</option>
+								<option value="1">发送</option>
+								<option value="0">不发送</option>
+							</select>
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--验证ip--" name="whetherCheckIp" id="whetherCheckIp"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 验证ip --</option>
+								<option value="1">验证</option>
+								<option value="0">不验证</option>
+							</select>
+						</div>
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								   placeholder="">
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="cooperation:distribution:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="cooperation:distribution:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="cooperation:distribution:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/cooperation/distribution/distribution.js"></script>
+</body>
+</html>

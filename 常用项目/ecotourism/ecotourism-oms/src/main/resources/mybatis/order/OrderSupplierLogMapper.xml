@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.OrderSupplierLogDao">
+	 
+	<insert id="save" parameterType="com.ecotourism.oms.oms.domain.OrderSupplierLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into order_supplier_log
+		(
+			`order_no`, 
+			`piaogo_order_no`, 
+			`status`, 
+			`msg`, 
+			`crate_time`,
+			`electronic_ticket`
+		)
+		values
+		(
+			#{orderNo}, 
+			#{piaogoOrderNo}, 
+			#{status}, 
+			#{msg}, 
+			#{crateTime},
+			#{electronicTicket}
+		)
+	</insert>
+
+</mapper>

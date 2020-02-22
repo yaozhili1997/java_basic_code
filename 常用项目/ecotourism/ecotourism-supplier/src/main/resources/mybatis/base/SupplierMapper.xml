@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.base.dao.SupplierDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.base.domain.SupplierDO">
+		select `id`,`supplier_no`,`supplier_name`,`address`,`phone`,`contacts`,`company_no`,`cid`,`url`,`app_id`,`app_key`,`whether_open` from base_supplier where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.base.domain.SupplierDO">
+		select `id`,`supplier_no`,`supplier_name`,`address`,`phone`,`contacts`,`company_no`,`cid`,`url`,`app_id`,`app_key`,`whether_open` from base_supplier
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="supplierNo != null and supplierNo != ''"> and supplier_no = #{supplierNo} </if>
+		  		  <if test="supplierName != null and supplierName != ''"> and supplier_name = #{supplierName} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="phone != null and phone != ''"> and phone = #{phone} </if>
+		  		  <if test="contacts != null and contacts != ''"> and contacts = #{contacts} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		  <if test="appId != null and appId != ''"> and app_id = #{appId} </if>
+		  		  <if test="appKey != null and appKey != ''"> and app_key = #{appKey} </if>
+		  		  <if test="whetherOpen != null and whetherOpen != ''"> and whether_open = #{whetherOpen} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from base_supplier
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="supplierNo != null and supplierNo != ''"> and supplier_no = #{supplierNo} </if>
+		  		  <if test="supplierName != null and supplierName != ''"> and supplier_name = #{supplierName} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		  <if test="phone != null and phone != ''"> and phone = #{phone} </if>
+		  		  <if test="contacts != null and contacts != ''"> and contacts = #{contacts} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		  <if test="appId != null and appId != ''"> and app_id = #{appId} </if>
+		  		  <if test="appKey != null and appKey != ''"> and app_key = #{appKey} </if>
+		  		  <if test="whetherOpen != null and whetherOpen != ''"> and whether_open = #{whetherOpen} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.base.domain.SupplierDO" useGeneratedKeys="true" keyProperty="id">
+		insert into base_supplier
+		(
+			`supplier_no`, 
+			`supplier_name`, 
+			`address`, 
+			`phone`, 
+			`contacts`, 
+			`company_no`,
+			`cid`,
+			`url`, 
+			`app_id`, 
+			`app_key`, 
+			`whether_open`
+		)
+		values
+		(
+			#{supplierNo}, 
+			#{supplierName}, 
+			#{address}, 
+			#{phone}, 
+			#{contacts}, 
+			#{companyNo},
+			#{cid},
+			#{url}, 
+			#{appId}, 
+			#{appKey}, 
+			#{whetherOpen}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.base.domain.SupplierDO">
+		update base_supplier 
+		<set>
+			<if test="supplierNo != null">`supplier_no` = #{supplierNo}, </if>
+			<if test="supplierName != null">`supplier_name` = #{supplierName}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="contacts != null">`contacts` = #{contacts}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}, </if>
+			<if test="cid != null">`cid` = #{cid}, </if>
+			<if test="url != null">`url` = #{url}, </if>
+			<if test="appId != null">`app_id` = #{appId}, </if>
+			<if test="appKey != null">`app_key` = #{appKey}, </if>
+			<if test="whetherOpen != null">`whether_open` = #{whetherOpen}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from base_supplier where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from base_supplier where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.OrderSpotDao">
+
+	<select id="get" resultType="com.ecotourism.oms.oms.domain.OrderSpotDO">
+		select `order_id`,`customer_name`,`customer_phone`,`customer_user_id`,`order_no`,`electronic_ticket`,`product_no`,`product_name`,`order_quantity`,`pay_price`,`total_amount`,`pay_type`,`pay_status`,`order_status`,`refund_status`,`order_distributor`,`purchase_time`,`consumption_time`,`play_time`,`message_status`,`whether_issued`,`check_equipment_no`,`spot_no`,`ticket_type`,`ticket_no`,`check_time`,`piaogo_order_no`,`order_voucherno`,`whether_send_notice`,`self_machine_no`,`whether_send_refund_notice`,`whether_send_check_tolocal`,`refund_time`,`is_transit`,`transit_time`,`device_no`,`device_no_two`,`transit_time_two`,`check_in_time`,`check_in_operator`,`push_user_no`,`company_no`,`bz`,`distribution_user`,`ip`,`sub_order_no` from order_spot where order_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.oms.oms.domain.OrderSpotDO">
+		select `order_id`,`customer_name`,`customer_phone`,`customer_user_id`,`order_no`,`electronic_ticket`,`product_no`,`product_name`,`order_quantity`,`pay_price`,`total_amount`,`pay_type`,b.name pay_status ,c.name order_status ,d.name refund_status,`order_distributor`,`purchase_time`,`consumption_time`,`play_time`,`message_status`,`whether_issued`,`check_equipment_no`,`spot_no`,e.name ticket_type,`ticket_no`,`check_time`,`piaogo_order_no`,`order_voucherno`,`whether_send_notice`,`self_machine_no`,`whether_send_refund_notice`,`whether_send_check_tolocal`,`refund_time`,`is_transit`,`transit_time`,`device_no`,`device_no_two`,`transit_time_two`,`check_in_time`,`check_in_operator`,`push_user_no`,`bz`,`distribution_user`,`ip`,`sub_order_no` from order_spot a
+		left join sys_dict b ON
+		b.value = a.pay_status
+		and b.company_no = a.company_no
+		left join sys_dict c ON
+		c.value = a.order_status
+		and c.company_no = a.company_no
+		left join sys_dict d ON
+		d.value = a.refund_status
+		and d.company_no = a.company_no
+		left join sys_dict e ON
+		e.value = a.ticket_type
+		and e.company_no = a.company_no
+		<include refid="sqlWhere"></include>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by order_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from order_spot a
+		left join sys_dict b ON
+		b.value = a.pay_status
+		and b.company_no = a.company_no
+		left join sys_dict c ON
+		c.value = a.order_status
+		and c.company_no = a.company_no
+		left join sys_dict d ON
+		d.value = a.refund_status
+		and d.company_no = a.company_no
+		left join sys_dict e ON
+		e.value = a.ticket_type
+		and e.company_no = a.company_no
+		<include refid="sqlWhere"></include>
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.oms.oms.domain.OrderSpotDO" useGeneratedKeys="true" keyProperty="orderId">
+		insert into order_spot
+		(
+		`customer_name`,
+		`customer_phone`,
+		`customer_user_id`,
+		`order_no`,
+		`electronic_ticket`,
+		`product_no`,
+		`product_name`,
+		`order_quantity`,
+		`pay_price`,
+		`total_amount`,
+		`pay_type`,
+		`pay_status`,
+		`order_status`,
+		`refund_status`,
+		`order_distributor`,
+		`purchase_time`,
+		`consumption_time`,
+		`play_time`,
+		`message_status`,
+		`check_equipment_no`,
+		`spot_no`,
+		`ticket_type`,
+		`ticket_no`,
+		`check_time`,
+		`piaogo_order_no`,
+		`order_voucherno`,
+		`self_machine_no`,
+		`refund_time`,
+		`is_transit`,
+		`transit_time`,
+		`device_no`,
+		`device_no_two`,
+		`transit_time_two`,
+		`check_in_time`,
+		`check_in_operator`,
+		`push_user_no`,
+		`company_no`,
+		`bz`,
+		`distribution_user`,
+		`ip`,
+		`sub_order_no`
+		)
+		values
+		(
+		#{customerName},
+		#{customerPhone},
+		#{customerUserId},
+		#{orderNo},
+		#{electronicTicket},
+		#{productNo},
+		#{productName},
+		#{orderQuantity},
+		#{payPrice},
+		#{totalAmount},
+		#{payType},
+		#{payStatus},
+		#{orderStatus},
+		#{refundStatus},
+		#{orderDistributor},
+		#{purchaseTime},
+		#{consumptionTime},
+		#{playTime},
+		#{messageStatus},
+		#{checkEquipmentNo},
+		#{spotNo},
+		#{ticketType},
+		#{ticketNo},
+		#{checkTime},
+		#{piaogoOrderNo},
+		#{orderVoucherno},
+		#{selfMachineNo},
+		#{refundTime},
+		0,
+		#{transitTime},
+		#{deviceNo},
+		#{deviceNoTwo},
+		#{transitTimeTwo},
+		#{checkInTime},
+		#{checkInOperator},
+		#{pushUserNo},
+		#{companyNo},
+		#{bz},
+		#{distributionUser},
+		#{ip},
+		#{subOrderNo}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.oms.oms.domain.OrderSpotDO">
+		update order_spot
+		<set>
+			<if test="customerName != null">`customer_name` = #{customerName}, </if>
+			<if test="customerPhone != null">`customer_phone` = #{customerPhone}, </if>
+			<if test="customerUserId != null">`customer_user_id` = #{customerUserId}, </if>
+			<if test="orderNo != null">`order_no` = #{orderNo}, </if>
+			<if test="electronicTicket != null">`electronic_ticket` = #{electronicTicket}, </if>
+			<if test="productNo != null">`product_no` = #{productNo}, </if>
+			<if test="productName != null">`product_name` = #{productName}, </if>
+			<if test="orderQuantity != null">`order_quantity` = #{orderQuantity}, </if>
+			<if test="payPrice != null">`pay_price` = #{payPrice}, </if>
+			<if test="totalAmount != null">`total_amount` = #{totalAmount}, </if>
+			<if test="payType != null">`pay_type` = #{payType}, </if>
+			<if test="payStatus != null">`pay_status` = #{payStatus}, </if>
+			<if test="orderStatus != null">`order_status` = #{orderStatus}, </if>
+			<if test="refundStatus != null">`refund_status` = #{refundStatus}, </if>
+			<if test="orderDistributor != null">`order_distributor` = #{orderDistributor}, </if>
+			<if test="purchaseTime != null">`purchase_time` = #{purchaseTime}, </if>
+			<if test="consumptionTime != null">`consumption_time` = #{consumptionTime}, </if>
+			<if test="playTime != null">`play_time` = #{playTime}, </if>
+			<if test="messageStatus != null">`message_status` = #{messageStatus}, </if>
+			<if test="whetherIssued != null">`whether_issued` = #{whetherIssued}, </if>
+			<if test="checkEquipmentNo != null">`check_equipment_no` = #{checkEquipmentNo}, </if>
+			<if test="spotNo != null">`spot_no` = #{spotNo}, </if>
+			<if test="ticketType != null">`ticket_type` = #{ticketType}, </if>
+			<if test="ticketNo != null">`ticket_no` = #{ticketNo}, </if>
+			<if test="checkTime != null">`check_time` = #{checkTime}, </if>
+			<if test="piaogoOrderNo != null">`piaogo_order_no` = #{piaogoOrderNo}, </if>
+			<if test="orderVoucherno != null">`order_voucherno` = #{orderVoucherno}, </if>
+			<if test="whetherSendNotice != null">`whether_send_notice` = #{whetherSendNotice}, </if>
+			<if test="selfMachineNo != null">`self_machine_no` = #{selfMachineNo}, </if>
+			<if test="whetherSendRefundNotice != null">`whether_send_refund_notice` = #{whetherSendRefundNotice}, </if>
+			<if test="whetherSendCheckTolocal != null">`whether_send_check_tolocal` = #{whetherSendCheckTolocal}, </if>
+			<if test="refundTime != null">`refund_time` = #{refundTime}, </if>
+			<if test="isTransit != null">`is_transit` = #{isTransit}, </if>
+			<if test="transitTime != null">`transit_time` = #{transitTime}, </if>
+			<if test="deviceNo != null">`device_no` = #{deviceNo}, </if>
+			<if test="deviceNoTwo != null">`device_no_two` = #{deviceNoTwo}, </if>
+			<if test="transitTimeTwo != null">`transit_time_two` = #{transitTimeTwo}, </if>
+			<if test="checkInTime != null">`check_in_time` = #{checkInTime}, </if>
+			<if test="checkInOperator != null">`check_in_operator` = #{checkInOperator}, </if>
+			<if test="pushUserNo != null">`push_user_no` = #{pushUserNo}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}, </if>
+			<if test="bz != null">`bz` = #{bz}, </if>
+			<if test="distributionUser != null">`distribution_user` = #{distributionUser}, </if>
+			<if test="ip != null">`ip` = #{ip}</if>
+		</set>
+		where order_id = #{orderId}
+	</update>
+
+	<delete id="remove">
+		delete from order_spot where order_id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from order_spot where order_id in
+		<foreach item="orderId" collection="array" open="(" separator="," close=")">
+			#{orderId}
+		</foreach>
+	</delete>
+
+	<sql id="sqlWhere">
+		<where>
+			a.company_no = #{companyNo}
+			<if test="searchName != null and searchName != ''">
+				and (
+				customer_name LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				customer_phone
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				customer_user_id
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				order_no
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				electronic_ticket
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				)
+			</if>
+			<if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+			<if test="payStatus != null and payStatus != ''"> and pay_status = #{payStatus} </if>
+			<if test="orderStatus != null and orderStatus != ''"> and order_status = #{orderStatus} </if>
+			<if test="refundStatus != null and refundStatus != ''"> and refund_status = #{refundStatus} </if>
+			<if test="orderDistributor != null and orderDistributor != ''"> and order_distributor = #{orderDistributor} </if>
+			<if test="payStartTime != null and payStartTime != ''"><![CDATA[ and purchase_time >= #{payStartTime}]]>   </if>
+			<if test="payEndTime != null and payEndTime != ''"> <![CDATA[ and purchase_time <= #{payEndTime}]]>   </if>
+			<if test="playStartTime != null and playStartTime != ''"><![CDATA[ and play_time >= #{playStartTime}]]>   </if>
+			<if test="playEndTime != null and playEndTime != ''"> <![CDATA[ and play_time <= #{playEndTime}]]>   </if>
+			<if test="spotNo != null and spotNo != ''"> and spot_no = #{spotNo} </if>
+			<if test="ticketType != null and ticketType != ''"> and ticket_type = #{ticketType} </if>
+			<if test="ticketNo != null and ticketNo != ''"> and ticket_no = #{ticketNo} </if>
+		</where>
+	</sql>
+
+	<select id="queryOrder" resultType="com.ecotourism.oms.oms.domain.OrderSpotDO">
+		SELECT
+			`order_id`,
+			`customer_name`,
+			`customer_phone`,
+			`customer_user_id`,
+			`order_no`,
+			`electronic_ticket`,
+			`product_no`,
+			`product_name`,
+			`order_quantity`,
+			`order_quantity` nums,
+			`pay_price`,
+			`total_amount`,
+			`pay_type`,
+			`pay_status`,
+			`order_status`,
+			`refund_status`,
+			`order_distributor`,
+			`purchase_time`,
+			`consumption_time`,
+			`play_time`,
+			`message_status`,
+			`whether_issued`,
+			`check_equipment_no`,
+			`spot_no`,
+			`ticket_type`,
+			`ticket_no`,
+			`check_time`,
+			`piaogo_order_no`,
+			`order_voucherno`,
+			`whether_send_notice`,
+			`self_machine_no`,
+			`whether_send_refund_notice`,
+			`whether_send_check_tolocal`,
+			`refund_time`,
+			`is_transit`,
+			`transit_time`,
+			`device_no`,
+			`device_no_two`,
+			`transit_time_two`,
+			`check_in_time`,
+			`check_in_operator`,
+			`push_user_no`,
+			`bz`,
+			`distribution_user`,
+			`sub_order_no`,
+			`ip`
+		FROM
+			order_spot
+		where
+		order_distributor = #{orderDistributor}
+		and order_no = #{orderNo}
+	</select>
+
+	<!-- 订单状态 -->
+	<select id="getCancelOrder"  resultType="com.ecotourism.oms.oms.domain.OrderSpotDO" >
+		select
+		`order_id`,
+		`customer_name`,
+		`customer_phone`,
+		`customer_user_id`,
+		`order_no`,
+		`electronic_ticket`,
+		`product_no`,
+		`product_name`,
+		`order_quantity`,
+		`order_quantity` nums,
+		`pay_price`,
+		`total_amount`,
+		`pay_type`,
+		`pay_status`,
+		`order_status`,
+		`refund_status`,
+		`order_distributor`,
+		`purchase_time`,
+		`consumption_time`,
+		`play_time`,
+		`message_status`,
+		`whether_issued`,
+		`check_equipment_no`,
+		`spot_no`,
+		`ticket_type`,
+		`ticket_no`,
+		`check_time`,
+		`piaogo_order_no`,
+		`order_voucherno`,
+		`whether_send_notice`,
+		`self_machine_no`,
+		`whether_send_refund_notice`,
+		`whether_send_check_tolocal`,
+		`refund_time`,
+		`is_transit`,
+		`transit_time`,
+		`device_no`,
+		`device_no_two`,
+		`transit_time_two`,
+		`check_in_time`,
+		`check_in_operator`,
+		`push_user_no`,
+		`bz`,
+		`distribution_user`,
+		`sub_order_no`,
+		`ip`
+		from
+		order_spot
+		where
+		1=1
+		and	order_no=#{orderNo}
+		and order_distributor = #{orderDistributor}
+		<if test="electronicTicket != null and electronicTicket != ''">
+			and electronic_ticket in (#{electronicTicket})
+		</if>
+	</select>
+
+	<!-- 取消订单 -->
+	<update id="cancelOrder" parameterType="com.ecotourism.oms.oms.domain.OrderSpotDO">
+		update order_spot
+		set
+		<if test="orderStatus != null and orderStatus != ''">
+			order_status = #{orderStatus   }
+		</if>
+		where order_no=#{orderNo}
+		and order_distributor = #{orderDistributor}
+	</update>
+	<!-- 退票 -->
+	<update id="refundOrder"   parameterType="com.ecotourism.oms.oms.domain.OrderSpotDO">
+		update order_spot
+		<set>
+			<if test="refundStatus != null and refundStatus != ''">
+				refund_status = #{refundStatus},
+			</if>
+			<if test="orderStatus != null and orderStatus != ''">
+				order_status = #{orderStatus},
+			</if>
+			<if test="refundTime != null">
+				refund_time = #{refundTime},
+			</if>
+			<!--
+			<if test="supplierResultStatus != null and supplierResultStatus != ''">
+				supplier_result_status = #{supplierResultStatus},
+			</if>
+			<if test="supplierResultMsg != null and supplierResultMsg != ''">
+				supplier_result_msg = #{supplierResultMsg},
+			</if>
+			<if test="supplierResult != null and supplierResult != ''">
+				supplier_result = #{supplierResult},
+			</if>-->
+		</set>
+		where order_no = #{orderNo}
+		and order_distributor = #{orderDistributor}
+		and electronic_ticket =#{electronicTicket}
+		<if test="piaogoOrderNo != null and piaogoOrderNo != ''">
+			and piaogo_order_no = #{piaogoOrderNo}
+		</if>
+	</update>
+
+	<!-- 修改订单数据 -->
+	<update id="updateOrder"   parameterType="com.ecotourism.oms.oms.domain.OrderSpotDO">
+		update order_spot
+		<set>
+			<if test="customerName != null and customerName != ''">
+				customer_name = #{customerName    },
+			</if>
+			<if test="customerPhone != null and customerPhone != ''">
+				customer_phone = #{customerPhone   },
+			</if>
+			<if test="customerUserId != null and customerUserId != ''">
+				customer_user_id = #{customerUserId   },
+			</if>
+			<if test="consumptionTime != null">
+				consumption_time = #{consumptionTime   },
+			</if>
+			<if test="playTime != null">
+				play_time = #{playTime   },
+			</if>
+		</set>
+		where order_no = #{orderNo}
+		and order_distributor = #{orderDistributor}
+		and electronic_ticket =#{electronicTicket}
+	</update>
+
+</mapper>

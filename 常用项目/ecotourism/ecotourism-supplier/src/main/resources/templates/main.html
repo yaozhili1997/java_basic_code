@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CITY TOUR平台后台管理系统</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link href="css/assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="css/assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- Morris Chart Styles-->
+    <link href="css/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="css/assets/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <script src="css/assets/js/jquery-1.10.2.js"></script>
+</head>
+<body>
+<div class="panel panel-default">
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div style="text-align:center"><h3 style="font-size:26px; margin-bottom: 20px">数据分析</h3></div>
+            <div class="div-box claerfix" style="height: 300px">
+                <div id="container1" style="min-width:400px;height:300px;width:48%;float:left;"></div>
+                <div id="container2" style="min-width:400px;height:300px;width:48%;float:right;"></div>
+            </div>
+            <div id="container3" style="min-width:100%;height:300px;margin-top: 20px;"></div>
+            <script>
+                function saleToday(){
+                    $.ajax({
+                        type: "POST",
+                        url: 'report/todayTotal.do?tm='+new Date().getTime(),
+                        dataType:'json',
+                        cache: false,
+                        success: function(data){
+                            var json = $.parseJSON(data.result);
+                            var todayLineList = "["+json.todayLineList+"]";
+                            var ticketNumList= "["+json.ticketNumList+"]";
+                            var todayDeviceList= "["+json.todayDeviceList+"]";
+                            var nowDate = json.nowDate;
+                            $('#container1').highcharts({
+                                chart: {
+                                    type: 'column'
+                                },
+                                exporting:{
+                                    enabled:false
+                                },
+                                credits: {
+                                    enabled: false
+                                },
+                                title: {
+                                    text: '售票人数'
+                                },
+                                subtitle: {
+                                    text: '数据截止 '+nowDate
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    labels: {
+                                        rotation: -45,
+                                        style: {
+                                            fontSize: '13px',
+                                            fontFamily: 'Verdana, sans-serif'
+                                        }
+                                    }
+                                },
+                                yAxis: {
+                                    min: 0,
+                                    title: {
+                                        text: '购票人数 (人)'
+                                    }
+                                },
+                                legend: {
+                                    enabled: false
+                                },
+                                tooltip: {
+                                    pointFormat: '购票人数: <b>{point.y:.0f} 人</b>'
+                                },
+                                series: [{
+                                    name: '总购票人数',
+                                    data: eval(ticketNumList),
+                                    dataLabels: {
+                                        enabled: true,
+                                        rotation: -90,
+                                        color: '#FFFFFF',
+                                        align: 'right',
+                                        format: '{point.y:.0f}', // one decimal
+                                        y: 10, // 10 pixels down from the top
+                                        style: {
+                                            fontSize: '13px',
+                                            fontFamily: 'Verdana, sans-serif'
+                                        }
+                                    }
+                                }]
+                            });
+
+                            $('#container2').highcharts({
+                                chart: {
+                                    type: 'column'
+                                },
+                                exporting:{
+                                    enabled:false
+                                },
+                                credits: {
+                                    enabled: false
+                                },
+                                title: {
+                                    text: '线路乘车人数'
+                                },
+                                subtitle: {
+                                    text: '数据截止 '+nowDate
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    labels: {
+                                        rotation: -45,
+                                        style: {
+                                            fontSize: '13px',
+                                            fontFamily: 'Verdana, sans-serif'
+                                        }
+                                    }
+                                },
+                                yAxis: {
+                                    min: 0,
+                                    title: {
+                                        text: '乘车人数 (人)'
+                                    }
+                                },
+                                legend: {
+                                    enabled: false
+                                },
+                                tooltip: {
+                                    pointFormat: '乘车人数: <b>{point.y:.0f} 人</b>'
+                                },
+                                series: [{
+                                    name: '总乘车人数',
+                                    data: eval(todayLineList),
+                                    dataLabels: {
+                                        enabled: true,
+                                        rotation: -90,
+                                        color: '#FFFFFF',
+                                        align: 'right',
+                                        format: '{point.y:.0f}', // one decimal
+                                        y: 10, // 10 pixels down from the top
+                                        style: {
+                                            fontSize: '13px',
+                                            fontFamily: 'Verdana, sans-serif'
+                                        }
+                                    }
+                                }]
+                            });
+
+                            $('#container3').highcharts({
+                                chart: {
+                                    type: 'column'
+                                },
+                                exporting:{
+                                    enabled:false
+                                },
+                                credits: {
+                                    enabled: false
+                                },
+                                title: {
+                                    text: '车辆载客人数'
+                                },
+                                subtitle: {
+                                    text: '数据截止 '+nowDate
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    labels: {
+                                        rotation: -45,
+                                        style: {
+                                            fontSize: '13px',
+                                            fontFamily: 'Verdana, sans-serif'
+                                        }
+                                    }
+                                },
+                                yAxis: {
+                                    min: 0,
+                                    title: {
+                                        text: '乘车人数 (人)'
+                                    }
+                                },
+                                legend: {
+                                    enabled: false
+                                },
+                                tooltip: {
+                                    pointFormat: '乘车人数: <b>{point.y:.0f} 人</b>'
+                                },
+                                series: [{
+                                    name: '总乘车人数人数',
+                                    data: eval(todayDeviceList),
+                                    dataLabels: {
+                                        enabled: true,
+                                        rotation: -90,
+                                        color: '#FFFFFF',
+                                        align: 'right',
+                                        format: '{point.y:.0f}', // one decimal
+                                        y: 10, // 10 pixels down from the top
+                                        style: {
+                                            fontSize: '13px',
+                                            fontFamily: 'Verdana, sans-serif'
+                                        }
+                                    }
+                                }]
+                            });
+                        }
+                    });
+                }
+            </script>
+            <script>
+                $(function(){
+                    saleToday();
+                    window.setInterval("saleToday()",60000);
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<script src="css/assets/js/bootstrap.min.js"></script>
+<script src="css/assets/js/jquery.metisMenu.js"></script>
+<script src="css/assets/js/morris/raphael-2.1.0.min.js"></script>
+<script src="css/assets/js/morris/morris.js"></script>
+<script src="js/plugins/highcharts/highcharts.js"></script>
+<script src="js/plugins/highcharts/modules/exporting.js"></script>
+<script src="js/plugins/highcharts/modules/data.js"></script>
+<script src="js/plugins/highcharts/modules/drilldown.js"></script>
+<script src="js/plugins/highcharts/plugins/highcharts-zh_CN.js"></script>
+</body>
+</html>

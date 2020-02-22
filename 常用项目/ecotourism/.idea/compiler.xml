@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ecotourism-message" />
+        <module name="ecotourism-supplier" />
+        <module name="ecotourism-mobile" />
+        <module name="ecotourism-oms" />
+        <module name="ecotourism-manage" />
+        <module name="ecotourism-api" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="9" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ecotourism-api" options="-parameters" />
+      <module name="ecotourism-manage" options="-parameters" />
+      <module name="ecotourism-message" options="-parameters" />
+      <module name="ecotourism-mobile" options="-parameters" />
+      <module name="ecotourism-oms" options="-parameters" />
+      <module name="ecotourism-supplier" options="-parameters" />
+    </option>
+  </component>
+</project>

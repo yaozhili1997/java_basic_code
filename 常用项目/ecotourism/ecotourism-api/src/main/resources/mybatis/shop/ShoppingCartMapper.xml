@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.shop.dao.ShoppingCartDao">
+
+	<resultMap id="resultShopCar" type="com.ecotourism.api.shop.domain.ShoppingCartDO">
+		<result property="id" column="id"/>
+		<result property="openId" column="open_id"/>
+		<result property="productNo" column="product_no"/>
+		<result property="productName" column="product_name"/>
+		<result property="productImg" column="product_img"/>
+		<result property="productWhetherShelves" column="product_whether_shelves"/>
+		<result property="productType" column="product_type"/>
+		<result property="productNum" column="product_num"/>
+		<result property="productPrice" column="product_price"/>
+		<result property="status" column="status"/>
+		<result property="sort" column="sort"/>
+		<result property="checked" column="checked"/>
+		<result property="applicationNo" column="application_no"/>
+		<result property="playTime" column="play_time"/>
+		<collection property="users" ofType="com.ecotourism.api.shop.domain.ShoppingCartUserDO">
+			<result property="id" column="user_id"/>
+			<result property="customerName" column="customer_name"/>
+			<result property="phoneNum" column="phone_num"/>
+			<result property="idCard" column="id_card"/>
+			<result property="country" column="country"/>
+			<result property="province" column="province"/>
+			<result property="city" column="city"/>
+			<result property="region" column="region"/>
+			<result property="detailAddress" column="detail_address"/>
+		</collection>
+	</resultMap>
+
+	<sql id="commonFlied">
+		s.id,s.open_id,s.product_no,p.product_name,p.product_type,s.product_num,s.play_time
+		,s.play_time,s.status,s.sort,s.checked,s.application_no
+		,CONCAT(p.base_url,p.img_url) as product_img,p.whether_shelves as product_whether_shelves
+		,u.id_card,u.phone_num,u.customer_name,u.id as user_id,u.country,u.province,u.city,u.region,u.detail_address,
+		IFNULL((select sale_price from product_price_stock ps where ps.product_no=s.product_no
+		and DATE(s.play_time)=DATE(ps.date) and p.stock_type=2 limit 1),p.pay_price) as product_price
+	</sql>
+
+	<select id="getShopCar" resultMap="resultShopCar">
+		select <include refid="commonFlied"/>
+		 from shopping_cart s left join product_spot_ticket p on s.product_no = p.product_no
+			left join shopping_car_user u on s.id=u.shop_car_id
+		 where open_id = #{openId} and product_no =#{productNo} and status='1'
+	</select>
+	<select id="getCount" resultType="int">
+		select IFNULL(count(*),0) from shopping_cart where open_id = #{openId} and product_no =#{productNo} and status='1'
+	</select>
+	<select id="getShopCarUserCount" resultType="int">
+		select IFNULL(count(*),0) from shopping_car_user where shop_car_id = #{shopCarId} and id = #{id}
+	</select>
+
+	<select id="getShopCarTotalCount" resultType="int">
+		select IFNULL(count(*),0) from shopping_cart where open_id = #{openId} and application_no=#{applicationNo} and status='1'
+	</select>
+
+	<delete id="deleteShopCarUser">
+		delete from shopping_car_user where shop_car_id = #{value}
+	</delete>
+
+	<select id="list" resultMap="resultShopCar">
+		select <include refid="commonFlied"/>
+		from shopping_cart s left join product_spot_ticket p on s.product_no = p.product_no
+		left join shopping_car_user u on s.id=u.shop_car_id
+        <where>  s.application_no = #{applicationNo} and s.open_id = #{openId} and s.status='1'
+		  		  <if test="productName != null and productName != ''"> and p.product_name like CONCAT('%',#{productName},'%') </if>
+		  		  <if test="id != null and id != ''"> and s.id = #{id} </if>
+		  		  <if test="productType != null and productType != ''"> and p.product_type = #{productType} </if>
+		  		  <if test="idCard != null and idCard != ''"> and u.id_card = #{idCard} </if>
+		  		  <if test="phoneNum != null and phoneNum != ''"> and u.phone_num = #{phoneNum} </if>
+		  		  <if test="playTime != null and playTime != ''"> and s.play_time = #{playTime} </if>
+		  		</where>
+		order by sort ASC
+		<if test="pageNumber != null and pageSize != null">
+			limit #{pageNumber}, #{pageSize}
+		</if>
+	</select>
+	<insert id="save" parameterType="com.ecotourism.api.shop.domain.ShoppingCartDO" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into shopping_cart
+		(
+			open_id, 
+			product_no,
+			product_num,
+			play_time,
+			status,
+			sort, 
+			checked, 
+			create_time,
+			application_no
+		)
+		values
+		(
+			#{openId}, 
+			#{productNo},
+			#{productNum},
+			#{playTime},
+			"1",
+			"1",
+			#{checked}, 
+			NOW(),
+			#{applicationNo}
+		)
+	</insert>
+
+	<insert id="saveShopCarUser" parameterType="com.ecotourism.api.shop.domain.ShoppingCartUserDO" useGeneratedKeys="true" keyProperty="id"
+			keyColumn="id">
+		insert into shopping_car_user
+		(
+			shop_car_id,
+			customer_name,
+			id_card,
+			phone_num,
+			country,
+			province,
+			city,
+			region,
+			detail_address,
+			create_time
+		)
+		values
+		(
+			#{shopCarId},
+			#{customerName},
+			#{idCard},
+			#{phoneNum},
+			#{country},
+			#{province},
+			#{city},
+			#{region},
+			#{detailAddress},
+			NOW()
+		)
+	</insert>
+
+	<update id="deleteShopCar" parameterType="com.ecotourism.api.api.domain.shop.car.DeleteShopCarParams">
+		update shopping_cart  set
+			update_time = NOW(),
+			status='0'
+		where  application_no = #{applicationNo} and open_id = #{openId} and id = #{id} and status='1'
+	</update>
+
+	<update id="updateCartData">
+		update shopping_cart
+		<set>
+			update_time = NOW(),
+			<if test="productNum != null">product_num = #{productNum}, </if>
+			<if test="playTime != null">play_time = #{playTime}, </if>
+		</set>
+		where  application_no = #{applicationNo} and open_id = #{openId} and id = #{id} and status='1'
+	</update>
+
+	<update id="updateCartUserData">
+		update shopping_car_user
+		<set>
+			update_time = NOW(),
+			<if test="customerName != null">customer_name = #{customerName}, </if>
+			<if test="idCard != null">id_card = #{idCard}, </if>
+			<if test="phoneNum != null">phone_num = #{phoneNum}, </if>
+		</set>
+		where  id = #{id} and shop_car_id = #{shopCarId}
+	</update>
+</mapper>

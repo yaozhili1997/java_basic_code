@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<script>
+    var pageSize = 10;
+    var pageNumber = 1;
+    var hasLoadAll = false;
+    var loading = false;
+    $(function() {
+        $(document).scroll(function() {
+            if ($(window).scrollTop()/$("#collection_list").height() > 0.8 && !loading && !hasLoadAll) {
+                pageNumber++;
+                loadCollection();
+            }
+        });
+        loadCollection();
+    });
+
+    function loadCollection() {
+        loading = true;
+        $.post('/my/getCollectionByPage', {pageNumber : pageNumber, pageSize : pageSize}, function(result) {
+            var data = result.data;
+            if (data.length != pageSize) {
+                hasLoadAll = true;
+            }
+            var html = '';
+            if (data.length > 0) {
+                html = doT.template($('#template-collection-list').text())(data);
+                $.each(data, function() {
+                    getProduct(this.productNo, function(result) {
+                        if (result.status == 'success') {
+                            var product = result.data;
+                            $('#item_' + product.productNo).html(doT.template($('#template-item-info').text())(product));
+                        }
+                    });
+                });
+            } else if (pageNumber == 1) {
+                html = $('#template-no-data').text();
+            }
+            $('#collection_list').append(html);
+            loading = false;
+        }, 'json');
+    }
+</script>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">我的收藏</h1>
+</header>
+<div id="collection_list" class="" style="position: absolute;top:45px;bottom: 0;width: 100%;">
+</div>
+<script>
+    function removeCollection(productNo, _this) {
+        deleteCollection(productNo, function(result) {
+            if (result.code === 0) {
+                $(_this).parents('li').remove();
+            }
+        });
+    }
+</script>
+</body>
+</html>
+<script type="text/html" id="template-collection-list">
+    <ul class="mui-table-view" >
+        {{
+        $.each(it, function(); {
+        }}
+        <li class="mui-table-view-cell mui-media" id="item_{{=this.productNo}}">
+    </li>
+        {{
+        })
+        }}
+    </ul>
+</script>
+<script type="text/html" id="template-item-info">
+    {{
+        var product = it;
+    }}
+    <div class="mui-slider-right mui-disabled">
+        <a class="mui-btn mui-btn-red" onclick="removeCollection('{{=product.productNo}}', this)" href="javascript:">删除</a>
+    </div>
+    <div class="mui-slider-handle">
+    <a href="javascript:itemDetails('{{=product.productNo}}');">
+        <img class="mui-pull-left" style="width: 100px; height: 75px; margin-right: 10px;" src="{{=product.imgUrl}}">
+        <div class="mui-media-body">
+            <p style="font-size: 16px; font-weight: bold; color: #000000;height: 44px;overflow: hidden;text-overflow: ellipsis;word-break: break-all">
+                {{=product.productName}}
+            </p>
+            <!--<div class="mui-clearfix" style="margin-top: 5px;">
+                <p class='mui-ellipsis mui-pull-left'>
+                    <button type="" class="mui-btn-tag mui-btn-outlined" style="padding: 1px 4px; font-size: 12px; margin-left: 0px;">
+                        4A景区
+                    </button>
+                </p>
+            </div>-->
+            <div class='mui-ellipsis' style="font-size: 30px; margin-top:0px; color: #FF7362;text-indent: 4px;vertical-align:bottom;">
+                <span class="mui-pull-left" style="font-size: 12px;">
+                ￥<small style="font-size: 20px;">{{=product.payPrice}}</small>起
+                </span>
+                <!--<span class="mui-pull-left" style="line-height: 30px;">
+                    <span class="mui-icon mui-icon-location-filled mui-pull-left"
+                          style="font-size: 14px;margin: 7px; color:#02ac85;"></span>
+                    <p class="mui-pull-left" style="font-size: 12px;">四川·成都</p>
+                </span>-->
+            </div>
+        </div>
+    </a>
+</script>
+<script type="text/html" id="template-no-data">
+    <div class="mui-clearfix" style="background-color: white; padding: 28px 0;">
+        <h4  class="mui-text-center" style="font-size: 16px;font-weight: 400;">
+            <span class="mui-icon mui-icon-star" style="color: #FF7362;font-size: 18px;"></span>
+            收藏夹是空的！
+        </h4>
+        <!--<p class="mui-text-center" style="margin-top: 6px;">可在我的-待出行订单中查看出游信息。</p>-->
+    </div>
+    <p class="mui-text-center" style="color: #02ac85; font-size: 12px; padding: 22px;"></p>
+
+    <div class="mui-clearfix btn-box" style="width: 100%;padding: 0 20px;">
+        <button type="button" class="mui-btn mui-btn-danger mui-btn-block btn-detail" style="padding: 12px 0;font-size: 14px;" onclick="itemList()">
+            去逛逛
+        </button>
+        <button type="button" class="mui-btn mui-btn-block mui-btn-outlined btn-main" style="padding: 12px 0;font-size: 14px;" onclick="geHome()">
+            返回首页
+        </button>
+    </div>
+</script>

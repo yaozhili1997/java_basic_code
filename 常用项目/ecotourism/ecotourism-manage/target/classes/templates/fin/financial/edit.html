@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="order_id" name="order_id" th:value="${orderSpot.order_id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">客户名称：</label>
+								<div class="col-sm-8">
+									<input id="customerName" name="customerName" th:value="${orderSpot.customerName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">客户电话：</label>
+								<div class="col-sm-8">
+									<input id="customerPhone" name="customerPhone" th:value="${orderSpot.customerPhone}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">客户身份证：</label>
+								<div class="col-sm-8">
+									<input id="customerUserId" name="customerUserId" th:value="${orderSpot.customerUserId}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">订单编号：</label>
+								<div class="col-sm-8">
+									<input id="orderNo" name="orderNo" th:value="${orderSpot.orderNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">电子票：</label>
+								<div class="col-sm-8">
+									<input id="electronicTicket" name="electronicTicket" th:value="${orderSpot.electronicTicket}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">产品编号：</label>
+								<div class="col-sm-8">
+									<input id="productNo" name="productNo" th:value="${orderSpot.productNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">产品名称：</label>
+								<div class="col-sm-8">
+									<input id="productName" name="productName" th:value="${orderSpot.productName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">数量：</label>
+								<div class="col-sm-8">
+									<input id="orderQuantity" name="orderQuantity" th:value="${orderSpot.orderQuantity}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">售价：</label>
+								<div class="col-sm-8">
+									<input id="payPrice" name="payPrice" th:value="${orderSpot.payPrice}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">总金额：</label>
+								<div class="col-sm-8">
+									<input id="totalAmount" name="totalAmount" th:value="${orderSpot.totalAmount}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">支付方式：</label>
+								<div class="col-sm-8">
+									<input id="payType" name="payType" th:value="${orderSpot.payType}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">支付状态：</label>
+								<div class="col-sm-8">
+									<input id="payStatus" name="payStatus" th:value="${orderSpot.payStatus}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">订单状态：</label>
+								<div class="col-sm-8">
+									<input id="orderStatus" name="orderStatus" th:value="${orderSpot.orderStatus}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退款状态：</label>
+								<div class="col-sm-8">
+									<input id="refundStatus" name="refundStatus" th:value="${orderSpot.refundStatus}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">分销商：</label>
+								<div class="col-sm-8">
+									<input id="orderDistributor" name="orderDistributor" th:value="${orderSpot.orderDistributor}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">购买时间：</label>
+								<div class="col-sm-8">
+									<input id="purchaseTime" name="purchaseTime" th:value="${orderSpot.purchaseTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">消费时间：</label>
+								<div class="col-sm-8">
+									<input id="consumptionTime" name="consumptionTime" th:value="${orderSpot.consumptionTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">游玩时间：</label>
+								<div class="col-sm-8">
+									<input id="playTime" name="playTime" th:value="${orderSpot.playTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">短信状态：</label>
+								<div class="col-sm-8">
+									<input id="messageStatus" name="messageStatus" th:value="${orderSpot.messageStatus}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">是否下发（0-未下发，1-已下发）：</label>
+								<div class="col-sm-8">
+									<input id="whetherIssued" name="whetherIssued" th:value="${orderSpot.whetherIssued}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">检票设备编码：</label>
+								<div class="col-sm-8">
+									<input id="checkEquipmentNo" name="checkEquipmentNo" th:value="${orderSpot.checkEquipmentNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">景点编号：</label>
+								<div class="col-sm-8">
+									<input id="spotNo" name="spotNo" th:value="${orderSpot.spotNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">票种类型：</label>
+								<div class="col-sm-8">
+									<input id="ticketType" name="ticketType" th:value="${orderSpot.ticketType}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">票种定义：</label>
+								<div class="col-sm-8">
+									<input id="ticketNo" name="ticketNo" th:value="${orderSpot.ticketNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">检票时间：</label>
+								<div class="col-sm-8">
+									<input id="checkTime" name="checkTime" th:value="${orderSpot.checkTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">piaogo系统中的第三方订单号：</label>
+								<div class="col-sm-8">
+									<input id="piaogoOrderNo" name="piaogoOrderNo" th:value="${orderSpot.piaogoOrderNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">取票凭证码：</label>
+								<div class="col-sm-8">
+									<input id="orderVoucherno" name="orderVoucherno" th:value="${orderSpot.orderVoucherno}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">是否发送通知：</label>
+								<div class="col-sm-8">
+									<input id="whetherSendNotice" name="whetherSendNotice" th:value="${orderSpot.whetherSendNotice}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">购票设备编码：</label>
+								<div class="col-sm-8">
+									<input id="selfMachineNo" name="selfMachineNo" th:value="${orderSpot.selfMachineNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退票审核：</label>
+								<div class="col-sm-8">
+									<input id="whetherSendRefundNotice" name="whetherSendRefundNotice" th:value="${orderSpot.whetherSendRefundNotice}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">推送检票信息到本地(西信--->本地)：</label>
+								<div class="col-sm-8">
+									<input id="whetherSendCheckTolocal" name="whetherSendCheckTolocal" th:value="${orderSpot.whetherSendCheckTolocal}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">退票(审核)时间：</label>
+								<div class="col-sm-8">
+									<input id="refundTime" name="refundTime" th:value="${orderSpot.refundTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">是否使用公交：</label>
+								<div class="col-sm-8">
+									<input id="isTransit" name="isTransit" th:value="${orderSpot.isTransit}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">乘车时间：</label>
+								<div class="col-sm-8">
+									<input id="transitTime" name="transitTime" th:value="${orderSpot.transitTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">设备编号：</label>
+								<div class="col-sm-8">
+									<input id="deviceNo" name="deviceNo" th:value="${orderSpot.deviceNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">设备编号2：</label>
+								<div class="col-sm-8">
+									<input id="deviceNoTwo" name="deviceNoTwo" th:value="${orderSpot.deviceNoTwo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">：</label>
+								<div class="col-sm-8">
+									<input id="transitTimeTwo" name="transitTimeTwo" th:value="${orderSpot.transitTimeTwo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">入住时间：</label>
+								<div class="col-sm-8">
+									<input id="checkInTime" name="checkInTime" th:value="${orderSpot.checkInTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">入住办理人：</label>
+								<div class="col-sm-8">
+									<input id="checkInOperator" name="checkInOperator" th:value="${orderSpot.checkInOperator}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">地推用户编号：</label>
+								<div class="col-sm-8">
+									<input id="pushUserNo" name="pushUserNo" th:value="${orderSpot.pushUserNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">公司编号：</label>
+								<div class="col-sm-8">
+									<input id="companyNo" name="companyNo" th:value="${orderSpot.companyNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">备注：</label>
+								<div class="col-sm-8">
+									<input id="bz" name="bz" th:value="${orderSpot.bz}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">人工下单用户：</label>
+								<div class="col-sm-8">
+									<input id="distributionUser" name="distributionUser" th:value="${orderSpot.distributionUser}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">来源ip：</label>
+								<div class="col-sm-8">
+									<input id="ip" name="ip" th:value="${orderSpot.ip}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/fin/financial/edit.js">
+	</script>
+</body>
+</html>

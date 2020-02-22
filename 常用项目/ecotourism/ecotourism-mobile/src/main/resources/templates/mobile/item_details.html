@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<body class="gray-bg">
+    <!-- 标题名称 -->
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title" id="titleName"></h1>
+    </header>
+
+    <div class="mui-content">
+        <div id="slider" class="mui-slider" style="height: 230px;" >
+            <div class="mui-slider-group mui-slider-loop">
+            </div>
+            <div class="mui-slider-indicator">
+            </div>
+        </div>
+        <div class="mui-clearfix" style="padding: 0 20px;background-color: white;position: relative">
+            <h5 style="color: #000000;font-size: 16px;font-weight: 600;padding:10px 50px 10px 0;" id="productName">&nbsp;</h5>
+            <div class="mui-clearfix collection-box" style="display: none;">
+                <span class="uncollection-heart" style="margin: 0 auto;"></span>
+                <p style="font-size: 8px;text-align: center;" class="uncollection-font">未收藏</p>
+            </div>
+            <h4 style="color: #FF7362;"><small style="font-size: 10px;">￥</small><span id="price">&nbsp;</span></h4>
+            <div class="mui-clearfix" style="margin:10px 0 5px 0;display: none;">
+                <button type="" class="mui-btn-gat mui-btn-outlined mui-pull-left" style="padding: 1px 4px; font-size: 12px;">
+                    今日票
+                </button>
+                <p class="mui-pull-left" style="font-size: 12px;margin-left: 5px;"><span id="stopSellingTicketsTime">00:00</span>点前可订今日票！</p>
+            </div>
+            <div class="mui-clearfix" style="margin:10px 0 20px 0;display: none;">
+                <button type="" class="mui-btn-tag mui-btn-outlined mui-pull-left" style="padding: 1px 4px; font-size: 12px;">
+                    随时退
+                </button>
+                <p class="mui-pull-left" style="font-size: 12px; margin-left: 5px;">本产品在未使用的情况下，支持当日随时退！</p>
+            </div>
+        </div>
+        <div class="mui-clearfix titel-box" style="margin-top: 10px;background-color: white;">
+            <div style="width: 50%;" class="mui-pull-left active one-t">
+                产品介绍
+            </div>
+            <div style="width: 50%;" class="mui-pull-left two-t">
+                订购须知
+            </div>
+        </div>
+        <div class="mui-clearfix" style="margin-bottom: 40px;" id="product-desc">
+            <!-- 产品介绍  -->
+            <div class="one" style="padding: 8px;">
+
+            </div>
+            <div class="two" style="display: none;padding: 8px;">
+
+            </div>
+            <div class="three" style="display: none;padding: 8px;">
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 底部导航 -->
+    <foot class="foot-box" style="position: fixed; bottom: 0px; width: 100%;border-top:1px solid rgba(0, 0, 0, .1)">
+        <!--<div style="width: 50%; float: left;background-color: white;">
+
+            <div class="total-pay mui-clearfix mui-pull-left" style="width: 70%;padding-left: 20px;">
+                <span style="color: #999; font-size: 14px;">在线支付：</span>
+                <div>
+                    <span style="font-size: 10px;color: rgb(255,74,40)">￥</span>
+                    <span style="color: rgb(255,74,40);font-weight: 600;font-size: 20px;">1130.00</span>
+                </div>
+            </div>
+
+            <div style="width: 30%;color: rgb(40,158,243);border-left:1px solid rgba(0, 0, 0, .1);" class="mui-pull-right">
+
+                <span class="mui-icon mui-icon-phone-filled" style="width: 100%;text-align: center;"></span>
+                <p style="color: rgb(40,158,243);width: 100%; text-align: center;">客服</p>
+
+            </div>
+        </div>-->
+        <div style="width: 100%;  float: left;">
+            <!--<button type="button" class="mui-btn mui-btn-success mui-btn-block choseset mui-pull-left" style="background-color: rgb(255,181,39);border: 1px solid rgb(255,181,39);margin-bottom: 0;border-radius:0px;padding: 10px;width: 50%;font-size: 14px;line-height: 25px;">加入购物车</button>-->
+            <a type="button" id="gotobuy" class="mui-btn mui-btn-success mui-btn-block choseset mui-pull-right" style="background-color: rgb(255,75,39);border: 1px solid rgb(255,181,39);margin-bottom: 0;border-radius:0px;padding: 10px;width: 100%;font-size: 14px;line-height: 25px;">立即预定</a>
+        </div>
+    </foot>
+    <!-- 底部导航 end!-->
+    </body>
+    <script th:inline="javascript">
+        var productNo = [[${productNo}]];
+        $(function() {
+            getProduct(productNo, function(result) {
+                console.log(result);
+                var product = result.data;
+                var priceStocks = product.priceStocks;
+                // 从库存价格里面获取当天的价格
+                if (priceStocks && priceStocks.length > 0) {
+                    $.post('/getServerTime', {}, function(r) {
+                        var now = parseDate(r.now).format('yyyy-MM-dd');
+                        var priceStock;
+                        for (var i = 0; i < priceStocks.length; i++) {
+                            if (now === priceStocks[i].date) {
+                                priceStock = priceStocks[i];
+                                break;
+                            }
+                        }
+                        if (priceStock) {
+                            $('#price').html(priceStock.salePrice);
+                        } else {
+                            $('#price').html(product.payPrice);
+                        }
+                    });
+                } else {
+                    $('#price').html(product.payPrice);
+                }
+                $('#productName').html(product.productName);
+                var productTypeName = product.productTypeName;
+                if(!productTypeName){
+                    productTypeName = '成都旅游平台';
+                }
+                $('#titleName').html(productTypeName);
+                $('#stopSellingTicketsTime').html(product.stopSellingTicketsTime ? product.stopSellingTicketsTime.substr(0, 5) : '');
+                $('#product-desc .one').html(product.costIncludes);
+                $('#product-desc .two').html(product.useExplain + product.refundExplain);
+                var slider = $('#slider .mui-slider-group');
+                var sliderText = $('#tmpl-slider-img').text();
+                var sliderHtml = doT.template(sliderText)(product.imgUrl);
+                slider.append($(sliderHtml).addClass('mui-slider-item-duplicate'));
+                slider.append(sliderHtml);
+                var indicatorHtml = '<div class="mui-indicator mui-active"></div>';
+                $.each(product.imgs, function() {
+                    var sliderHtml = doT.template(sliderText)(this.imgUrl);
+                    slider.append(sliderHtml);
+                    indicatorHtml += '<div class="mui-indicator"></div>';
+                });
+                slider.append($(sliderHtml).addClass('mui-slider-item-duplicate'));
+                $('#slider .mui-slider-indicator').html(indicatorHtml);
+                mui(".mui-slider").slider({interval: 3000});
+            });
+
+            $(".collection-box").click(function(){
+                var unc = $(this).find(".uncollection-heart");
+                if(unc.length > 0){
+                    addCollection(productNo);
+                    $(this).find(".uncollection-heart").removeClass("uncollection-heart").addClass("collection-heart");
+                    $(this).find(".uncollection-font").html("已收藏");
+                    $(this).find(".uncollection-font").removeClass("uncollection-font").addClass("collection-font");
+                }else{
+                    deleteCollection(productNo);
+                    $(this).find(".collection-heart").removeClass("collection-heart").addClass("uncollection-heart");
+                    $(this).find(".collection-font").html("未收藏");
+                    $(this).find(".collection-font").removeClass("collection-font").addClass("uncollection-font");
+                }
+            });
+            getProductCollection(productNo);
+        });
+
+        function book() {
+            document.locationg = '/order/book?productNo=' + $("#productNo").val();
+        }
+
+        function getProductCollection(productNo) {
+            $.post('/item/getProductCollection', {productNo : productNo}, function(result) {
+                if (result.code == 0) {
+                    var collectionBox = $('.collection-box');
+                    if (result.collection) {
+                        collectionBox.find(".uncollection-heart").removeClass("uncollection-heart").addClass("collection-heart");
+                        collectionBox.find(".uncollection-font").html("已收藏");
+                        collectionBox.find(".uncollection-font").removeClass("uncollection-font").addClass("collection-font");
+                    }
+                    collectionBox.show();
+                }
+            }, 'json');
+        }
+    </script>
+    <script th:inline="javascript">
+
+        //点击切换页面
+
+
+        mui('.foot-box').on('tap', '#gotobuy', function() {
+            var url = $(this).attr('href');
+            //打开关于页面
+            mui.openWindow({
+                url: '/order/book?productNo=' + [[${productNo}]],
+                id: 'busticketbook'
+            });
+        });
+
+        var slider = mui("#slider");
+        slider.slider({
+            interval: 5000
+        });
+
+        mui.init({
+            swipeBack:true //启用右滑关闭功能
+        });
+
+        $(function(){
+            hideList();
+            showList();
+            totle();
+        });
+
+        /*显示下拉*/
+        function hideList(){
+            $(document).on('touchend','.mui-icon-arrowup',function(){
+                var olistHide = $(this).parent().parent().parent().parent().find('.notice').css('display','none');
+                $(this).removeClass('mui-icon-arrowup').addClass('mui-icon-arrowdown');
+            });
+        }
+
+        /*计算总价*/
+        function totle(){
+            var oSinglePrice = $('.single-price').text();
+            var omuiInputNumbox = $('.mui-input-numbox');
+            var omuiInputNumboxVal = omuiInputNumbox.val();
+            var totle = parseInt(oSinglePrice)*parseInt(omuiInputNumboxVal);
+            $('.total-price').html(totle+'元');
+        }
+
+        /*隐藏下拉*/
+        function showList(){
+            $(document).on('touchend','.mui-icon-arrowdown',function(){
+                var olistHide = $(this).parent().parent().parent().parent().find('.notice').css('display','block');
+                $(this).removeClass('mui-icon-arrowdown').addClass('mui-icon-arrowup');
+            });
+        }
+
+        //购买数量
+        var omuiInputNumbox = $('.mui-input-numbox');
+        var omuiInputNumboxVal = omuiInputNumbox.val();
+        var omuiInputNumboxSibings = omuiInputNumbox.siblings();
+        var omuiBtnNumboxMinus = omuiInputNumbox.siblings().eq(0);
+        var omuiBtnNumboxPlus = omuiInputNumbox.siblings().eq(1);
+        var test = /^(\+|-)?\d+$/;//正则表达式
+
+
+        omuiBtnNumboxPlus.click(function(){
+            var newomuiInputNumboxVal = $('.mui-input-numbox').val();
+            if(parseInt(newomuiInputNumboxVal) < 999 && parseInt(newomuiInputNumboxVal)>0){
+                omuiInputNumbox.val(parseInt(omuiInputNumbox.val())+1);
+            }else{
+                alert('已经达到购买上限')
+            }
+            totle();
+        });
+
+        omuiBtnNumboxMinus.click(function(){
+            var newomuiInputNumboxVal = $('.mui-input-numbox').val();
+            if(parseInt(newomuiInputNumboxVal) < 2 ){
+                omuiInputNumbox.val(1);
+                return
+            }else{
+                omuiInputNumbox.val(parseInt(omuiInputNumbox.val())-1);
+            }
+            totle();
+        });
+
+        omuiInputNumbox.blur(function(){
+            var newomuiInputNumboxVal = $('.mui-input-numbox').val();
+            if(parseInt(newomuiInputNumboxVal) < 2 ){
+                omuiInputNumbox.val(1);
+            }
+            totle();
+        });
+
+
+        //切换标签（订票、产品、用户）
+        $(".titel-box div").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+        });
+
+        $(".one-t").click(function(){
+            $(".one").show().siblings().hide();
+        });
+
+        $(".two-t").click(function(){
+            $(".two").show().siblings().hide();
+        });
+
+        $(".three-t").click(function(){
+            $(".three").show().siblings().hide();
+        });
+
+        //调用电话
+
+        //		document.getElementById("phone").addEventListener('tap',function(){
+        //            var btnArray=['拨打','取消'];
+        //            var phone="4009988784";
+        //          mui.confirm('是否拨打'+phone+'?','提示',btnArray,function(e){
+        //                if(e.index == 0){
+        //                   plus.device.dial(phone,false);
+        //               }
+        //           });
+        //});
+
+        //遮罩
+
+    </script>
+    <script type="text/html" id="tmpl-slider-img">
+        <div class="mui-slider-item">
+            <a>
+                <img src="{{=it}}"/>
+            </a>
+        </div>
+    </script>
+</body>
+</html>

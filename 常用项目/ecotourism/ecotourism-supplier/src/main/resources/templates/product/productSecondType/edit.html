@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm"   enctype="multipart/form-data">
+						<input id="id" name="id" th:value="${productSecondType.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">类型名称：</label>
+								<div class="col-sm-4">
+									<input id="productTypeName" name="productTypeName" th:value="${productSecondType.productTypeName}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">选择父类：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择类别--" name="parentTypeNo" id="parentTypeNo"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择类别 --</option>
+										<option th:each="parentType : ${parentTypeNos}" th:value="${parentType.productTypeNo}" th:text="${parentType.productTypeName}"  th:if="${parentType.productTypeNo eq productSecondType.parentTypeNo}" th:selected="selected"></option>
+										<option th:each="parentType : ${parentTypeNos}" th:value="${parentType.productTypeNo}" th:text="${parentType.productTypeName}"  th:if="${parentType.productTypeNo ne productSecondType.parentTypeNo}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">别名：</label>
+								<div class="col-sm-4">
+									<input id="alias" name="alias" class="form-control" th:value="${productSecondType.alias}" type="text">
+								</div>
+								<label class="col-sm-2 control-label">排序(降序)：</label>
+								<div class="col-sm-4">
+									<input id="sort" name="sort" class="form-control" th:value="${productSecondType.sort}" type="number">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">icon小图标：</label>
+								<div class="col-sm-4">
+									<button type="button" class="btn btn-primary" onclick="$('#iconFile').trigger('click');">
+										<i class="fa fa-cloud"></i>上传图片
+									</button>
+									<input type="file" id="iconFile" name="iconFile" style="display: none;">
+								</div>
+								<label class="col-sm-2 control-label">类型图片：</label>
+								<div class="col-sm-4">
+									<button type="button" class="btn btn-primary" onclick="$('#file').trigger('click');">
+										<i class="fa fa-cloud"></i>上传图片
+									</button>
+									<input type="file" id="file" name="file" multiple style="display: none;">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">跳转地址：</label>
+								<div class="col-sm-4">
+									<input id="turnUrl" name="turnUrl" th:value="${productSecondType.turnUrl}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">状态：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="status" name="status" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox" th:checked=${productSecondType.status=='1'}>
+										<label class="onoffswitch-label" for="status">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/product/productSecondType/edit.js">
+	</script>
+</body>
+</html>

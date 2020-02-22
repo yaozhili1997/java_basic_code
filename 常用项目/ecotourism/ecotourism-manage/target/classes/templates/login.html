@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>攀枝花智慧生态旅游管理系统</title>
+    <link href="/css/login.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="login_box">
+    <div class="login_l_img"><img src="/img/login-img.png" /></div>
+    <div class="login">
+        <div class="login_logo"><a href="#"><img src="/img/login_logo.png" /></a></div>
+        <div class="login_name">
+            <p>攀枝花智慧生态旅游管理系统</p>
+        </div>
+        <form id="signupForm">
+            <input name="username" id="username" type="text"  value="用户名" onfocus="this.value=''" onblur="if(this.value==''){this.value='用户名'}">
+            <span id="password_text" onclick="this.style.display='none';document.getElementById('password').style.display='block';document.getElementById('password').focus().select();" >密码</span>
+            <input name="password" type="password" id="password" style="display:none;" onblur="if(this.value==''){document.getElementById('password_text').style.display='block';this.style.display='none'}"/>
+            <input value="登录" style="width:100%;" type="submit">
+        </form>
+    </div>
+    <div class="copyright"> 版权所有©2016-2019 技术支持电话：0832-1234567</div>
+</div>
+<div style="text-align:center;">
+</div>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4" th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6" th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+
+<!-- 自定义js -->
+<script src="/js/content.js?v=1.0.0" th:src="@{/js/content.js?v=1.0.0}"></script>
+
+<!-- jQuery Validation plugin javascript-->
+<script src="/js/ajax-util.js"></script>
+<script src="/js/plugins/validate/jquery.validate.min.js" th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script src="/js/plugins/validate/messages_zh.min.js" th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#login").on('click',function(){$("#signupForm").submit();});
+        validateRule();
+    });
+
+    $.validator.setDefaults({
+        submitHandler: function () {
+            login();
+        }
+    });
+
+    function login() {
+        $.ajax({
+            type: "POST",
+            url: ctx+"login",
+            data: $('#signupForm').serialize(),
+            success: function (r) {
+                if (r.code == 0) {
+                    var index = layer.load(1, {
+                        shade: [0.1,'#fff'] //0.1透明度的白色背景
+                    });
+                    parent.location.href = '/index';
+                } else {
+                    layer.msg(r.msg);
+                }
+            },
+        });
+    }
+
+    function validateRule() {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                username: {
+                    required: true
+                },
+                password: {
+                    required: true
+                }
+            },
+            messages: {
+                username: {
+                    required: icon + "请输入您的用户名",
+                },
+                password: {
+                    required: icon + "请输入您的密码",
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${omsApiFieldconfig.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-2 control-label">接口编号：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择类别--" name="apino" id="apino"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择类别 --</option>
+										<option th:each="omsApiList : ${omsApiLists}" th:value="${omsApiList.apino}" th:text="${omsApiList.apiname}" th:if="${omsApiList.apino eq omsApiFieldconfig.apino}" th:selected="selected"></option>
+										<option th:each="omsApiList : ${omsApiLists}" th:value="${omsApiList.apino}" th:text="${omsApiList.apiname}" th:if="${omsApiList.apino ne omsApiFieldconfig.apino}"></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">输入或者输出：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择输入或者输出--" name="transtype" id="transtype"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择输入或者输出 --</option>
+										<option  th:value="in" th:text="输入" th:if="${omsApiFieldconfig.transtype eq 'in'}" th:selected="selected"></option>
+										<option  th:value="out" th:text="输出" th:if="${omsApiFieldconfig.transtype eq 'out'}" th:selected="selected">></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">转换前字段：</label>
+								<div class="col-sm-4">
+									<input id="transbefore" name="transbefore" th:value="${omsApiFieldconfig.transbefore}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">转换后字段：</label>
+								<div class="col-sm-4">
+									<input id="transafter" name="transafter" th:value="${omsApiFieldconfig.transafter}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">字段说明：</label>
+								<div class="col-sm-4">
+									<input id="fieldexplain" name="fieldexplain" th:value="${omsApiFieldconfig.fieldexplain}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">转换值sql：</label>
+								<div class="col-sm-4">
+									<input id="formatsql" name="formatsql" th:value="${omsApiFieldconfig.formatsql}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">数据验证方式：</label>
+								<div class="col-sm-4">
+									<input id="validatestr" name="validatestr" th:value="${omsApiFieldconfig.validatestr}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">接口版本：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择版本--" name="apiversion" id="apiversion"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择版本 --</option>
+										<option th:each="versionType : ${versionTypes}" th:value="${versionType.value}" th:text="${versionType.name}" th:if="${versionType.value eq omsApiFieldconfig.apiversion}" th:selected="selected" ></option>
+										<option th:each="versionType : ${versionTypes}" th:value="${versionType.value}" th:text="${versionType.name}" th:if="${versionType.value ne omsApiFieldconfig.apiversion}" ></option>
+									</select>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/inter/omsApiFieldconfig/edit.js">
+	</script>
+</body>
+</html>

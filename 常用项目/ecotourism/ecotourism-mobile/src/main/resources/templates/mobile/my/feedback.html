@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<script>
+    /*$(function() {
+        $('#content,#phone').focus(function() {
+            $('#bottom').css({position: 'relative'});
+        }).blur(function() {
+            $('#bottom').css({position: 'absolute'});
+        });
+    });*/
+    function saveFeedback(_this) {
+        var content = $.trim($('#content').val());
+        var phone = $.trim($('#phone').val());
+        if (!content) {
+            mui.toast('反馈内容不能为空');
+            return;
+        }
+        $(_this).prop('disabled', true);
+        $.post('/my/saveFeedback', {content :content, phone : phone}, function(result) {
+            if(result.code == 0) {
+                mui.alert('您的反馈提交成功，感谢您的支持！');
+            } else {
+                mui.alert(result.msg);
+                $(_this).prop('disabled', false);
+            }
+        }, 'json');
+    }
+</script>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">问题反馈</h1>
+</header>
+
+<div class="mui-content"style="background-color: white;position: absolute;top:0;bottom: 0;width: 100%;">
+    <div class="mui-clearfix" style="padding: 0 20px; z-index: 9;">
+        <h4 style="margin: 20px 0 10px 0;">想说的话</h4>
+        <div style="position:relative;">
+            <textarea id="content" class="textarea" style="min-height: 156px; font-size: 12px;" maxlength="200" placeholder="请写下您的问题，我们将及时回复"></textarea>
+            <p style="position: absolute; bottom: 20px; right: 10px; text-align: right; width: 100%;">
+                <small class="limit-sum" style="font-size: 14px;">0</small>/200
+            </p>
+        </div>
+    </div>
+    <div class="mui-clearfix" style="padding: 0 20px; z-index: 9;">
+        <h4 style="margin: 20px 0 10px 0;">联系方式</h4>
+        <div style="position:relative;">
+            <input id="phone" type="text" class="text-input" placeholder="请留下您的联系方式，以便我们联系您！"/>
+        </div>
+    </div>
+    <div>
+        <div class="mui-clearfix" style="padding: 0 20px; z-index: 9; position: relative; width: 100%;">
+            <button type="button" class="mui-btn mui-btn-danger mui-btn-block submite" style="padding: 10px 0;" onclick="saveFeedback(this)">提&emsp;交</button>
+        </div>
+
+        <div class="mui-clearfix" style="padding: 0 20px; z-index: 9; position: relative; width: 100%;">
+            <p class="mui-text-center"  style="color: #f14e48;">客服电话:400-9988-784</p>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" charset="utf-8">
+    //输入计算字数
+    $(".textarea").keydown(function(){
+        var valueLenth = $('.textarea').val().length;
+        $(".limit-sum").html(valueLenth);
+    })
+</script>
+</html>

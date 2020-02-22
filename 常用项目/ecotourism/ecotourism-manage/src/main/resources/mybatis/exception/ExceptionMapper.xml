@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.exception.dao.ExceptionDao">
+
+	<sql id="commonField">
+		id,batch_number,api_code,api_name,sysresource,req_param,ex_url,operator,exception_msg,create_time,
+		(SELECT user_name from payment_user where user_no=operator limit 1) as app_name
+	</sql>
+	<select id="get" resultType="com.ecotourism.manage.exception.domain.ExceptionDO">
+		select <include refid="commonField"/> from exception where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.exception.domain.ExceptionDO">
+		select <include refid="commonField"/> from exception
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="searchName != null and searchName != ''">
+					  and (batch_number = #{searchName} or ex_url like CONCAT('%',#{searchName},'%')
+					  or operator = #{searchName} or operatorlike CONCAT('%',#{searchName},'%'))
+				  </if>
+		  		  <if test="batchNumber != null and batchNumber != ''"> and batch_number = #{batchNumber} </if>
+		  		  <if test="sysresource != null and sysresource != ''"> and sysresource = #{sysresource} </if>
+		  		  <if test="reqParam != null and reqParam != ''"> and req_param = #{reqParam} </if>
+		  		  <if test="exUrl != null and exUrl != ''"> and ex_url = #{exUrl} </if>
+		  		  <if test="operator != null and operator != ''"> and operator = #{operator} </if>
+		  		  <if test="exceptionMsg != null and exceptionMsg != ''"> and exception_msg = #{exceptionMsg} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from exception
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="batchNumber != null and batchNumber != ''"> and batch_number = #{batchNumber} </if>
+		  		  <if test="sysresource != null and sysresource != ''"> and sysresource = #{sysresource} </if>
+		  		  <if test="reqParam != null and reqParam != ''"> and req_param = #{reqParam} </if>
+		  		  <if test="exUrl != null and exUrl != ''"> and ex_url = #{exUrl} </if>
+		  		  <if test="operator != null and operator != ''"> and operator = #{operator} </if>
+		  		  <if test="exceptionMsg != null and exceptionMsg != ''"> and exception_msg = #{exceptionMsg} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.exception.domain.ExceptionDO" useGeneratedKeys="true" keyProperty="id">
+		insert into exception
+		(
+			batch_number, 
+			sysresource, 
+			req_param, 
+			ex_url, 
+			operator, 
+			exception_msg, 
+			create_time
+		)
+		values
+		(
+			#{batchNumber}, 
+			#{sysresource}, 
+			#{reqParam}, 
+			#{exUrl}, 
+			#{operator}, 
+			#{exceptionMsg}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.exception.domain.ExceptionDO">
+		update exception 
+		<set>
+			<if test="batchNumber != null">batch_number = #{batchNumber}, </if>
+			<if test="sysresource != null">sysresource = #{sysresource}, </if>
+			<if test="reqParam != null">req_param = #{reqParam}, </if>
+			<if test="exUrl != null">ex_url = #{exUrl}, </if>
+			<if test="operator != null">operator = #{operator}, </if>
+			<if test="exceptionMsg != null">exception_msg = #{exceptionMsg}, </if>
+			<if test="createTime != null">create_time = #{createTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from exception where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from exception where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

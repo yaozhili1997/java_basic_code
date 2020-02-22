@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.ImgDao">
+
+
+	<select id="list" resultType="com.ecotourism.oms.oms.domain.ImgDO">
+		select `id`,`product_no`,`img_url`,`create_time`,`update_time`,`create_user`,`update_user` from product_img
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+		  		  <if test="imgUrl != null and imgUrl != ''"> and img_url = #{imgUrl} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		</where>
+		order by id desc
+	</select>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.report.dao.cluster.PushUserReadDao">
+
+
+	<select id="list" resultType="com.ecotourism.manage.report.domain.PushUserReportDO">
+		SELECT
+			l.user_name,
+			l.user_no,
+			ifnull(sum(o.order_quantity), 0) total_person,
+			ifnull(sum(o.total_amount), 0) total_amount
+		FROM
+			local_push_user l
+				LEFT JOIN order_spot o ON o.push_user_no = l.user_no
+		<include refid="commonSql"></include>
+		GROUP BY
+			l.user_no,
+			l.user_name
+		ORDER BY
+			total_person DESC
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from (SELECT
+		l.user_name,
+		l.user_no,
+		ifnull(sum(o.order_quantity), 0) total_person,
+		ifnull(sum(o.total_amount), 0) total_amount
+		FROM
+		local_push_user l
+		LEFT JOIN order_spot o ON o.push_user_no = l.user_no
+		<include refid="commonSql"></include>
+		GROUP BY
+		l.user_no,
+		l.user_name
+		ORDER BY
+		total_person DESC) a
+	</select>
+
+	<select id="getPushUserReportSum" resultType="com.ecotourism.manage.common.utils.PageTotal">
+		SELECT
+			sum(o.order_quantity) totalNum,
+			sum(o.total_amount) totalAmount
+		FROM
+			local_push_user l
+				LEFT JOIN order_spot o ON o.push_user_no = l.user_no
+        <include refid="commonSql"></include>
+	</select>
+
+	<sql id="commonSql">
+		WHERE l.company_no = #{companyNo}
+			  and o.order_status='004002'
+		<if test="endTime!=null and endTime!=''"><!-- 时间检索 -->
+			<![CDATA[  and o.purchase_time <= #{endTime} ]]>
+		</if>
+		<if test="startTime!=null and startTime!=''"><!-- 时间检索 -->
+			and o.purchase_time >= #{startTime}
+		</if>
+		<if test="nowDate !=null and nowDate !=''"><!-- 默认当天时间 -->
+			and DATE_FORMAT(o.purchase_time, "%Y-%m-%d") =  DATE_FORMAT(#{nowDate}, "%Y-%m-%d")
+		</if>
+		<if test="userNo !=null and userNo !=''">
+			and l.user_no = #{userNo}
+		</if>
+	</sql>
+</mapper>

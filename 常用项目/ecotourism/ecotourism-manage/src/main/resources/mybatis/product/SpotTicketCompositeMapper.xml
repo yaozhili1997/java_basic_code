@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.product.dao.SpotTicketCompositeDao">
+
+	<select id="get" resultType="com.ecotourism.manage.product.domain.SpotTicketCompositeDO">
+		select `id`,`composite_no`,`product_type`,`product_second_type`,`product_no`,`product_name`
+		,`pay_price`,`fractional_price`,`ticket_no`,`ticket_grouping`,`spot_no`,`status`,`create_time`
+		,`create_user`,`update_time`,`update_user` from product_spot_ticket_composite where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.product.domain.SpotTicketCompositeDO">
+		select `id`,`composite_no`,`product_type`,`product_second_type`,`product_no`
+		,`product_name`,`pay_price`,`fractional_price`,`ticket_no`,`ticket_grouping`
+		,`spot_no`,`status`,`create_time`,`create_user`,`update_time`,`update_user` from product_spot_ticket_composite
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="compositeNo != null and compositeNo != ''"> and composite_no = #{compositeNo} </if>
+		  		  <if test="productType != null and productType != ''"> and product_type = #{productType} </if>
+		  		  <if test="productSecondType != null and productSecondType != ''"> and product_second_type = #{productSecondType} </if>
+		  		  <if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+		  		  <if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+		  		  <if test="payPrice != null and payPrice != ''"> and pay_price = #{payPrice} </if>
+		  		  <if test="fractionalPrice != null and fractionalPrice != ''"> and fractional_price = #{fractionalPrice} </if>
+		  		  <if test="ticketNo != null and ticketNo != ''"> and ticket_no = #{ticketNo} </if>
+		  		  <if test="ticketGrouping != null and ticketGrouping != ''"> and ticket_grouping = #{ticketGrouping} </if>
+		  		  <if test="spotNo != null and spotNo != ''"> and spot_no = #{spotNo} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from product_spot_ticket_composite
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="compositeNo != null and compositeNo != ''"> and composite_no = #{compositeNo} </if>
+		  		  <if test="productType != null and productType != ''"> and product_type = #{productType} </if>
+		  		  <if test="productSecondType != null and productSecondType != ''"> and product_second_type = #{productSecondType} </if>
+		  		  <if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+		  		  <if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+		  		  <if test="payPrice != null and payPrice != ''"> and pay_price = #{payPrice} </if>
+		  		  <if test="fractionalPrice != null and fractionalPrice != ''"> and fractional_price = #{fractionalPrice} </if>
+		  		  <if test="ticketNo != null and ticketNo != ''"> and ticket_no = #{ticketNo} </if>
+		  		  <if test="ticketGrouping != null and ticketGrouping != ''"> and ticket_grouping = #{ticketGrouping} </if>
+		  		  <if test="spotNo != null and spotNo != ''"> and spot_no = #{spotNo} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.product.domain.SpotTicketCompositeDO" useGeneratedKeys="true" keyProperty="id">
+		insert into product_spot_ticket_composite
+		(
+			`composite_no`, 
+			`product_type`, 
+			`product_second_type`, 
+			`product_no`, 
+			`product_name`, 
+			`pay_price`, 
+			`fractional_price`, 
+			`ticket_no`, 
+			`ticket_grouping`, 
+			`spot_no`, 
+			`status`, 
+			`create_time`, 
+			`create_user`, 
+			`update_time`, 
+			`update_user`
+		)
+		values
+		(
+			#{compositeNo}, 
+			#{productType}, 
+			#{productSecondType}, 
+			#{productNo}, 
+			#{productName}, 
+			#{payPrice}, 
+			#{fractionalPrice}, 
+			#{ticketNo}, 
+			#{ticketGrouping}, 
+			#{spotNo}, 
+			#{status}, 
+			#{createTime}, 
+			#{createUser}, 
+			#{updateTime}, 
+			#{updateUser}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.product.domain.SpotTicketCompositeDO">
+		update product_spot_ticket_composite 
+		<set>
+			<if test="compositeNo != null">`composite_no` = #{compositeNo}, </if>
+			<if test="productType != null">`product_type` = #{productType}, </if>
+			<if test="productSecondType != null">`product_second_type` = #{productSecondType}, </if>
+			<if test="productNo != null">`product_no` = #{productNo}, </if>
+			<if test="productName != null">`product_name` = #{productName}, </if>
+			<if test="payPrice != null">`pay_price` = #{payPrice}, </if>
+			<if test="fractionalPrice != null">`fractional_price` = #{fractionalPrice}, </if>
+			<if test="ticketNo != null">`ticket_no` = #{ticketNo}, </if>
+			<if test="ticketGrouping != null">`ticket_grouping` = #{ticketGrouping}, </if>
+			<if test="spotNo != null">`spot_no` = #{spotNo}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from product_spot_ticket_composite where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from product_spot_ticket_composite where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

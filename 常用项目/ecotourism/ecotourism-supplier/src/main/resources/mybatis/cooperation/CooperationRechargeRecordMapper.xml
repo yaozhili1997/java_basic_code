@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.cooperation.dao.CooperationRechargeRecordDao">
+	
+	<select id="count" resultType="int">
+		SELECT COUNT(*) FROM cooperation_recharge_record
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.cooperation.domain.CooperationRechargeRecordDO">
+		SELECT recharge_id,
+		distribution_no as distributionNo,
+		(select c.name from cooperation_distribution c where c.distribution_no=distributionNo) as distribution_name,
+		recharge_flowing,
+		recharge_price,pre_deposit_balance,
+		recharge_time,
+		remarks,create_user,
+		create_time,company_no
+		FROM cooperation_recharge_record
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.supplier.cooperation.domain.CooperationRechargeRecordDO" useGeneratedKeys="true" keyProperty="rechargeId" >
+		INSERT into cooperation_recharge_record
+			(`distribution_no`,
+			 `recharge_flowing`,
+			 `recharge_price`,
+			 `pre_deposit_balance`,
+			 `recharge_time`,
+			 `remarks`,
+			 `create_user`)
+			 VALUES
+			 (#{distributionNo},
+			  #{rechargeFlowing},
+			  #{rechargePrice},
+			  #{preDepositBalance},
+			  #{rechargeTime},
+			  #{remarks},
+			  #{createUser})
+	</insert>
+
+
+</mapper>

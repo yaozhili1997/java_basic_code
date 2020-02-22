@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.payment.dao.WechatMchDao">
+
+	<select id="get" resultType="com.ecotourism.manage.payment.domain.WechatMchDO">
+		select id,mch_no,provider_no,mch_name,private_key,mch_id,cert_local_path,cert_password,bz,available,create_time,update_time,create_user,update_user,company_no from payment_wechat_mch where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.payment.domain.WechatMchDO">
+		select id,mch_no,provider_no,
+		(select provider_name from payment_wechat_provider w where w.provider_no=p.provider_no limit 1) as providerName,
+		mch_name,private_key,mch_id,cert_password,bz,available,cert_local_path
+		,create_time,update_time,create_user,update_user,company_no from payment_wechat_mch p
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="mchNo != null and mchNo != ''"> and mch_no = #{mchNo} </if>
+		  		  <if test="providerNo != null and providerNo != ''"> and provider_no = #{providerNo} </if>
+		  		  <if test="mchName != null and mchName != ''"> and mch_name = #{mchName} </if>
+		  		  <if test="privateKey != null and privateKey != ''"> and private_key = #{privateKey} </if>
+		  		  <if test="mchId != null and mchId != ''"> and mch_id = #{mchId} </if>
+		  		  <if test="certLocalPath != null and certLocalPath != ''"> and cert_local_path = #{certLocalPath} </if>
+		  		  <if test="certPassword != null and certPassword != ''"> and cert_password = #{certPassword} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<select id="findCountNo" resultType="int">
+		select count(mch_no) from payment_wechat_mch where mch_no = #{mch_no}
+	</select>
+ 	<select id="count" resultType="int">
+		select count(*) from payment_wechat_mch
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="mchNo != null and mchNo != ''"> and mch_no = #{mchNo} </if>
+		  		  <if test="providerNo != null and providerNo != ''"> and provider_no = #{providerNo} </if>
+		  		  <if test="mchName != null and mchName != ''"> and mch_name = #{mchName} </if>
+		  		  <if test="privateKey != null and privateKey != ''"> and private_key = #{privateKey} </if>
+		  		  <if test="mchId != null and mchId != ''"> and mch_id = #{mchId} </if>
+		  		  <if test="certLocalPath != null and certLocalPath != ''"> and cert_local_path = #{certLocalPath} </if>
+		  		  <if test="certPassword != null and certPassword != ''"> and cert_password = #{certPassword} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.payment.domain.WechatMchDO" useGeneratedKeys="true" keyProperty="id">
+		insert into payment_wechat_mch
+		(
+			mch_no, 
+			provider_no, 
+			mch_name, 
+			private_key, 
+			mch_id, 
+			cert_local_path, 
+			cert_password, 
+			base_url,
+			bz,
+			available, 
+			create_time, 
+			update_time, 
+			create_user, 
+			update_user, 
+			company_no
+		)
+		values
+		(
+			#{mchNo}, 
+			#{providerNo}, 
+			#{mchName}, 
+			#{privateKey}, 
+			#{mchId}, 
+			#{certLocalPath}, 
+			#{certPassword}, 
+			#{baseUrl},
+			#{bz},
+			#{available}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.payment.domain.WechatMchDO">
+		update payment_wechat_mch 
+		<set>
+			<if test="mchNo != null">mch_no = #{mchNo}, </if>
+			<if test="providerNo != null">provider_no = #{providerNo}, </if>
+			<if test="mchName != null">mch_name = #{mchName}, </if>
+			<if test="privateKey != null">private_key = #{privateKey}, </if>
+			<if test="mchId != null">mch_id = #{mchId}, </if>
+			<if test="certLocalPath != null">cert_local_path = #{certLocalPath}, </if>
+			<if test="certPassword != null">cert_password = #{certPassword}, </if>
+			<if test="bz != null">bz = #{bz}, </if>
+			<if test="available != null">available = #{available}, </if>
+			<if test="createTime != null">create_time = #{createTime}, </if>
+			<if test="updateTime != null">update_time = #{updateTime}, </if>
+			<if test="createUser != null">create_user = #{createUser}, </if>
+			<if test="updateUser != null">update_user = #{updateUser}, </if>
+			<if test="companyNo != null">company_no = #{companyNo}</if>
+			<if test="baseUrl != null">base_url = #{baseUrl}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from payment_wechat_mch where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from payment_wechat_mch where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

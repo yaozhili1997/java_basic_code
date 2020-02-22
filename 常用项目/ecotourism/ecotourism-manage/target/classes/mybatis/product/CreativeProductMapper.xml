@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.product.dao.CreativeProductDao">
+
+	<select id="get" resultType="com.ecotourism.manage.product.domain.CreativeProductDO">
+		SELECT
+			`product_id`,
+			`ticket_no`,
+			`product_no`,
+			`term_no`,
+			`product_name`,
+			`distribution_channel`,
+			`pay_type`,
+			`pay_price`,
+			`order_cancel`,
+			`whether_user_phone`,
+			`whether_user_id`,
+			`whether_make`,
+			`certificate_exchange`,
+			`park_way`,
+			`park_address`,
+			`tick_type`,
+			`use_explain`,
+			`whether_refund`,
+			`whether_examine`,
+			`refund_explain`,
+			`cost_includes`,
+			`cost_not_includes`,
+			`whether_user_name`,
+			`whether_shelves`,
+			`template_sms_no`,
+			`template_mms_no`,
+			`settlement_price`,
+			`ticket_grouping`,
+			`effective_days`,
+			`whether_shelves_advance`,
+			`advance_start_date`,
+			`advance_end_date`,
+			`user_role_id`,
+			`template_no`,
+			`img_url`,
+			`whether_sure_ride`,
+			`subordinate_line`,
+			`whether_refund_strategy`,
+			 a.strategy_no,
+			  a.base_url,
+			 a.is_entity,
+			`refund_strategy_detail_no`,
+			`whether_limit_sell`,
+			`sell_date_type`,
+			`limit_sell_num`,
+			`product_provider`,
+			`car_fee`,
+			`product_type`,
+			 a.company_no,
+			`whether_limit_stock`,
+			`product_second_type`,
+			 b.strategy_details_name,
+			 `product_type_name`,
+			a.sort,
+			whether_real_name
+		FROM
+		product_spot_ticket a
+		left JOIN base_refund_strategy_details b on
+		a.refund_strategy_detail_no = b.strategy_details_no
+		WHERE
+			product_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.product.domain.CreativeProductDO">
+		select `product_id`,`ticket_no`,`product_no`,base_url,is_entity,`term_no`,`product_name`,`distribution_channel`,`pay_type`,`pay_price`,`order_cancel`,`whether_user_phone`,`whether_user_id`,`whether_make`,`certificate_exchange`,`park_way`,`park_address`,`tick_type`,`use_explain`,`whether_refund`,`whether_examine`,`refund_explain`,`cost_includes`,`cost_not_includes`,`whether_user_name`,`whether_shelves`,`template_sms_no`,`template_mms_no`,`settlement_price`,`ticket_grouping`,`effective_days`,`whether_shelves_advance`,`advance_start_date`,`advance_end_date`,`user_role_id`,`template_no`,`img_url`,`whether_sure_ride`,`subordinate_line`,`whether_refund_strategy`,`strategy_no`,`refund_strategy_detail_no`,`whether_limit_sell`,`sell_date_type`,`limit_sell_num`,`product_provider`,`car_fee`,`product_type`,`company_no`,`whether_limit_stock`,`product_second_type`,`product_type_name`,sort,whether_real_name from product_spot_ticket
+		<where>
+			<if test="searchName != null and searchName != ''">(
+				product_name LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				)
+			</if>
+			<if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+			<if test="ticketNo != null and ticketNo != ''"> and ticket_no = #{ticketNo} </if>
+			<if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+			<if test="termNo != null and termNo != ''"> and term_no = #{termNo} </if>
+			<if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+			<if test="distributionChannel != null and distributionChannel != ''"> and distribution_channel = #{distributionChannel} </if>
+			<if test="payType != null and payType != ''"> and pay_type = #{payType} </if>
+			<if test="payPrice != null and payPrice != ''"> and pay_price = #{payPrice} </if>
+			<if test="orderCancel != null and orderCancel != ''"> and order_cancel = #{orderCancel} </if>
+			<if test="whetherUserPhone != null and whetherUserPhone != ''"> and whether_user_phone = #{whetherUserPhone} </if>
+			<if test="whetherUserId != null and whetherUserId != ''"> and whether_user_id = #{whetherUserId} </if>
+			<if test="whetherMake != null and whetherMake != ''"> and whether_make = #{whetherMake} </if>
+			<if test="certificateExchange != null and certificateExchange != ''"> and certificate_exchange = #{certificateExchange} </if>
+			<if test="parkWay != null and parkWay != ''"> and park_way = #{parkWay} </if>
+			<if test="parkAddress != null and parkAddress != ''"> and park_address = #{parkAddress} </if>
+			<if test="tickType != null and tickType != ''"> and tick_type = #{tickType} </if>
+			<if test="useExplain != null and useExplain != ''"> and use_explain = #{useExplain} </if>
+			<if test="whetherRefund != null and whetherRefund != ''"> and whether_refund = #{whetherRefund} </if>
+			<if test="whetherExamine != null and whetherExamine != ''"> and whether_examine = #{whetherExamine} </if>
+			<if test="refundExplain != null and refundExplain != ''"> and refund_explain = #{refundExplain} </if>
+			<if test="costIncludes != null and costIncludes != ''"> and cost_includes = #{costIncludes} </if>
+			<if test="costNotIncludes != null and costNotIncludes != ''"> and cost_not_includes = #{costNotIncludes} </if>
+			<if test="whetherUserName != null and whetherUserName != ''"> and whether_user_name = #{whetherUserName} </if>
+			<if test="whetherShelves != null and whetherShelves != ''"> and whether_shelves = #{whetherShelves} </if>
+			<if test="templateSmsNo != null and templateSmsNo != ''"> and template_sms_no = #{templateSmsNo} </if>
+			<if test="templateMmsNo != null and templateMmsNo != ''"> and template_mms_no = #{templateMmsNo} </if>
+			<if test="settlementPrice != null and settlementPrice != ''"> and settlement_price = #{settlementPrice} </if>
+			<if test="ticketGrouping != null and ticketGrouping != ''"> and ticket_grouping = #{ticketGrouping} </if>
+			<if test="effectiveDays != null and effectiveDays != ''"> and effective_days = #{effectiveDays} </if>
+			<if test="whetherShelvesAdvance != null and whetherShelvesAdvance != ''"> and whether_shelves_advance = #{whetherShelvesAdvance} </if>
+			<if test="advanceStartDate != null and advanceStartDate != ''"> and advance_start_date = #{advanceStartDate} </if>
+			<if test="advanceEndDate != null and advanceEndDate != ''"> and advance_end_date = #{advanceEndDate} </if>
+			<if test="userRoleId != null and userRoleId != ''"> and user_role_id = #{userRoleId} </if>
+			<if test="templateNo != null and templateNo != ''"> and template_no = #{templateNo} </if>
+			<if test="imgUrl != null and imgUrl != ''"> and img_url = #{imgUrl} </if>
+			<if test="whetherSureRide != null and whetherSureRide != ''"> and whether_sure_ride = #{whetherSureRide} </if>
+			<if test="subordinateLine != null and subordinateLine != ''"> and subordinate_line = #{subordinateLine} </if>
+			<if test="whetherRefundStrategy != null and whetherRefundStrategy != ''"> and whether_refund_strategy = #{whetherRefundStrategy} </if>
+			<if test="strategyNo != null and strategyNo != ''"> and strategy_no = #{strategyNo} </if>
+			<if test="refundStrategyDetailNo != null and refundStrategyDetailNo != ''"> and refund_strategy_detail_no = #{refundStrategyDetailNo} </if>
+			<if test="whetherLimitSell != null and whetherLimitSell != ''"> and whether_limit_sell = #{whetherLimitSell} </if>
+			<if test="sellDateType != null and sellDateType != ''"> and sell_date_type = #{sellDateType} </if>
+			<if test="limitSellNum != null and limitSellNum != ''"> and limit_sell_num = #{limitSellNum} </if>
+			<if test="productProvider != null and productProvider != ''"> and product_provider = #{productProvider} </if>
+			<if test="carFee != null and carFee != ''"> and car_fee = #{carFee} </if>
+			<if test="productType != null and productType != ''"> and product_type = #{productType} </if>
+			<if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+			<if test="whetherLimitStock != null and whetherLimitStock != ''"> and whether_limit_stock = #{whetherLimitStock} </if>
+			<if test="productSecondType != null and productSecondType != ''"> and product_second_type = #{productSecondType} </if>
+			<if test="isEntity != null and isEntity != ''"> and is_entity = #{isEntity} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by product_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from product_spot_ticket
+		<where>
+			<if test="searchName != null and searchName != ''">(
+				product_name LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				)
+			</if>
+			<if test="productId != null and productId != ''"> and product_id = #{productId} </if>
+			<if test="ticketNo != null and ticketNo != ''"> and ticket_no = #{ticketNo} </if>
+			<if test="productNo != null and productNo != ''"> and product_no = #{productNo} </if>
+			<if test="termNo != null and termNo != ''"> and term_no = #{termNo} </if>
+			<if test="productName != null and productName != ''"> and product_name = #{productName} </if>
+			<if test="distributionChannel != null and distributionChannel != ''"> and distribution_channel = #{distributionChannel} </if>
+			<if test="payType != null and payType != ''"> and pay_type = #{payType} </if>
+			<if test="payPrice != null and payPrice != ''"> and pay_price = #{payPrice} </if>
+			<if test="orderCancel != null and orderCancel != ''"> and order_cancel = #{orderCancel} </if>
+			<if test="whetherUserPhone != null and whetherUserPhone != ''"> and whether_user_phone = #{whetherUserPhone} </if>
+			<if test="whetherUserId != null and whetherUserId != ''"> and whether_user_id = #{whetherUserId} </if>
+			<if test="whetherMake != null and whetherMake != ''"> and whether_make = #{whetherMake} </if>
+			<if test="certificateExchange != null and certificateExchange != ''"> and certificate_exchange = #{certificateExchange} </if>
+			<if test="parkWay != null and parkWay != ''"> and park_way = #{parkWay} </if>
+			<if test="parkAddress != null and parkAddress != ''"> and park_address = #{parkAddress} </if>
+			<if test="tickType != null and tickType != ''"> and tick_type = #{tickType} </if>
+			<if test="useExplain != null and useExplain != ''"> and use_explain = #{useExplain} </if>
+			<if test="whetherRefund != null and whetherRefund != ''"> and whether_refund = #{whetherRefund} </if>
+			<if test="whetherExamine != null and whetherExamine != ''"> and whether_examine = #{whetherExamine} </if>
+			<if test="refundExplain != null and refundExplain != ''"> and refund_explain = #{refundExplain} </if>
+			<if test="costIncludes != null and costIncludes != ''"> and cost_includes = #{costIncludes} </if>
+			<if test="costNotIncludes != null and costNotIncludes != ''"> and cost_not_includes = #{costNotIncludes} </if>
+			<if test="whetherUserName != null and whetherUserName != ''"> and whether_user_name = #{whetherUserName} </if>
+			<if test="whetherShelves != null and whetherShelves != ''"> and whether_shelves = #{whetherShelves} </if>
+			<if test="templateSmsNo != null and templateSmsNo != ''"> and template_sms_no = #{templateSmsNo} </if>
+			<if test="templateMmsNo != null and templateMmsNo != ''"> and template_mms_no = #{templateMmsNo} </if>
+			<if test="settlementPrice != null and settlementPrice != ''"> and settlement_price = #{settlementPrice} </if>
+			<if test="ticketGrouping != null and ticketGrouping != ''"> and ticket_grouping = #{ticketGrouping} </if>
+			<if test="effectiveDays != null and effectiveDays != ''"> and effective_days = #{effectiveDays} </if>
+			<if test="whetherShelvesAdvance != null and whetherShelvesAdvance != ''"> and whether_shelves_advance = #{whetherShelvesAdvance} </if>
+			<if test="advanceStartDate != null and advanceStartDate != ''"> and advance_start_date = #{advanceStartDate} </if>
+			<if test="advanceEndDate != null and advanceEndDate != ''"> and advance_end_date = #{advanceEndDate} </if>
+			<if test="userRoleId != null and userRoleId != ''"> and user_role_id = #{userRoleId} </if>
+			<if test="templateNo != null and templateNo != ''"> and template_no = #{templateNo} </if>
+			<if test="imgUrl != null and imgUrl != ''"> and img_url = #{imgUrl} </if>
+			<if test="whetherSureRide != null and whetherSureRide != ''"> and whether_sure_ride = #{whetherSureRide} </if>
+			<if test="subordinateLine != null and subordinateLine != ''"> and subordinate_line = #{subordinateLine} </if>
+			<if test="whetherRefundStrategy != null and whetherRefundStrategy != ''"> and whether_refund_strategy = #{whetherRefundStrategy} </if>
+			<if test="strategyNo != null and strategyNo != ''"> and strategy_no = #{strategyNo} </if>
+			<if test="refundStrategyDetailNo != null and refundStrategyDetailNo != ''"> and refund_strategy_detail_no = #{refundStrategyDetailNo} </if>
+			<if test="whetherLimitSell != null and whetherLimitSell != ''"> and whether_limit_sell = #{whetherLimitSell} </if>
+			<if test="sellDateType != null and sellDateType != ''"> and sell_date_type = #{sellDateType} </if>
+			<if test="limitSellNum != null and limitSellNum != ''"> and limit_sell_num = #{limitSellNum} </if>
+			<if test="productProvider != null and productProvider != ''"> and product_provider = #{productProvider} </if>
+			<if test="carFee != null and carFee != ''"> and car_fee = #{carFee} </if>
+			<if test="productType != null and productType != ''"> and product_type = #{productType} </if>
+			<if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+			<if test="whetherLimitStock != null and whetherLimitStock != ''"> and whether_limit_stock = #{whetherLimitStock} </if>
+			<if test="productSecondType != null and productSecondType != ''"> and product_second_type = #{productSecondType} </if>
+			<if test="isEntity != null and isEntity != ''"> and is_entity = #{isEntity} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.manage.product.domain.CreativeProductDO" useGeneratedKeys="true" keyProperty="productId">
+		insert into product_spot_ticket
+		(
+		`ticket_no`,
+		`product_no`,
+		`term_no`,
+		`product_name`,
+		`distribution_channel`,
+		`pay_type`,
+		`pay_price`,
+		`order_cancel`,
+		`whether_user_phone`,
+		`whether_user_id`,
+		`whether_make`,
+		`certificate_exchange`,
+		`park_way`,
+		`park_address`,
+		`tick_type`,
+		`use_explain`,
+		`whether_refund`,
+		`whether_examine`,
+		`refund_explain`,
+		`cost_includes`,
+		`cost_not_includes`,
+		`whether_user_name`,
+		`whether_shelves`,
+		`template_sms_no`,
+		`template_mms_no`,
+		`settlement_price`,
+		`ticket_grouping`,
+		`effective_days`,
+		`whether_shelves_advance`,
+		`advance_start_date`,
+		`advance_end_date`,
+		`user_role_id`,
+		`template_no`,
+		`img_url`,
+		`whether_sure_ride`,
+		`subordinate_line`,
+		`whether_refund_strategy`,
+		`strategy_no`,
+		`refund_strategy_detail_no`,
+		`whether_limit_sell`,
+		`sell_date_type`,
+		`limit_sell_num`,
+		`product_provider`,
+		`car_fee`,
+		`product_type`,
+		`company_no`,
+		`whether_limit_stock`,
+		`product_second_type`,
+		`base_url`,
+		`is_entity`,
+		`product_type_name`,
+		whether_real_name
+		)
+		values
+		(
+		#{ticketNo},
+		#{productNo},
+		#{termNo},
+		#{productName},
+		#{distributionChannel},
+		#{payType},
+		#{payPrice},
+		#{orderCancel},
+		#{whetherUserPhone},
+		#{whetherUserId},
+		#{whetherMake},
+		#{certificateExchange},
+		#{parkWay},
+		#{parkAddress},
+		#{tickType},
+		#{useExplain},
+		#{whetherRefund},
+		#{whetherExamine},
+		#{refundExplain},
+		#{costIncludes},
+		#{costNotIncludes},
+		#{whetherUserName},
+		#{whetherShelves},
+		#{templateSmsNo},
+		#{templateMmsNo},
+		#{settlementPrice},
+		#{ticketGrouping},
+		#{effectiveDays},
+		#{whetherShelvesAdvance},
+		#{advanceStartDate},
+		#{advanceEndDate},
+		#{userRoleId},
+		#{templateNo},
+		#{imgUrl},
+		#{whetherSureRide},
+		#{subordinateLine},
+		#{whetherRefundStrategy},
+		#{strategyNo},
+		#{refundStrategyDetailNo},
+		#{whetherLimitSell},
+		#{sellDateType},
+		#{limitSellNum},
+		#{productProvider},
+		#{carFee},
+		#{productType},
+		#{companyNo},
+		#{whetherLimitStock},
+		#{productSecondType},
+		#{baseUrl},
+		#{isEntity},
+		#{productTypeName},
+		 #{whetherRealName}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.manage.product.domain.CreativeProductDO">
+		update product_spot_ticket
+		<set>
+			<if test="ticketNo != null">`ticket_no` = #{ticketNo}, </if>
+			<if test="productNo != null">`product_no` = #{productNo}, </if>
+			<if test="termNo != null">`term_no` = #{termNo}, </if>
+			<if test="productName != null">`product_name` = #{productName}, </if>
+			<if test="distributionChannel != null">`distribution_channel` = #{distributionChannel}, </if>
+			<if test="payType != null">`pay_type` = #{payType}, </if>
+			<if test="payPrice != null">`pay_price` = #{payPrice}, </if>
+			<if test="orderCancel != null">`order_cancel` = #{orderCancel}, </if>
+			<if test="whetherUserPhone != null">`whether_user_phone` = #{whetherUserPhone}, </if>
+			<if test="whetherUserId != null">`whether_user_id` = #{whetherUserId}, </if>
+			<if test="whetherMake != null">`whether_make` = #{whetherMake}, </if>
+			<if test="certificateExchange != null">`certificate_exchange` = #{certificateExchange}, </if>
+			<if test="parkWay != null">`park_way` = #{parkWay}, </if>
+			<if test="parkAddress != null">`park_address` = #{parkAddress}, </if>
+			<if test="tickType != null">`tick_type` = #{tickType}, </if>
+			<if test="useExplain != null">`use_explain` = #{useExplain}, </if>
+			<if test="whetherRefund != null">`whether_refund` = #{whetherRefund}, </if>
+			<if test="whetherExamine != null">`whether_examine` = #{whetherExamine}, </if>
+			<if test="refundExplain != null">`refund_explain` = #{refundExplain}, </if>
+			<if test="costIncludes != null">`cost_includes` = #{costIncludes}, </if>
+			<if test="costNotIncludes != null">`cost_not_includes` = #{costNotIncludes}, </if>
+			<if test="whetherUserName != null">`whether_user_name` = #{whetherUserName}, </if>
+			<if test="whetherShelves != null">`whether_shelves` = #{whetherShelves}, </if>
+			<if test="templateSmsNo != null">`template_sms_no` = #{templateSmsNo}, </if>
+			<if test="templateMmsNo != null">`template_mms_no` = #{templateMmsNo}, </if>
+			<if test="settlementPrice != null">`settlement_price` = #{settlementPrice}, </if>
+			<if test="ticketGrouping != null">`ticket_grouping` = #{ticketGrouping}, </if>
+			<if test="effectiveDays != null">`effective_days` = #{effectiveDays}, </if>
+			<if test="whetherShelvesAdvance != null">`whether_shelves_advance` = #{whetherShelvesAdvance}, </if>
+			<if test="advanceStartDate != null">`advance_start_date` = #{advanceStartDate}, </if>
+			<if test="advanceEndDate != null">`advance_end_date` = #{advanceEndDate}, </if>
+			<if test="userRoleId != null">`user_role_id` = #{userRoleId}, </if>
+			<if test="templateNo != null">`template_no` = #{templateNo}, </if>
+			<if test="imgUrl != null">`img_url` = #{imgUrl}, </if>
+			<if test="whetherSureRide != null">`whether_sure_ride` = #{whetherSureRide}, </if>
+			<if test="subordinateLine != null">`subordinate_line` = #{subordinateLine}, </if>
+			<if test="whetherRefundStrategy != null">`whether_refund_strategy` = #{whetherRefundStrategy}, </if>
+			<if test="strategyNo != null">`strategy_no` = #{strategyNo}, </if>
+			<if test="refundStrategyDetailNo != null">`refund_strategy_detail_no` = #{refundStrategyDetailNo}, </if>
+			<if test="whetherLimitSell != null">`whether_limit_sell` = #{whetherLimitSell}, </if>
+			<if test="sellDateType != null">`sell_date_type` = #{sellDateType}, </if>
+			<if test="limitSellNum != null">`limit_sell_num` = #{limitSellNum}, </if>
+			<if test="productProvider != null">`product_provider` = #{productProvider}, </if>
+			<if test="carFee != null">`car_fee` = #{carFee}, </if>
+			<if test="productType != null">`product_type` = #{productType}, </if>
+			<if test="whetherLimitStock != null">`whether_limit_stock` = #{whetherLimitStock}, </if>
+			<if test="productSecondType != null">`product_second_type` = #{productSecondType},</if>
+			<if test="productTypeName != null">`product_type_name` = #{productTypeName},</if>
+			<if test="baseUrl != null">`base_url` = #{baseUrl},</if>
+			<if test="isEntity != null">`is_entity` = #{isEntity},</if>
+			<if test="whetherRealName != null">`whether_real_name` = #{whetherRealName},</if>
+		</set>
+		where product_id = #{productId}
+	</update>
+
+	<delete id="remove">
+		delete from product_spot_ticket where product_id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from product_spot_ticket where product_id in
+		<foreach item="productId" collection="array" open="(" separator="," close=")">
+			#{productId}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.sms.dao.SendDataDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.sms.domain.SendDataDO">
+		select `id`,`mobile`,`content`,`order_no`,`supplier_no`,`send_status`,`error_msg`,`sms_type`,`tickets`,`mms_title`,`send_way`,`sender_no`,`create_time`,`update_time`,`distribution_no` from sms_send_data where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.sms.domain.SendDataDO">
+		select a.id,`mobile`,`content`,`order_no`,b.supplier_name supplier_no,`send_status`,`error_msg`,`sms_type`,`tickets`,`mms_title`,`send_way`,`sender_no`,a.create_time,a.update_time,`distribution_no` from sms_send_data a
+		inner join sms_supplier b on a.supplier_no = b.supplier_no
+        <where>  
+		  		  <if test="id != null and id != ''"> and a.id = #{id} </if>
+		  		  <if test="mobile != null and mobile != ''"> and a.mobile = #{mobile} </if>
+		  		  <if test="content != null and content != ''"> and a.content = #{content} </if>
+		  		  <if test="orderNo != null and orderNo != ''"> and a.order_no = #{orderNo} </if>
+		  		  <if test="supplierNo != null and supplierNo != ''"> and a.supplier_no = #{supplierNo} </if>
+		  		  <if test="sendStatus != null and sendStatus != ''"> and a.send_status = #{sendStatus} </if>
+		  		  <if test="errorMsg != null and errorMsg != ''"> and a.error_msg = #{errorMsg} </if>
+		  		  <if test="smsType != null and smsType != ''"> and a.sms_type = #{smsType} </if>
+		  		  <if test="tickets != null and tickets != ''"> and a.tickets = #{tickets} </if>
+		  		  <if test="mmsTitle != null and mmsTitle != ''"> and a.mms_title = #{mmsTitle} </if>
+		  		  <if test="sendWay != null and sendWay != ''"> and a.send_way = #{sendWay} </if>
+		  		  <if test="senderNo != null and senderNo != ''"> and a.sender_no = #{senderNo} </if>
+		  		  <if test="createTime != null and createTime != ''"> and a.create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and a.update_time = #{updateTime} </if>
+		  		  <if test="distributionNo != null and distributionNo != ''"> and a.distribution_no = #{distributionNo} </if>
+			      <if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by a.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sms_send_data
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="mobile != null and mobile != ''"> and mobile = #{mobile} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
+		  		  <if test="supplierNo != null and supplierNo != ''"> and supplier_no = #{supplierNo} </if>
+		  		  <if test="sendStatus != null and sendStatus != ''"> and send_status = #{sendStatus} </if>
+		  		  <if test="errorMsg != null and errorMsg != ''"> and error_msg = #{errorMsg} </if>
+		  		  <if test="smsType != null and smsType != ''"> and sms_type = #{smsType} </if>
+		  		  <if test="tickets != null and tickets != ''"> and tickets = #{tickets} </if>
+		  		  <if test="mmsTitle != null and mmsTitle != ''"> and mms_title = #{mmsTitle} </if>
+		  		  <if test="sendWay != null and sendWay != ''"> and send_way = #{sendWay} </if>
+		  		  <if test="senderNo != null and senderNo != ''"> and sender_no = #{senderNo} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="distributionNo != null and distributionNo != ''"> and distribution_no = #{distributionNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.sms.domain.SendDataDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sms_send_data
+		(
+			`mobile`, 
+			`content`, 
+			`order_no`, 
+			`supplier_no`, 
+			`send_status`, 
+			`error_msg`, 
+			`sms_type`, 
+			`tickets`, 
+			`mms_title`, 
+			`send_way`, 
+			`sender_no`, 
+			`create_time`, 
+			`update_time`, 
+			`distribution_no`
+		)
+		values
+		(
+			#{mobile}, 
+			#{content}, 
+			#{orderNo}, 
+			#{supplierNo}, 
+			#{sendStatus}, 
+			#{errorMsg}, 
+			#{smsType}, 
+			#{tickets}, 
+			#{mmsTitle}, 
+			#{sendWay}, 
+			#{senderNo}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{distributionNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.sms.domain.SendDataDO">
+		update sms_send_data 
+		<set>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="orderNo != null">`order_no` = #{orderNo}, </if>
+			<if test="supplierNo != null">`supplier_no` = #{supplierNo}, </if>
+			<if test="sendStatus != null">`send_status` = #{sendStatus}, </if>
+			<if test="errorMsg != null">`error_msg` = #{errorMsg}, </if>
+			<if test="smsType != null">`sms_type` = #{smsType}, </if>
+			<if test="tickets != null">`tickets` = #{tickets}, </if>
+			<if test="mmsTitle != null">`mms_title` = #{mmsTitle}, </if>
+			<if test="sendWay != null">`send_way` = #{sendWay}, </if>
+			<if test="senderNo != null">`sender_no` = #{senderNo}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="distributionNo != null">`distribution_no` = #{distributionNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sms_send_data where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sms_send_data where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

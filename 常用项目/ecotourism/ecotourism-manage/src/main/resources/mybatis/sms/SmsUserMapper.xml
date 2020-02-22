@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.sms.dao.SmsUserDao">
+
+	<select id="get" resultType="com.ecotourism.manage.sms.domain.SmsUserDO">
+		select `id`,`user_id`,`password`,`enable`,`create_time`,`update_time`,`create_user`,`update_user` from sms_user where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.sms.domain.SmsUserDO">
+		select `id`,`user_id`,`password`,`enable`,`create_time`,`update_time`,`create_user`,`update_user` from sms_user
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="password != null and password != ''"> and password = #{password} </if>
+		  		  <if test="enable != null and enable != ''"> and enable = #{enable} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sms_user
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="password != null and password != ''"> and password = #{password} </if>
+		  		  <if test="enable != null and enable != ''"> and enable = #{enable} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.sms.domain.SmsUserDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sms_user
+		(
+			`user_id`, 
+			`password`, 
+			`enable`, 
+			`create_time`, 
+			`update_time`, 
+			`create_user`, 
+			`update_user`
+		)
+		values
+		(
+			#{userId}, 
+			#{password}, 
+			#{enable}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{createUser}, 
+			#{updateUser}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.sms.domain.SmsUserDO">
+		update sms_user 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="enable != null">`enable` = #{enable}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sms_user where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sms_user where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

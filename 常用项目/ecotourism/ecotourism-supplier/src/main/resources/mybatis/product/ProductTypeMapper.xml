@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.product.dao.ProductTypeDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.product.domain.ProductTypeDO">
+		select `id`,`product_type_no`,`product_type_name`,`parent_type_no`,`icon`,`status`,`create_time`,`create_user`,`update_time`,`update_user`,`company_no`,`alias`,`img_no`,`turn_url`,sort,base_url from product_type where id = #{value}
+	</select>
+	<select id="list" resultType="com.ecotourism.supplier.product.domain.ProductTypeDO">
+		select `id`,`product_type_no`,`product_type_name`,`parent_type_no`,`icon`,`status`,`create_time`,`create_user`,`update_time`,`update_user`,`company_no`,`alias`,`img_no`,`turn_url`,sort,base_url from product_type
+        <where>
+		  		  <if test="searchName != null and searchName != ''">
+					  and (product_type_name like concat(#{searchName},'%')
+					  or product_type_no like concat(#{searchName},'%')
+					  or parent_type_no like concat(#{searchName},'%')
+					  or alias like concat(#{searchName},'%'))
+				  </if>
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productTypeNo != null and productTypeNo != ''"> and product_type_no = #{productTypeNo} </if>
+		  		  <if test="productTypeName != null and productTypeName != ''"> and product_type_name = #{productTypeName} </if>
+		  		  <if test="parentTypeNo != null and parentTypeNo != ''"> and parent_type_no = #{parentTypeNo} </if>
+		  		  <if test="children != null and children != ''"> and parent_type_no !="0" </if>
+		  		  <if test="icon != null and icon != ''"> and icon = #{icon} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		  <if test="alias != null and alias != ''"> and alias = #{alias} </if>
+		  		  <if test="imgNo != null and imgNo != ''"> and img_no = #{imgNo} </if>
+		  		  <if test="turnUrl != null and turnUrl != ''"> and turn_url = #{turnUrl} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by sort desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from product_type
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="productTypeNo != null and productTypeNo != ''"> and product_type_no = #{productTypeNo} </if>
+		  		  <if test="productTypeName != null and productTypeName != ''"> and product_type_name = #{productTypeName} </if>
+		  		  <if test="parentTypeNo != null and parentTypeNo != ''"> and parent_type_no = #{parentTypeNo} </if>
+		  		  <if test="icon != null and icon != ''"> and icon = #{icon} </if>
+		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		  <if test="alias != null and alias != ''"> and alias = #{alias} </if>
+		  		  <if test="imgNo != null and imgNo != ''"> and img_no = #{imgNo} </if>
+		  		  <if test="turnUrl != null and turnUrl != ''"> and turn_url = #{turnUrl} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.product.domain.ProductTypeDO" useGeneratedKeys="true" keyProperty="id">
+		insert into product_type
+		(
+			`product_type_no`, 
+			`product_type_name`, 
+			`parent_type_no`, 
+			`icon`, 
+			`status`, 
+			`create_time`, 
+			`create_user`, 
+			`update_time`, 
+			`update_user`, 
+			`company_no`, 
+			`alias`, 
+			`img_no`, 
+			`turn_url`,sort,base_url
+		)
+		values
+		(
+			#{productTypeNo}, 
+			#{productTypeName}, 
+			#{parentTypeNo}, 
+			#{icon}, 
+			#{status}, 
+			#{createTime}, 
+			#{createUser}, 
+			#{updateTime}, 
+			#{updateUser}, 
+			#{companyNo}, 
+			#{alias}, 
+			#{imgNo}, 
+			#{turnUrl},#{sort},#{baseUrl}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.product.domain.ProductTypeDO">
+		update product_type 
+		<set>
+			<if test="productTypeName != null">`product_type_name` = #{productTypeName}, </if>
+			<if test="parentTypeNo != null">`parent_type_no` = #{parentTypeNo}, </if>
+			<if test="icon != null">`icon` = #{icon}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}, </if>
+			<if test="alias != null">`alias` = #{alias}, </if>
+			<if test="imgNo != null">`img_no` = #{imgNo}, </if>
+			<if test="turnUrl != null">`turn_url` = #{turnUrl},</if>
+			<if test="sort != null">`sort` = #{sort},</if>
+			<if test="baseUrl != null">`base_url` = #{baseUrl},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from product_type where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from product_type where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="countChildrenType" resultType="int">
+		select count(*) from product_type where parent_type_no in (
+			select product_type_no from product_type where id in
+			<foreach item="id" collection="array" open="(" separator="," close=")">
+				#{id}
+			</foreach>
+		)
+	</select>
+
+	<select id="findProductTypeNo" resultType="String">
+		select lpad(max(product_type_no)+1,#{len},'0') from product_type where parent_type_no=#{parentTypeNo}
+	</select>
+
+	<select id="listChildren" resultType="com.ecotourism.supplier.product.domain.ProductTypeDO">
+		select `id`,`product_type_no`,`product_type_name`,`parent_type_no`,`icon`,`status`,`create_time`,`create_user`,`update_time`,`update_user`,`company_no`,`alias`,`img_no`,`turn_url`,sort,base_url from product_type
+		<where>
+			parent_type_no !=#{parentTypeNo}
+			and parent_type_no = #{productType}
+			and company_no = #{companyNo}
+		</where>
+	</select>
+
+	<select id="listParent" resultType="com.ecotourism.supplier.product.domain.ProductTypeDO">
+		select `id`,`product_type_no`,`product_type_name`,`parent_type_no`,`icon`,`status`,`create_time`,`create_user`,`update_time`,`update_user`,`company_no`,`alias`,`img_no`,`turn_url`,sort,base_url from product_type
+		<where>
+			parent_type_no =#{parentTypeNo}
+			and product_type_no = #{productType}
+		</where>
+	</select>
+</mapper>

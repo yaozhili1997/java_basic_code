@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.payment.dao.AlipayDao">
+
+	<select id="get" resultType="com.ecotourism.manage.payment.domain.AlipayDO">
+		select `id`,`name`,`alipay_no`,`appid`,`rsa_private_key`,`alipay_public_key`,`notify_url`,`return_url`,`charset`,`format`,`signtype`,`sysserviceproviderid`,`available`,`create_user`,`create_time`,`update_user`,`update_time`,`bz`,`company_no` from payment_alipay where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.payment.domain.AlipayDO">
+		select `id`,`name`,`alipay_no`,`appid`,`rsa_private_key`,`alipay_public_key`,`notify_url`,`return_url`,`charset`,`format`,`signtype`,`sysserviceproviderid`,`available`,`create_user`,`create_time`,`update_user`,`update_time`,`bz`,`company_no` from payment_alipay
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="alipayNo != null and alipayNo != ''"> and alipay_no = #{alipayNo} </if>
+		  		  <if test="appid != null and appid != ''"> and appid = #{appid} </if>
+		  		  <if test="rsaPrivateKey != null and rsaPrivateKey != ''"> and rsa_private_key = #{rsaPrivateKey} </if>
+		  		  <if test="alipayPublicKey != null and alipayPublicKey != ''"> and alipay_public_key = #{alipayPublicKey} </if>
+		  		  <if test="notifyUrl != null and notifyUrl != ''"> and notify_url = #{notifyUrl} </if>
+		  		  <if test="returnUrl != null and returnUrl != ''"> and return_url = #{returnUrl} </if>
+		  		  <if test="charset != null and charset != ''"> and charset = #{charset} </if>
+		  		  <if test="format != null and format != ''"> and format = #{format} </if>
+		  		  <if test="signtype != null and signtype != ''"> and signtype = #{signtype} </if>
+		  		  <if test="sysserviceproviderid != null and sysserviceproviderid != ''"> and sysserviceproviderid = #{sysserviceproviderid} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="findCountNo" resultType="int">
+		select count(alipay_no) from payment_alipay where alipay_no = #{alipay_no}
+	</select>
+
+ 	<select id="count" resultType="int">
+		select count(*) from payment_alipay
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="alipayNo != null and alipayNo != ''"> and alipay_no = #{alipayNo} </if>
+		  		  <if test="appid != null and appid != ''"> and appid = #{appid} </if>
+		  		  <if test="rsaPrivateKey != null and rsaPrivateKey != ''"> and rsa_private_key = #{rsaPrivateKey} </if>
+		  		  <if test="alipayPublicKey != null and alipayPublicKey != ''"> and alipay_public_key = #{alipayPublicKey} </if>
+		  		  <if test="notifyUrl != null and notifyUrl != ''"> and notify_url = #{notifyUrl} </if>
+		  		  <if test="returnUrl != null and returnUrl != ''"> and return_url = #{returnUrl} </if>
+		  		  <if test="charset != null and charset != ''"> and charset = #{charset} </if>
+		  		  <if test="format != null and format != ''"> and format = #{format} </if>
+		  		  <if test="signtype != null and signtype != ''"> and signtype = #{signtype} </if>
+		  		  <if test="sysserviceproviderid != null and sysserviceproviderid != ''"> and sysserviceproviderid = #{sysserviceproviderid} </if>
+		  		  <if test="available != null and available != ''"> and available = #{available} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.payment.domain.AlipayDO" useGeneratedKeys="true" keyProperty="id">
+		insert into payment_alipay
+		(
+			`name`, 
+			`alipay_no`, 
+			`appid`, 
+			`rsa_private_key`, 
+			`alipay_public_key`, 
+			`notify_url`, 
+			`return_url`, 
+			`charset`, 
+			`format`, 
+			`signtype`, 
+			`sysserviceproviderid`, 
+			`available`, 
+			`create_user`, 
+			`create_time`, 
+			`update_user`, 
+			`update_time`, 
+			`bz`, 
+			`company_no`
+		)
+		values
+		(
+			#{name}, 
+			#{alipayNo}, 
+			#{appid}, 
+			#{rsaPrivateKey}, 
+			#{alipayPublicKey}, 
+			#{notifyUrl}, 
+			#{returnUrl}, 
+			#{charset}, 
+			#{format}, 
+			#{signtype}, 
+			#{sysserviceproviderid}, 
+			#{available}, 
+			#{createUser}, 
+			#{createTime}, 
+			#{updateUser}, 
+			#{updateTime}, 
+			#{bz}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.payment.domain.AlipayDO">
+		update payment_alipay 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="alipayNo != null">`alipay_no` = #{alipayNo}, </if>
+			<if test="appid != null">`appid` = #{appid}, </if>
+			<if test="rsaPrivateKey != null">`rsa_private_key` = #{rsaPrivateKey}, </if>
+			<if test="alipayPublicKey != null">`alipay_public_key` = #{alipayPublicKey}, </if>
+			<if test="notifyUrl != null">`notify_url` = #{notifyUrl}, </if>
+			<if test="returnUrl != null">`return_url` = #{returnUrl}, </if>
+			<if test="charset != null">`charset` = #{charset}, </if>
+			<if test="format != null">`format` = #{format}, </if>
+			<if test="signtype != null">`signtype` = #{signtype}, </if>
+			<if test="sysserviceproviderid != null">`sysserviceproviderid` = #{sysserviceproviderid}, </if>
+			<if test="available != null">`available` = #{available}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="bz != null">`bz` = #{bz}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from payment_alipay where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from payment_alipay where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.report.dao.cluster.SpotOrderReadDao">
+
+	<select id="getTodaySaleTotal" resultType="com.ecotourism.manage.report.domain.SaleTicketDO">
+		SELECT
+			product_name productName,
+			sum(order_quantity) orderQuantity
+		FROM
+			order_spot
+		WHERE
+		DATE_FORMAT(purchase_time, "%Y-%m-%d") = DATE_FORMAT(SYSDATE(), "%Y-%m-%d")
+		AND order_status != '004004'
+		<if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		GROUP BY
+			product_name
+	</select>
+</mapper>

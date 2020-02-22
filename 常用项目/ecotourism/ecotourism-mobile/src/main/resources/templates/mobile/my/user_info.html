@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<script>
+    getUserInfo({openId : openId}, function(result) {
+        if (result.status == 'success') {
+            var data = result.data;
+            var html = doT.template($('#template_user_info').text())(data);
+            $('#content_user_info').html(html);
+        }
+    });
+</script>
+<body>
+<!-- 标题名称 -->
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">个人资料</h1>
+</header>
+<div class="mui-content">
+    <div id="content_user_info" class="" style="">
+    </div>
+</div>
+<script id="template_user_info"type="text/html">
+    {{
+        var info = it;
+    }}
+    <ul class="mui-table-view"  style="">
+        <li class="mui-table-view-cell" style="padding: 14px 15px;position: relative; padding-right: 0px;">
+            <a class="mui-navigate-right" style="font-size: 14px; margin: 10px 0; padding-left: 0px; padding-right: 0px;">
+                头像
+            </a>
+
+            <div style="width: 60px;height: 60px;overflow: hidden;border-radius: 50%;position: absolute;right: 40px; top:20px" class="">
+                <img src="{{=info.avatar}}" style="width: 60px;height: 60px;" />
+            </div>
+
+        </li>
+        <li class="mui-table-view-cell" style="padding: 14px 15px;">
+            <a class="mui-navigate-right" style="font-size: 14px;">
+                昵称
+            </a>
+
+            <div style="position: absolute;right: 44px; top:17px" class="">
+                <p style="width:200px;overflow: hidden;height: 18px;"  class="mui-ellipsis mui-text-right">{{=info.nickName}}</p>
+            </div>
+        </li>
+        <!--<li class="mui-table-view-cell"  style="padding: 14px 15px;">
+            <a class="mui-navigate-right" style="font-size: 14px;">
+                生日
+            </a>
+            <div style="position: absolute;right: 44px; top:17px" class="">
+                <p style="width:200px;overflow: hidden;height: 18px;"  class="mui-ellipsis mui-text-right">1990-05-13</p>
+            </div>
+        </li>-->
+
+        <li class="mui-table-view-cell address-in"  style="padding: 14px 15px;">
+            <a class="mui-navigate-right" style="font-size: 14px;">
+                性别
+            </a>
+            <div style="position: absolute;right: 44px; top:17px;" class="">
+                <p style="width:200px;overflow: hidden;height: 18px;"  class="mui-ellipsis mui-text-right">{{=info.gender == 'm' ? '男' : '女'}}</p>
+            </div>
+        </li>
+    </ul>
+</script>
+</body>
+</html>

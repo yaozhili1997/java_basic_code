@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<!--<header>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script type="application/javascript" src="/js/jquery.min.js" ></script>
+    <script type="application/javascript" src="/js/mui.min.js" ></script>
+    <script type="application/javascript" src="/js/mui.picker.min.js" ></script>
+    <link href="/css/mui.min.css" rel="stylesheet">
+    <link href="/css/mui.picker.min.css" rel="stylesheet">
+    <link href="/css/iconfont.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</header>-->
+<head th:include="include :: header"><meta charset="utf-8" /></head>
+<script>
+    function addAddress() {
+        //打开关于页面
+        mui.openWindow({
+            url: '/my/addressEdit',
+            id: 'addAddress'
+        });
+    }
+
+    function editAddress(addressNo) {
+        //打开关于页面
+        mui.openWindow({
+            url: '/my/addressEdit?addressNo=' + addressNo,
+            id: 'addAddress'
+        });
+    }
+
+    function deleteAddress(addressNo) {
+        mui.confirm('确定要删除？', function(result) {
+            if (result.index === 1) {
+                var params = {};
+                params.openId = openId;
+                params.addressNo = addressNo;
+                deleteMyAddress(params, function(result) {
+                    if (result.status == 'success') {
+                        initList();
+                        mui.toast('删除成功');
+                    } else {
+                        mui.alert(result.errorMsg);
+                    }
+                });
+            }
+        });
+    }
+
+    function setDefault(addressNo) {
+        var params = {};
+        params.openId = openId;
+        params.addressNo = addressNo;
+        setMyDefaultAddress(params, function(result) {
+            if (result.status == 'success') {
+                mui.toast('设置默认成功');
+            } else {
+                mui.alert(result.errorMsg);
+            }
+        });
+    }
+
+    $(function() {
+        initList();
+    });
+
+    function initList() {
+        var params = {};
+        params.openId = openId;
+        getMyAddressList(params, function (result) {
+            var data = result.data;
+            var html;
+            if (data.length > 0) {
+                html = doT.template($('#template_address_list').text())(data);
+                $('.foot-box').show();
+            } else {
+                html = $('#template-no-data').text();
+                $('.foot-box').hide();
+            }
+            $('.mui-content').html(html);
+        });
+    }
+</script>
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">收货地址列表</h1>
+    </header>
+    <div class="mui-content" style="position: absolute;top: 0;width: 100%;bottom: 48px;overflow: auto;padding-bottom: 10px;">
+    </div>
+    <!-- 底部导航 -->
+    <foot class="foot-box" style="position: fixed; bottom: 0px; width: 100%;border-top:1px solid rgba(0, 0, 0, .1);display: none;">
+        <div style="width: 100%;  float: left;">
+            <button onclick="addAddress()" type="button" id="gotoaddress" class="mui-btn mui-btn-success mui-btn-block  mui-pull-right" style="background-color: rgb(255,75,39);border: 1px solid rgb(255, 75, 39);margin-bottom: 0;border-radius:0px;padding: 10px;width: 100%;font-size: 14px;line-height: 25px;">新增收货地址</button>
+        </div>
+    </foot>
+</body>
+<script  type="text/html" id="template_address_list">
+    {{
+        var list = it;
+        $.each(list, function() {
+            var address = this;
+    }}
+    <div class="mui-card mui-clearfix" style="margin: 10px 0 0 0;">
+        <div class="mui-card-content">
+            <div class="mui-card-content-inner mui-clearfix" style="padding-bottom: 0;">
+
+                <div class="mui-clearfix">
+
+                    <div class="mui-pull-left" style="padding-right: 10px; font-size: 16px;">
+                        {{=address.consigneeName}}
+                    </div>
+
+                    <div class="mui-pull-left" style="">
+                        <p style="overflow: hidden;text-overflow: ellipsis;word-break: break-all;color:#ff5555;font-size: 16px;margin-left: 10px;height: 24px; margin-top: 2px;">
+                            {{=address.consigneePhone}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mui-clearfix" style="margin-bottom: 10px;">
+                    <p>{{=address.province}} {{=address.city}} {{=address.region}} {{=address.detailAddress}}</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mui-card-footer" style="border-top:1px solid #eee ;">
+            <div class="mui-clearfix" style="width: 100%;">
+
+                <div class="mui-pull-left mui-radio mui-clearfix" style="">
+                    <label class="choice-font address-box" style="padding-left: 32px; margin-top: 8px;">默认上门地点
+                        <input name="radio" {{=address.isDefault == '1' ? 'checked' : ''}} onclick="setDefault('{{=address.addressNo}}')" type="radio" value="0" class="checkbox-c mui-pull-left"
+                               style="left: -6px;">
+                    </label>
+                </div>
+
+                <div class="mui-pull-right">
+                    <div class=" " style="width:120px;margin-top: 8px;">
+
+                        <p class="mui-pull-right delete-btn" onclick="deleteAddress('{{=address.addressNo}}')">删除</p>
+                        <p class="mui-pull-right" style="margin-right: 20px;" onclick="editAddress('{{=address.addressNo}}')">编辑</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{
+        });
+    }}
+</script>
+<script type="text/html" id="template-no-data">
+    <div class="mui-clearfix" style="background-color: white; padding: 28px 0;">
+        <h4  class="mui-text-center" style="font-size: 16px;font-weight: 400;">
+            <span class="mui-icon mui-icon-location" style="color: #FF7362;font-size: 18px;"></span>
+            地址列表是空的！
+        </h4>
+        <!--<p class="mui-text-center" style="margin-top: 6px;">可在我的-待出行订单中查看出游信息。</p>-->
+    </div>
+    <p class="mui-text-center" style="color: #02ac85; font-size: 12px; padding: 22px;"></p>
+
+   <div class="mui-clearfix btn-box" style="width: 100%;padding: 0 20px;">
+        <button type="button" class="mui-btn mui-btn-danger mui-btn-block btn-detail" style="padding: 12px 0;font-size: 14px;" onclick="addAddress()">
+            新增收货地址
+        </button>
+        <button type="button" class="mui-btn mui-btn-block mui-btn-outlined btn-main" style="padding: 12px 0;font-size: 14px;" onclick="geHome()">
+            返回首页
+        </button>
+    </div>
+</script>
+</html>

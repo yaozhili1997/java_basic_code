@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="order:orderSpot:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="order:orderSpot:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+							<button shiro:hasPermission="order:orderSpot:excel" type="button" class="btn  btn-primary"
+									onclick="expotExcel()">
+								<i class="fa fa-file-excel-o" aria-hidden="true"></i>导出
+							</button>
+						</div>
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">
+								<i class="fa fa-search" aria-hidden="true"></i>查询
+							</button>
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="playEndTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon form-control" placeholder="游玩结束时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="playStartTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon form-control" placeholder="游玩开始时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="payEndTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="购票结束时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="payStartTime" type="text" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="购票开始时间">
+						</div>
+						<div class="pull-right search nopadding">
+							<input id="searchName" type="text" class="form-control"
+								placeholder="客户信息/订单信息">
+						</div>
+
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--票种类型--" name="ticketType" id="ticketType"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 票种类型 --</option>
+								<option th:each="ticketTypeList : ${ticketTypeList}" th:value="${ticketTypeList.value}" th:text="${ticketTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--退款状态--" name="refundStatus" id="refundStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 退款状态 --</option>
+								<option th:each="refundTypeList : ${refundTypeLists}" th:value="${refundTypeList.value}" th:text="${refundTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--订单状态--" name="orderStatus" id="orderStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 订单状态 --</option>
+								<option th:each="orderStateTypeList : ${orderStateTypeLists}" th:value="${orderStateTypeList.value}" th:text="${orderStateTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--支付状态--" name="payStatus" id="payStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 支付状态 --</option>
+								<option th:each="payStateTypeList : ${payStateTypeLists}" th:value="${payStateTypeList.value}" th:text="${payStateTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--分销商--" name="orderDistributor" id="orderDistributor"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 分销商 --</option>
+								<option th:each="cooperationDistributionList : ${cooperationDistributionLists}" th:value="${cooperationDistributionList.distributionNo}" th:text="${cooperationDistributionList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--产品名称--" name="productNo" id="productNo"
+									class="form-control" tabindex="2" multiple="multiple">
+								<option th:each="spotTicketList : ${spotTicketLists}" th:value="${spotTicketList.productNo}" th:text="${spotTicketList.productName}"  ></option>
+							</select>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_editStatus_h = 'hidden';
+                var s_editRefundStatus_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="order:orderSpot:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="order:orderSpot:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="order:orderSpot:editStatus">
+			<script type="text/javascript">
+				var s_editStatus_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="order:orderSpot:refundStatus">
+			<script type="text/javascript">
+				var s_editRefundStatus_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/order/orderSpot/orderSpot.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $('#productNo').multiselect({
+                nonSelectedText: "--产品名称--",
+                nSelectedText:"选中",
+                allSelectedText:"全选"
+            });
+        });
+	</script>
+</body>
+</html>

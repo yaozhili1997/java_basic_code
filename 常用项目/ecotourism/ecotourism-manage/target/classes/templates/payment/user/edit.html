@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${user.id}"  type="hidden">
+														<div class="form-group">
+								<label class="col-sm-2 control-label">应用名称：</label>
+								<div class="col-sm-4">
+									<input id="userName" name="userName" th:value="${user.userName}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">appId：</label>
+								<div class="col-sm-4">
+									<input id="appId" readonly name="appId" th:value="${user.appId}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">
+								<label class="col-sm-2 control-label">微信：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择微信--" name="wechatId" id="wechatId"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择微信 --</option>
+										<option th:each="wechat : ${wechats}" th:value="${wechat.wechatNo}" th:text="${wechat.name}"  th:if="${user.wechatId eq wechat.wechatNo}" th:selected="selected"></option>
+										<option th:each="wechat : ${wechats}" th:value="${wechat.wechatNo}" th:text="${wechat.name}"  th:if="${user.wechatId ne wechat.wechatNo}"></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">appKey：</label>
+								<div class="col-sm-4">
+									<input id="appKey" readonly name="appKey" th:value="${user.appKey}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">
+								<label class="col-sm-2 control-label">支付宝：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择支付宝--" name="alipayId" id="alipayId"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择支付宝 --</option>
+										<option th:each="alipay : ${alipays}" th:value="${alipay.alipayNo}" th:text="${alipay.name}"  th:if="${user.alipayId eq alipay.alipayNo}" th:selected="selected"></option>
+										<option th:each="alipay : ${alipays}" th:value="${alipay.alipayNo}" th:text="${alipay.name}"  th:if="${user.alipayId ne alipay.alipayNo}"></option>
+									</select>
+								</div>
+								<label class="col-sm-2 control-label">分销商账号：</label>
+								<div class="col-sm-4">
+									<select data-placeholder="--选择分销商--" name="distributionNo" id="distributionNo"
+											class="form-control chosen-select" tabindex="2">
+										<option value="">-- 选择分销商 --</option>
+										<option th:each="coo : ${coos}" th:value="${coo.distributionNo}" th:text="${coo.name}"  th:if="${user.distributionNo eq coo.distributionNo}" th:selected="selected" ></option>
+										<option th:each="coo : ${coos}" th:value="${coo.distributionNo}" th:text="${coo.name}"  th:if="${user.distributionNo ne coo.distributionNo}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">授权回调地址：</label>
+								<div class="col-sm-4">
+									<input id="authorizedAddress" name="authorizedAddress" th:value="${user.authorizedAddress}" class="form-control" type="text">
+								</div>
+								<label class="col-sm-2 control-label">是否启用：</label>
+								<div class="col-sm-4">
+									<div class="onoffswitch">
+										<input id="available" name="available" checked="" type="checkbox"
+											   value="1" class="onoffswitch-checkbox" th:checked=${user.available=='1'}>
+										<label class="onoffswitch-label" for="available">
+											<span class="onoffswitch-inner"></span>
+											<span class="onoffswitch-switch"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">备注：</label>
+								<div class="col-sm-4">
+									<input id="bz" name="bz" th:value="${user.bz}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/payment/user/edit.js">
+	</script>
+</body>
+</html>

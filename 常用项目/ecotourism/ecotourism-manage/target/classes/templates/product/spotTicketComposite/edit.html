@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${spotTicketComposite.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">套票产品编号：</label>
+								<div class="col-sm-8">
+									<input id="compositeNo" name="compositeNo" th:value="${spotTicketComposite.compositeNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">父类型：</label>
+								<div class="col-sm-8">
+									<input id="productType" name="productType" th:value="${spotTicketComposite.productType}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">子类型：</label>
+								<div class="col-sm-8">
+									<input id="productSecondType" name="productSecondType" th:value="${spotTicketComposite.productSecondType}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">产品编号：</label>
+								<div class="col-sm-8">
+									<input id="productNo" name="productNo" th:value="${spotTicketComposite.productNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">产品名称：</label>
+								<div class="col-sm-8">
+									<input id="productName" name="productName" th:value="${spotTicketComposite.productName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">售价：</label>
+								<div class="col-sm-8">
+									<input id="payPrice" name="payPrice" th:value="${spotTicketComposite.payPrice}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">分成价：</label>
+								<div class="col-sm-8">
+									<input id="fractionalPrice" name="fractionalPrice" th:value="${spotTicketComposite.fractionalPrice}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">票种编号：</label>
+								<div class="col-sm-8">
+									<input id="ticketNo" name="ticketNo" th:value="${spotTicketComposite.ticketNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">票种分组：</label>
+								<div class="col-sm-8">
+									<input id="ticketGrouping" name="ticketGrouping" th:value="${spotTicketComposite.ticketGrouping}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">景点编号：</label>
+								<div class="col-sm-8">
+									<input id="spotNo" name="spotNo" th:value="${spotTicketComposite.spotNo}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">产品状态：</label>
+								<div class="col-sm-8">
+									<input id="status" name="status" th:value="${spotTicketComposite.status}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="createTime" name="createTime" th:value="${spotTicketComposite.createTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建人：</label>
+								<div class="col-sm-8">
+									<input id="createUser" name="createUser" th:value="${spotTicketComposite.createUser}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">修改时间：</label>
+								<div class="col-sm-8">
+									<input id="updateTime" name="updateTime" th:value="${spotTicketComposite.updateTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">修改人：</label>
+								<div class="col-sm-8">
+									<input id="updateUser" name="updateUser" th:value="${spotTicketComposite.updateUser}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/product/spotTicketComposite/edit.js">
+	</script>
+</body>
+</html>

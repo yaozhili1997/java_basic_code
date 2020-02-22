@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.product.dao.ProductDao">
+	<resultMap id="resultProduct" type="com.ecotourism.api.product.domain.ProductDO">
+		<result property="productType" column="product_type"/>
+		<result property="productSecondType" column="product_second_type"/>
+		<result property="productNo" column="product_no"/>
+		<result property="productName" column="product_name"/>
+		<result property="payPrice" column="pay_price"/>
+		<result property="isEntity" column="is_entity"/>
+		<result property="parkWay" column="park_way"/>
+		<result property="parkAddress" column="park_address"/>
+		<result property="useExplain" column="use_explain"/>
+		<result property="refundExplain" column="refund_explain"/>
+		<result property="costIncludes" column="cost_includes"/>
+		<result property="costNotIncludes" column="cost_not_includes"/>
+		<result property="whetherUserId" column="whether_user_id"/>
+		<result property="whetherShelvesAdvance" column="whether_shelves_advance"/>
+		<result property="advanceStartDate" column="advance_start_date"/>
+		<result property="advanceEndDate" column="advance_end_date"/>
+		<result property="whetherLimitSell" column="whether_limit_sell"/>
+		<result property="sellDateType" column="sell_date_type"/>
+		<result property="limitSellNum" column="limit_sell_num"/>
+		<result property="productFeatures" column="product_features"/>
+		<result property="stopSellingTicketsTime" column="stop_selling_tickets_time"/>
+		<result property="whetherRealName" column="whether_real_name"/>
+		<result property="stockType" column="stock_type"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="productTypeName" column="product_type_name"/>
+		<collection property="imgs" ofType="com.ecotourism.api.product.domain.Img">
+			<result property="imgUrl" column="imgUrl"/>
+		</collection>
+	</resultMap>
+	<resultMap id="resultSimpleProduct" type="com.ecotourism.api.product.domain.ProductDO">
+		<result property="productType" column="product_type"/>
+		<result property="productSecondType" column="product_second_type"/>
+		<result property="productNo" column="product_no"/>
+		<result property="productName" column="product_name"/>
+		<result property="payPrice" column="pay_price"/>
+		<result property="imgUrl" column="img_url"/>
+		<!--<collection property="imgs" ofType="com.ecotourism.api.product.domain.Img">
+			<result property="imgUrl" column="imgUrl"/>
+		</collection>-->
+	</resultMap>
+	<select id="get" resultMap="resultProduct">
+		select  p.product_type,p.product_second_type,p.product_no,p.product_name,p.pay_price
+		,p.is_entity,p.park_way,p.park_address,p.use_explain,p.refund_explain,p.cost_includes
+		,p.cost_not_includes,p.whether_shelves_advance,p.advance_start_date,p.whether_real_name,
+        p.advance_end_date,p.whether_limit_sell,p.sell_date_type,p.limit_sell_num,p.stock_type
+        ,p.product_features,s.stop_selling_tickets_time,p.whether_user_id,
+        CONCAT(p.base_url,p.img_url) as img_url,i.id as imgId,i.img_no as imgNo
+        ,CONCAT(p.base_url,i.img_url) as imgUrl,
+        (select product_type_name from product_type b where b.product_type_no=p.product_type and b.company_no = p.company_no limit 1) as product_type_name
+		from product_spot_ticket p
+		left join img i on p.product_no=i.img_no and p.company_no = i.company_no
+		LEFT JOIN base_ticket_type b on p.ticket_no=b.ticket_no
+		LEFT JOIN base_spot_management s on b.spot_no=s.spot_no
+		 where product_no = #{value}  and p.whether_shelves = '1'
+	</select>
+
+	<select id="getByPriceStock" resultMap="resultProduct">
+		select  p.product_type,p.product_second_type,p.product_no,p.product_name,
+		IFNULL((select sale_price from product_price_stock ps where ps.product_no=p.product_no
+		and DATE(#{playTime})=DATE(ps.date) and p.stock_type=2 limit 1),p.pay_price) as pay_price
+		,p.is_entity,p.park_way,p.park_address,p.use_explain,p.refund_explain,p.cost_includes
+		,p.cost_not_includes,p.whether_shelves_advance,p.advance_start_date,p.whether_real_name,
+        p.advance_end_date,p.whether_limit_sell,p.sell_date_type,p.limit_sell_num,p.whether_user_id
+        ,p.product_features,s.stop_selling_tickets_time,
+        CONCAT(p.base_url,p.img_url) as img_url,i.id as imgId,i.img_no as imgNo
+        ,CONCAT(p.base_url,i.img_url) as imgUrl,
+        (select product_type_name from product_type b where b.product_type_no=p.product_type and b.company_no = p.company_no limit 1) as product_type_name
+		from product_spot_ticket p
+		left join img i on p.product_no=i.img_no and p.company_no = i.company_no
+		LEFT JOIN base_ticket_type b on p.ticket_no=b.ticket_no
+		LEFT JOIN base_spot_management s on b.spot_no=s.spot_no
+		 where product_no = #{productNo}  and p.whether_shelves = '1'
+	</select>
+
+	<select id="listSimple" resultMap="resultSimpleProduct">
+		SELECT
+		p.product_type,p.product_second_type,p.product_no,p.product_name,
+		IFNULL((select sale_price from product_price_stock ps where ps.product_no=p.product_no
+		and DATE(NOW())=DATE(ps.date) and p.stock_type=2 limit 1),p.pay_price) as pay_price,
+		CONCAT(p.base_url,p.img_url) as img_url
+		FROM
+		product_spot_ticket p
+		LEFT JOIN base_ticket_type b on p.ticket_no=b.ticket_no
+		LEFT JOIN base_spot_management s on b.spot_no=s.spot_no
+		WHERE
+		p.distribution_channel IN (
+		SELECT
+		sale_channel_code
+		FROM
+		cooperation_distribution
+		WHERE
+		distribution_no = #{distributionNo}
+		AND api_is_open = '1'
+		AND enable = '1'
+		AND DATE(start_date) &lt;= DATE(NOW())
+		AND DATE(end_date) &gt;= DATE(NOW())
+		) and p.product_type is NOT null and p.product_type !='' and p.whether_shelves='1'
+		  <if test="spotNo != null and spotNo != ''">
+			  and s.spot_no = #{spotNo}
+		  </if>
+		  <if test="productName != null and productName != ''"> and p.product_name like CONCAT('%',#{productName},'%') </if>
+		  <if test="productType != null and productType != ''"> and p.product_type = #{productType} </if>
+		  <if test="productSecondType != null and productSecondType != ''"> and p.product_second_type = #{productSecondType} </if>
+		order by p.sort DESC
+		<if test="pageNumber != null and pageSize != null">
+			limit #{pageNumber}, #{pageSize}
+		</if>
+	</select>
+	<select id="listPriceStock" resultType="com.ecotourism.api.product.domain.ProductPriceStock">
+		select `id`,`product_no`,`date`,`settlement_price`
+		,`sale_price`,`sale_num`,`stock_num`
+		from product_price_stock where product_no = #{productNo} and DATE(`date`)&gt;= DATE(NOW())
+		<if test="priceStockStartDate != null and priceStockStartDate != ''"> and DATE(`date`)&gt;=#{priceStockStartDate} </if>
+		<if test="priceStockEndDate != null and priceStockEndDate != ''"> and DATE(`date`)&lt;=#{priceStockEndDate} </if>
+		order by `date` ASC
+	</select>
+</mapper>

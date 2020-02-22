@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cd11ff39-ef9a-41ef-a1ed-0d1aeea38ece" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="HTML File" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$APPLICATION_HOME_DIR$/plugins/maven/lib/maven3" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+        <option name="vmOptionsForImporter" value="-Xmx1024m" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="9" />
+    <option name="vmOptions" value="-DarchetypeCatalog=internal" />
+  </component>
+  <component name="ProjectId" id="1XhCCFbQmItPAEebsKhlbYsgxTS" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555771752044" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../ecotourism" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.qingcheng.controller" />
+      <recent name="com.qingcheng.service" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\qingcheng\qingcheng_parent\qingcheng_web_manager\src\main\webapp\system" />
+      <recent name="E:\qingcheng\qingcheng_parent\qingcheng_common_web\src\main\java\com\qingcheng\util" />
+      <recent name="E:\qingcheng\qingcheng_parent\qingcheng_web_manager\src\main\java\com\qingcheng\controller\system" />
+      <recent name="E:\qingcheng\qingcheng_parent\qingcheng_service_system\src\main\java\com\qingcheng\service\impl" />
+      <recent name="E:\qingcheng\qingcheng_parent\qingcheng_service_system\src\main\java\com\qingcheng\dao" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="WebUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.qingcheng.util.WebUtil" />
+      <module name="qingcheng_common_web" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.qingcheng.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.WebUtil" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cd11ff39-ef9a-41ef-a1ed-0d1aeea38ece" name="Default Changelist" comment="" />
+      <created>1554714787668</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1554714787668</updated>
+      <workItem from="1554714791909" duration="6130000" />
+      <workItem from="1554737525554" duration="12000" />
+      <workItem from="1554768883348" duration="16405000" />
+      <workItem from="1554824178233" duration="8000" />
+      <workItem from="1554909657813" duration="1583000" />
+      <workItem from="1554953708452" duration="9076000" />
+      <workItem from="1555030972749" duration="12443000" />
+      <workItem from="1555143975845" duration="5900000" />
+      <workItem from="1555159428331" duration="80000" />
+      <workItem from="1555380298462" duration="24531000" />
+      <workItem from="1555465871705" duration="6085000" />
+      <workItem from="1555512196529" duration="8000" />
+      <workItem from="1555587528554" duration="2630000" />
+      <workItem from="1555639996047" duration="11961000" />
+      <workItem from="1555727331686" duration="23674000" />
+      <workItem from="1555774677758" duration="86000" />
+      <workItem from="1581488814111" duration="3778000" />
+      <workItem from="1581518599136" duration="1002000" />
+      <workItem from="1581520870150" duration="5000" />
+      <workItem from="1581520932444" duration="310000" />
+      <workItem from="1581523388670" duration="1000" />
+      <workItem from="1581523451940" duration="35000" />
+      <workItem from="1581523684266" duration="9000" />
+      <workItem from="1581524373242" duration="10000" />
+      <workItem from="1581567460028" duration="2584000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="614" y="302" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1581488872860">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="614" y="302" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1536.824@0.0.1536.824" timestamp="1581488872860" />
+    <state x="365" y="291" key="FileChooserDialogImpl" timestamp="1581568488559">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="365" y="288" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1581492738501" />
+    <state x="365" y="291" key="FileChooserDialogImpl/0.0.1536.834@0.0.1536.834" timestamp="1581568488559" />
+    <state width="1493" height="334" key="GridCell.Tab.0.bottom" timestamp="1581572015882">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1478" height="326" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1581492739642" />
+    <state width="1493" height="334" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1581572015882" />
+    <state width="1493" height="334" key="GridCell.Tab.0.center" timestamp="1581572015882">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1478" height="326" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1581492739642" />
+    <state width="1493" height="334" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1581572015882" />
+    <state width="1493" height="334" key="GridCell.Tab.0.left" timestamp="1581572015882">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1478" height="326" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1581492739642" />
+    <state width="1493" height="334" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1581572015882" />
+    <state width="1493" height="334" key="GridCell.Tab.0.right" timestamp="1581572015882">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1478" height="326" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1581492739642" />
+    <state width="1493" height="334" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1581572015882" />
+    <state x="270" y="0" key="SettingsEditor" timestamp="1581523691641">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="270" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1581523691641" />
+  </component>
+</project>

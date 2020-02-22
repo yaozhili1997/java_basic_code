@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="strategyDetailId" name="strategyDetailId" th:value="${refundStrategyDetails.strategyDetailId}"  type="hidden">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">明细名称：</label>
+								<div class="col-sm-8">
+									<input id="strategyDetailName" name="strategyDetailName" th:value="${refundStrategyDetails.strategyDetailName}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">购票后时长（小时）：</label>
+								<div class="col-sm-8">
+									<input id="strategyDetailTime" name="strategyDetailTime" th:value="${refundStrategyDetails.strategyDetailTime}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">所属退票策略：</label>
+								<div class="col-sm-8">
+									<select data-placeholder="--退票策略--" name="strategyNo" id="strategyNo"
+											class="form-control chosen-select" tabindex="2" required>
+										<option value="">--退票策略--</option>
+										<option th:each="refundStrategyList : ${refundStrategyLists}" th:value="${refundStrategyList.strategyNo}" th:text="${refundStrategyList.strategyName}"  th:if="${refundStrategyList.strategyNo eq refundStrategyDetails.strategyNo}" th:selected="selected"></option>
+										<option th:each="refundStrategyList : ${refundStrategyLists}" th:value="${refundStrategyList.strategyNo}" th:text="${refundStrategyList.strategyName}"  th:if="${refundStrategyList.strategyNo ne refundStrategyDetails.strategyNo}" ></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">退票比例：</label>
+								<div class="col-sm-8">
+									<input id="refundProportion" name="refundProportion" th:value="${refundStrategyDetails.refundProportion}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">备注：</label>
+								<div class="col-sm-8">
+									<textarea id="remarks" name="remarks" th:text="${refundStrategyDetails.remarks}" class="form-control" type="text"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/base/refundStrategyDetails/edit.js">
+	</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:shiro="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<!--<div class="columns pull-left">
+							<button shiro:hasPermission="ums:order:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="ums:order:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>-->
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--产品名称--" name="productNo" id="productNo"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 产品名称 --</option>
+								<option th:each="spotTicketList : ${spotTicketLists}" th:value="${spotTicketList.productNo}" th:text="${spotTicketList.productName}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--应用名称--" name="app" id="app"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 应用名称 --</option>
+								<option th:each="app : ${appList}" th:value="${app.userNo}" th:text="${app.userName}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--退款状态--" name="refundStatus" id="refundStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 退款状态 --</option>
+								<option th:each="refundTypeList : ${refundTypeLists}" th:value="${refundTypeList.value}" th:text="${refundTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<select data-placeholder="--订单状态--" name="orderStatus" id="orderStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 订单状态 --</option>
+								<option th:each="orderStateTypeList : ${orderStateTypeLists}" th:value="${orderStateTypeList.value}" th:text="${orderStateTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="endTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="结束时间">
+						</div>
+						<div class="pull-right search col-md-2">
+							<input id="startTime" type="text"  onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:MM:ss'})" class="laydate-icon form-control" placeholder="开始时间">
+						</div>
+						<div class="pull-left search col-md-2">
+							<select data-placeholder="--支付状态--" name="payStatus" id="payStatus"
+									class="form-control chosen-select" tabindex="2">
+								<option value="">-- 支付状态 --</option>
+								<option th:each="payStateTypeList : ${payStateTypeLists}" th:value="${payStateTypeList.value}" th:text="${payStateTypeList.name}"  ></option>
+							</select>
+						</div>
+						<div class="columns pull-right columnsSearch">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2 nopadding">
+							<input id="searchName" type="text" class="form-control"
+								   placeholder="">
+						</div>
+						<table id="exampleTable" data-mobile-responsive="true">
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性  -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+				var s_resetPwd_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="ums:order:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="ums:order:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="ums:order:resetPwd">
+			<script type="text/javascript">
+				var s_resetPwd_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/plugins/clipboard/clipboard.min.js"></script>
+	<script type="text/javascript" src="/js/appjs/ums/order/order.js"></script>
+</body>
+</html>

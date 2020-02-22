@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.CapitalFlowDao">
+
+	<select id="get" resultType="com.ecotourism.oms.oms.domain.CapitalFlowDO">
+		select `capital_id`,`distribution_no`,`settlement_no`,`order_no`,`pay_type`,`houston`,`out_of_account`,`transaction_time`,`remarks`,`create_user`,`create_time`,`company_no` from cooperation_capital_flow where capital_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.oms.oms.domain.CapitalFlowDO">
+		select `capital_id`,`distribution_no`,`settlement_no`,`order_no`,`pay_type`,`houston`,`out_of_account`,`transaction_time`,`remarks`,`create_user`,`create_time`,`company_no` from cooperation_capital_flow
+        <where>  
+		  		  <if test="capitalId != null and capitalId != ''"> and capital_id = #{capitalId} </if>
+		  		  <if test="distributionNo != null and distributionNo != ''"> and distribution_no = #{distributionNo} </if>
+		  		  <if test="settlementNo != null and settlementNo != ''"> and settlement_no = #{settlementNo} </if>
+		  		  <if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
+		  		  <if test="payType != null and payType != ''"> and pay_type = #{payType} </if>
+		  		  <if test="houston != null and houston != ''"> and houston = #{houston} </if>
+		  		  <if test="outOfAccount != null and outOfAccount != ''"> and out_of_account = #{outOfAccount} </if>
+		  		  <if test="transactionTime != null and transactionTime != ''"> and transaction_time = #{transactionTime} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by capital_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from cooperation_capital_flow
+		 <where>  
+		  		  <if test="capitalId != null and capitalId != ''"> and capital_id = #{capitalId} </if>
+		  		  <if test="distributionNo != null and distributionNo != ''"> and distribution_no = #{distributionNo} </if>
+		  		  <if test="settlementNo != null and settlementNo != ''"> and settlement_no = #{settlementNo} </if>
+		  		  <if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
+		  		  <if test="payType != null and payType != ''"> and pay_type = #{payType} </if>
+		  		  <if test="houston != null and houston != ''"> and houston = #{houston} </if>
+		  		  <if test="outOfAccount != null and outOfAccount != ''"> and out_of_account = #{outOfAccount} </if>
+		  		  <if test="transactionTime != null and transactionTime != ''"> and transaction_time = #{transactionTime} </if>
+		  		  <if test="remarks != null and remarks != ''"> and remarks = #{remarks} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="companyNo != null and companyNo != ''"> and company_no = #{companyNo} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.oms.oms.domain.CapitalFlowDO" useGeneratedKeys="true" keyProperty="capitalId">
+		insert into cooperation_capital_flow
+		(
+			`distribution_no`, 
+			`settlement_no`, 
+			`order_no`, 
+			`pay_type`, 
+			`houston`, 
+			`out_of_account`, 
+			`transaction_time`, 
+			`remarks`, 
+			`create_user`, 
+			`create_time`, 
+			`company_no`
+		)
+		values
+		(
+			#{distributionNo}, 
+			#{settlementNo}, 
+			#{orderNo}, 
+			#{payType}, 
+			#{houston}, 
+			#{outOfAccount}, 
+			#{transactionTime}, 
+			#{remarks}, 
+			#{createUser}, 
+			#{createTime}, 
+			#{companyNo}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.oms.oms.domain.CapitalFlowDO">
+		update cooperation_capital_flow 
+		<set>
+			<if test="distributionNo != null">`distribution_no` = #{distributionNo}, </if>
+			<if test="settlementNo != null">`settlement_no` = #{settlementNo}, </if>
+			<if test="orderNo != null">`order_no` = #{orderNo}, </if>
+			<if test="payType != null">`pay_type` = #{payType}, </if>
+			<if test="houston != null">`houston` = #{houston}, </if>
+			<if test="outOfAccount != null">`out_of_account` = #{outOfAccount}, </if>
+			<if test="transactionTime != null">`transaction_time` = #{transactionTime}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="companyNo != null">`company_no` = #{companyNo}</if>
+		</set>
+		where capital_id = #{capitalId}
+	</update>
+	
+	<delete id="remove">
+		delete from cooperation_capital_flow where capital_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from cooperation_capital_flow where capital_id in 
+		<foreach item="capitalId" collection="array" open="(" separator="," close=")">
+			#{capitalId}
+		</foreach>
+	</delete>
+
+</mapper>

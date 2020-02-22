@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.users.dao.PushUserDao">
+
+	<select id="list" resultType="com.ecotourism.manage.users.domain.PushUserDO">
+		SELECT
+			a.id,
+			a.user_name,
+			a.user_no,
+			`qr_code_img`,
+			c.`name` user_type,
+			`whether_shelves`,
+			a.bz,
+			b.user_name distribution_no
+		FROM
+		local_push_user a
+		LEFT JOIN payment_user b ON a.DISTRIBUTION_NO = b.user_no
+		LEFT JOIN sys_dict c ON a.user_type = c.`value`
+		<where>
+			<if test="id !=null and id != ''"> and id=#{id} </if>
+			<if test="userName !=null and userName != ''"> and user_name=#{userName} </if>
+			<if test="userNo !=null and userNo != ''"> and user_no=#{userNo} </if>
+			<if test="qrCodeImg !=null and qrCodeImg != ''"> and qr_code_img=#{qrCodeImg} </if>
+			<if test="userType !=null and userType != ''"> and user_type=#{userType} </if>
+			<if test="whetherShelves !=null and whetherShelves != ''"> and whether_shelves=#{whetherShelves} </if>
+			<if test="createUser !=null and createUser != ''"> and create_user=#{createUser} </if>
+			<if test="createTime !=null and createTime != ''"> and create_time=#{createTime} </if>
+			<if test="updateUser !=null and updateUser != ''"> and update_user=#{updateUser} </if>
+			<if test="bz !=null and bz != ''"> and bz=#{bz} </if>
+			<if test="updateTime !=null and updateTime != ''"> and update_time=#{updateTime} </if>
+			<if test="distributionNo !=null and distributionNo != ''"> and distribution_no=#{distributionNo} </if>
+			<if test="companyNo !=null and companyNo != ''"> and company_no=#{companyNo} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		SELECT COUNT(*) FROM local_push_user a
+		LEFT JOIN payment_user b ON a.DISTRIBUTION_NO = b.user_no
+		LEFT JOIN sys_dict c ON a.user_type = c.`value`
+		<where>
+			<if test="id !=null and id != ''"> and id=#{id} </if>
+			<if test="userName !=null and userName != ''"> and user_name=#{userName} </if>
+			<if test="userNo !=null and userNo != ''"> and user_no=#{userNo} </if>
+			<if test="qrCodeImg !=null and qrCodeImg != ''"> and qr_code_img=#{qrCodeImg} </if>
+			<if test="userType !=null and userType != ''"> and user_type=#{userType} </if>
+			<if test="whetherShelves !=null and whetherShelves != ''"> and whether_shelves=#{whetherShelves} </if>
+			<if test="createUser !=null and createUser != ''"> and create_user=#{createUser} </if>
+			<if test="createTime !=null and createTime != ''"> and create_time=#{createTime} </if>
+			<if test="updateUser !=null and updateUser != ''"> and update_user=#{updateUser} </if>
+			<if test="bz !=null and bz != ''"> and bz=#{bz} </if>
+			<if test="updateTime !=null and updateTime != ''"> and update_time=#{updateTime} </if>
+			<if test="distributionNo !=null and distributionNo != ''"> and distribution_no=#{distributionNo} </if>
+			<if test="companyNo !=null and companyNo != ''"> and company_no=#{companyNo} </if>
+		</where>
+	</select>
+
+	<select id="get" resultType="com.ecotourism.manage.users.domain.PushUserDO">
+		SELECT `id`,`user_name`,`user_no`,`qr_code_img`,`user_type`,`whether_shelves`,`create_user`,`create_time`,`update_user`,`bz`,`update_time`,`distribution_no`,`company_no` FROM local_push_user
+		WHERE id=#{value}
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.manage.users.domain.PushUserDO" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO local_push_user
+		 (
+	  		`user_name`,
+			`user_no`,
+			`qr_code_img`,
+			`user_type`,
+			`whether_shelves`,
+			`create_user`,
+			`create_time`,
+			`bz`,
+			`distribution_no`,
+			`company_no`
+		  )
+		  VALUES
+		  (
+		  	#{userName},
+		  	#{userNo},
+		  	#{qrCodeImg},
+		  	#{userType},
+		  	#{whetherShelves},
+		  	#{createUser},
+		  	#{createTime},
+		  	#{bz},
+		  	#{distributionNo},
+		  	#{companyNo}
+		  )
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.manage.users.domain.PushUserDO">
+		UPDATE local_push_user
+		<set>
+			<if test="userName != null">`user_name`=#{userName},</if>
+			<if test="userNo != null">`user_no`=#{userNo},</if>
+			<if test="qrCodeImg != null">`qr_code_img`=#{qrCodeImg},</if>
+			<if test="userType != null">`user_type`=#{userType},</if>
+			<if test="whetherShelves != null">`whether_shelves`=#{whetherShelves},</if>
+			<if test="updateUser != null">`update_user`=#{updateUser},</if>
+			<if test="updateTime != null">`update_time`=#{updateTime},</if>
+			<if test="bz != null">`bz`=#{bz},</if>
+			<if test="distributionNo != null">`distribution_no`=#{distributionNo},</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<delete id="remove">
+		DELETE FROM local_push_user WHERE id=#{value}
+	</delete>
+
+	<delete id="batchRemove">
+		DELETE FROM local_push_user WHERE id IN
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+
+	</delete>
+</mapper>

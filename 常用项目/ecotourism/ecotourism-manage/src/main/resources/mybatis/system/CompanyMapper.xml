@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.system.dao.CompanyDao">
+
+	<select id="get" resultType="com.ecotourism.manage.system.domain.CompanyDO">
+		select `department_id`,`name`,`name_en`,`bianma`,`parent_id`,`bz`,`headman`,`tel`,`functions`,`address` from sys_company where DEPARTMENT_ID = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.system.domain.CompanyDO">
+		select `department_id`,`name`,`name_en`,`bianma`,`parent_id`,`bz`,`headman`,`tel`,`functions`,`address` from sys_company
+        <where>  
+		  		  <if test="departmentId != null and departmentId != ''"> and department_id = #{departmentId} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="nameEn != null and nameEn != ''"> and name_en = #{nameEn} </if>
+		  		  <if test="bianma != null and bianma != ''"> and bianma = #{bianma} </if>
+		  		  <if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+		  		  <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+		  		  <if test="headman != null and headman != ''"> and headman = #{headman} </if>
+		  		  <if test="tel != null and tel != ''"> and tel = #{tel} </if>
+		  		  <if test="functions != null and functions != ''"> and functions = #{functions} </if>
+		  		  <if test="address != null and address != ''"> and address = #{address} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by department_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sys_company
+		 <where>
+				 <if test="departmentId != null and departmentId != ''"> and department_id = #{departmentId} </if>
+				 <if test="name != null and name != ''"> and name = #{name} </if>
+				 <if test="nameEn != null and nameEn != ''"> and name_en = #{nameEn} </if>
+				 <if test="bianma != null and bianma != ''"> and bianma = #{bianma} </if>
+				 <if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+				 <if test="bz != null and bz != ''"> and bz = #{bz} </if>
+				 <if test="headman != null and headman != ''"> and headman = #{headman} </if>
+				 <if test="tel != null and tel != ''"> and tel = #{tel} </if>
+				 <if test="functions != null and functions != ''"> and functions = #{functions} </if>
+				 <if test="address != null and address != ''"> and address = #{address} </if>
+		 </where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.manage.system.domain.CompanyDO">
+		insert into sys_company
+		(
+			`department_id`,
+			`name`,
+			`name_en`,
+			`bianma`,
+			`parent_id`,
+			`bz`,
+			`headman`,
+			`tel`,
+			`functions`,
+			`address`
+		)
+		values
+		(
+			#{departmentId}, 
+			#{name}, 
+			#{nameEn}, 
+			#{bianma}, 
+			#{parentId}, 
+			#{bz}, 
+			#{headman}, 
+			#{tel}, 
+			#{functions}, 
+			#{address}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.manage.system.domain.CompanyDO">
+		update sys_company 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="nameEn != null">`name_en` = #{nameEn}, </if>
+			<if test="bianma != null">`bianma` = #{bianma}, </if>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="bz != null">`bz` = #{bz}, </if>
+			<if test="headman != null">`headman` = #{headman}, </if>
+			<if test="tel != null">`tel` = #{tel}, </if>
+			<if test="functions != null">`functions` = #{functions}, </if>
+			<if test="address != null">`address` = #{address}</if>
+		</set>
+		where department_id = #{departmentId}
+	</update>
+	
+	<delete id="remove">
+		delete from sys_company where department_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_company where department_id in
+		<foreach item="departmentId" collection="array" open="(" separator="," close=")">
+			#{departmentId}
+		</foreach>
+	</delete>
+
+</mapper>

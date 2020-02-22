@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.order.dao.cluster.OrderSupplierLogDao">
+
+	<select id="list" resultType="com.ecotourism.manage.order.domain.OrderSupplierLogDO">
+		select `id`,`order_no`,`piaogo_order_no`,`status`,`msg`,`crate_time`,`electronic_ticket`  from order_supplier_log
+		<where>
+			<if test="searchName != null and searchName != ''">
+				order_no LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+			</if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from order_supplier_log
+		 <where>
+			 <if test="searchName != null and searchName != ''">
+				 and (
+				 order_no LIKE
+				 CONCAT(CONCAT('', #{searchName}),'%')
+				 )
+			 </if>
+		 </where>
+	</select>
+
+</mapper>

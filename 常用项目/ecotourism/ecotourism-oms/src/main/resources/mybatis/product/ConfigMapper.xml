@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.ConfigDao">
+
+	<select id="get" resultType="com.ecotourism.oms.oms.domain.ConfigDO">
+		SELECT
+			`id`,
+			`distribution_no`,
+			`product_no_order`,
+			`show_no_order`,
+			`key_code`,
+			`create_user`,
+			`create_time`,
+			`update_time`,
+			`update_user`,
+			`company_no`
+		FROM
+			product_config
+		WHERE
+		distribution_no = #{value}
+
+	</select>
+
+</mapper>

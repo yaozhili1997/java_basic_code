@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.order.dao.OrderUserDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.order.domain.OrderUserDO">
+		select `id`,`nick_name`,`avatar`,`country`,`province`,`city`,`gender`,`alipay_user_id`,`user_type`,`user_status`,`is_certified`,`is_student_certified`,`ticket_buying_time`,`priduct_no`,`number_tickets`,`latitude`,`longitude`,`accuracy` from order_user where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.order.domain.OrderUserDO">
+		select `id`,`nick_name`,`avatar`,`country`,`province`,`city`,`gender`,`alipay_user_id`,`user_type`,`user_status`,`is_certified`,`is_student_certified`,`ticket_buying_time`,`priduct_no`,`number_tickets`,`latitude`,`longitude`,`accuracy` from order_user
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="nickName != null and nickName != ''"> and nick_name = #{nickName} </if>
+		  		  <if test="avatar != null and avatar != ''"> and avatar = #{avatar} </if>
+		  		  <if test="country != null and country != ''"> and country = #{country} </if>
+		  		  <if test="province != null and province != ''"> and province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and city = #{city} </if>
+		  		  <if test="gender != null and gender != ''"> and gender = #{gender} </if>
+		  		  <if test="alipayUserId != null and alipayUserId != ''"> and alipay_user_id = #{alipayUserId} </if>
+		  		  <if test="userType != null and userType != ''"> and user_type = #{userType} </if>
+		  		  <if test="userStatus != null and userStatus != ''"> and user_status = #{userStatus} </if>
+		  		  <if test="isCertified != null and isCertified != ''"> and is_certified = #{isCertified} </if>
+		  		  <if test="isStudentCertified != null and isStudentCertified != ''"> and is_student_certified = #{isStudentCertified} </if>
+		  		  <if test="ticketBuyingTime != null and ticketBuyingTime != ''"> and ticket_buying_time = #{ticketBuyingTime} </if>
+		  		  <if test="priductNo != null and priductNo != ''"> and priduct_no = #{priductNo} </if>
+		  		  <if test="numberTickets != null and numberTickets != ''"> and number_tickets = #{numberTickets} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="accuracy != null and accuracy != ''"> and accuracy = #{accuracy} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from order_user
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="nickName != null and nickName != ''"> and nick_name = #{nickName} </if>
+		  		  <if test="avatar != null and avatar != ''"> and avatar = #{avatar} </if>
+		  		  <if test="country != null and country != ''"> and country = #{country} </if>
+		  		  <if test="province != null and province != ''"> and province = #{province} </if>
+		  		  <if test="city != null and city != ''"> and city = #{city} </if>
+		  		  <if test="gender != null and gender != ''"> and gender = #{gender} </if>
+		  		  <if test="alipayUserId != null and alipayUserId != ''"> and alipay_user_id = #{alipayUserId} </if>
+		  		  <if test="userType != null and userType != ''"> and user_type = #{userType} </if>
+		  		  <if test="userStatus != null and userStatus != ''"> and user_status = #{userStatus} </if>
+		  		  <if test="isCertified != null and isCertified != ''"> and is_certified = #{isCertified} </if>
+		  		  <if test="isStudentCertified != null and isStudentCertified != ''"> and is_student_certified = #{isStudentCertified} </if>
+		  		  <if test="ticketBuyingTime != null and ticketBuyingTime != ''"> and ticket_buying_time = #{ticketBuyingTime} </if>
+		  		  <if test="priductNo != null and priductNo != ''"> and priduct_no = #{priductNo} </if>
+		  		  <if test="numberTickets != null and numberTickets != ''"> and number_tickets = #{numberTickets} </if>
+		  		  <if test="latitude != null and latitude != ''"> and latitude = #{latitude} </if>
+		  		  <if test="longitude != null and longitude != ''"> and longitude = #{longitude} </if>
+		  		  <if test="accuracy != null and accuracy != ''"> and accuracy = #{accuracy} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.order.domain.OrderUserDO" useGeneratedKeys="true" keyProperty="id">
+		insert into order_user
+		(
+			`nick_name`, 
+			`avatar`, 
+			`country`, 
+			`province`, 
+			`city`, 
+			`gender`, 
+			`alipay_user_id`, 
+			`user_type`, 
+			`user_status`, 
+			`is_certified`, 
+			`is_student_certified`, 
+			`ticket_buying_time`, 
+			`priduct_no`, 
+			`number_tickets`, 
+			`latitude`, 
+			`longitude`, 
+			`accuracy`
+		)
+		values
+		(
+			#{nickName}, 
+			#{avatar}, 
+			#{country}, 
+			#{province}, 
+			#{city}, 
+			#{gender}, 
+			#{alipayUserId}, 
+			#{userType}, 
+			#{userStatus}, 
+			#{isCertified}, 
+			#{isStudentCertified}, 
+			#{ticketBuyingTime}, 
+			#{priductNo}, 
+			#{numberTickets}, 
+			#{latitude}, 
+			#{longitude}, 
+			#{accuracy}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.order.domain.OrderUserDO">
+		update order_user 
+		<set>
+			<if test="nickName != null">`nick_name` = #{nickName}, </if>
+			<if test="avatar != null">`avatar` = #{avatar}, </if>
+			<if test="country != null">`country` = #{country}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="gender != null">`gender` = #{gender}, </if>
+			<if test="alipayUserId != null">`alipay_user_id` = #{alipayUserId}, </if>
+			<if test="userType != null">`user_type` = #{userType}, </if>
+			<if test="userStatus != null">`user_status` = #{userStatus}, </if>
+			<if test="isCertified != null">`is_certified` = #{isCertified}, </if>
+			<if test="isStudentCertified != null">`is_student_certified` = #{isStudentCertified}, </if>
+			<if test="ticketBuyingTime != null">`ticket_buying_time` = #{ticketBuyingTime}, </if>
+			<if test="priductNo != null">`priduct_no` = #{priductNo}, </if>
+			<if test="numberTickets != null">`number_tickets` = #{numberTickets}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+			<if test="accuracy != null">`accuracy` = #{accuracy}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from order_user where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from order_user where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

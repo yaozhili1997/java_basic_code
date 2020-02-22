@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.api.system.dao.DictTypeDao">
+
+	<select id="get" resultType="com.ecotourism.api.system.domain.DictTypeDO">
+		select `id`,`type`,`description` from sys_dict_type where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.api.system.domain.DictTypeDO">
+		select `id`,`type`,`description` from sys_dict_type
+        <where>
+			<if test="searchName != null and searchName != ''">
+				type LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				description
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+			</if>
+		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sys_dict_type
+		 <where>
+			 <if test="searchName != null and searchName != ''">
+				 type LIKE
+				 CONCAT(CONCAT('', #{searchName}),'%')
+				 or
+				 description
+				 LIKE CONCAT(CONCAT('', #{searchName}),'%')
+			 </if>
+		 </where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.api.system.domain.DictTypeDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_dict_type
+		(
+			`type`, 
+			`description`
+		)
+		values
+		(
+			#{type}, 
+			#{description}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.api.system.domain.DictTypeDO">
+		update sys_dict_type 
+		<set>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="description != null">`description` = #{description}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sys_dict_type where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_dict_type where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

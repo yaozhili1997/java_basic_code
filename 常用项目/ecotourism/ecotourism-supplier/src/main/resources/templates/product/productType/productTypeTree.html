@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox-content">
+					<div id="jsTree"></div>
+				</div>
+				<div class="form-group ">
+					<div class="col-sm-12 col-sm-offset-12">
+						<input type="hidden" th:value="${productType}" name="productType" id="productType">
+						<button type="submit" onclick="loadProductType()" class="btn btn-primary">提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		    var productType = $("#productType").val();
+			getTreeData(productType)
+		});
+		function getTreeData(productType) {
+			$.ajax({
+				type : "GET",
+				url : "/product/productType/tree?productType="+productType,
+				success : function(tree) {
+                    loadProductTree(tree);
+				}
+			});
+		}
+		function loadProductTree(tree) {
+			$('#jsTree').jstree({
+				'core' : {
+                    "multiple": false,
+					'data' : tree
+				},
+                "checkbox": {
+                    "three_state": false
+                },
+				"plugins" : [ "checkbox" ]
+			});
+			$('#jsTree').jstree().open_all();
+		}
+		function loadProductType(){
+			var ids;
+			var ref = $('#jsTree').jstree(true); // 获得整个树
+            ids = ref.get_bottom_selected();
+			refunds = ref.get_bottom_checked('true');
+			var txt="";
+            var parentId="";
+			for(var refund in refunds){
+				if(refunds[refund].state.mType=="user"){
+					txt=txt+refunds[refund].text;
+                    parentId = parentId+refunds[refund].parent;
+				}
+			}
+			parent.loadProductType(ids,txt,parentId);
+			var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+			parent.layer.close(index);
+		}
+	</script>
+</body>
+</html>

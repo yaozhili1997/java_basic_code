@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.inter.dao.OmsApiFieldconfigDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.inter.domain.OmsApiFieldconfigDO">
+		select `id`,`apino`,`transtype`,`transbefore`,`transafter`,`fieldexplain`,`formatSql`,`validateStr`,`apiversion`,`createdate`,`createuser`,`modifydate`,`modifyuser` from interface_oms_api_fieldconfig where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.inter.domain.OmsApiFieldconfigDO">
+		select i.id,a.apiname `apino`,`transtype`,`transbefore`,`transafter`,`fieldexplain`,`formatSql`,`validateStr`,`apiversion` from interface_oms_api_fieldconfig i
+		left join interface_oms_api a ON
+		a.apino = i.apino
+        <where>  
+		  		  <if test="id != null and id != ''"> and i.id = #{id} </if>
+		  		  <if test="apino != null and apino != ''"> and i.apino = #{apino} </if>
+		  		  <if test="transtype != null and transtype != ''"> and i.transtype = #{transtype} </if>
+		  		  <if test="transbefore != null and transbefore != ''"> and i.transbefore = #{transbefore} </if>
+		  		  <if test="transafter != null and transafter != ''"> and i.transafter = #{transafter} </if>
+		  		  <if test="fieldexplain != null and fieldexplain != ''"> and i.fieldexplain = #{fieldexplain} </if>
+		  		  <if test="formatsql != null and formatsql != ''"> and i.formatSql = #{formatsql} </if>
+		  		  <if test="validatestr != null and validatestr != ''"> and i.validateStr = #{validatestr} </if>
+		  		  <if test="apiversion != null and apiversion != ''"> and i.apiversion = #{apiversion} </if>
+		  		  <if test="createdate != null and createdate != ''"> and i.createdate = #{createdate} </if>
+		  		  <if test="createuser != null and createuser != ''"> and i.createuser = #{createuser} </if>
+		  		  <if test="modifydate != null and modifydate != ''"> and i.modifydate = #{modifydate} </if>
+		  		  <if test="modifyuser != null and modifyuser != ''"> and i.modifyuser = #{modifyuser} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by i.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from interface_oms_api_fieldconfig
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="apino != null and apino != ''"> and apino = #{apino} </if>
+		  		  <if test="transtype != null and transtype != ''"> and transtype = #{transtype} </if>
+		  		  <if test="transbefore != null and transbefore != ''"> and transbefore = #{transbefore} </if>
+		  		  <if test="transafter != null and transafter != ''"> and transafter = #{transafter} </if>
+		  		  <if test="fieldexplain != null and fieldexplain != ''"> and fieldexplain = #{fieldexplain} </if>
+		  		  <if test="formatsql != null and formatsql != ''"> and formatSql = #{formatsql} </if>
+		  		  <if test="validatestr != null and validatestr != ''"> and validateStr = #{validatestr} </if>
+		  		  <if test="apiversion != null and apiversion != ''"> and apiversion = #{apiversion} </if>
+		  		  <if test="createdate != null and createdate != ''"> and createdate = #{createdate} </if>
+		  		  <if test="createuser != null and createuser != ''"> and createuser = #{createuser} </if>
+		  		  <if test="modifydate != null and modifydate != ''"> and modifydate = #{modifydate} </if>
+		  		  <if test="modifyuser != null and modifyuser != ''"> and modifyuser = #{modifyuser} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.ecotourism.supplier.inter.domain.OmsApiFieldconfigDO" useGeneratedKeys="true" keyProperty="id">
+		insert into interface_oms_api_fieldconfig
+		(
+			`apino`, 
+			`transtype`, 
+			`transbefore`, 
+			`transafter`, 
+			`fieldexplain`, 
+			`formatSql`, 
+			`validateStr`, 
+			`apiversion`, 
+			`createdate`, 
+			`createuser`, 
+			`modifydate`, 
+			`modifyuser`
+		)
+		values
+		(
+			#{apino}, 
+			#{transtype}, 
+			#{transbefore}, 
+			#{transafter}, 
+			#{fieldexplain}, 
+			#{formatsql}, 
+			#{validatestr}, 
+			#{apiversion}, 
+			#{createdate}, 
+			#{createuser}, 
+			#{modifydate}, 
+			#{modifyuser}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.ecotourism.supplier.inter.domain.OmsApiFieldconfigDO">
+		update interface_oms_api_fieldconfig 
+		<set>
+			<if test="apino != null">`apino` = #{apino}, </if>
+			<if test="transtype != null">`transtype` = #{transtype}, </if>
+			<if test="transbefore != null">`transbefore` = #{transbefore}, </if>
+			<if test="transafter != null">`transafter` = #{transafter}, </if>
+			<if test="fieldexplain != null">`fieldexplain` = #{fieldexplain}, </if>
+			<if test="formatsql != null">`formatSql` = #{formatsql}, </if>
+			<if test="validatestr != null">`validateStr` = #{validatestr}, </if>
+			<if test="apiversion != null">`apiversion` = #{apiversion}, </if>
+			<if test="createdate != null">`createdate` = #{createdate}, </if>
+			<if test="createuser != null">`createuser` = #{createuser}, </if>
+			<if test="modifydate != null">`modifydate` = #{modifydate}, </if>
+			<if test="modifyuser != null">`modifyuser` = #{modifyuser}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from interface_oms_api_fieldconfig where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from interface_oms_api_fieldconfig where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="springboot_mybatis (1) (com.itheima)" />
+        <module name="springboot_mybati" />
+        <module name="springboot_jpa" />
+        <module name="springboot_quick2" />
+        <module name="springboot_mybatis" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="springboot_jpa" target="1.8" />
+      <module name="springboot_mybati" target="1.8" />
+      <module name="springboot_mybatis" target="1.8" />
+      <module name="springboot_mybatis (1) (com.itheima)" target="1.8" />
+      <module name="springboot_quick2" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="springboot_jpa" options="-parameters" />
+      <module name="springboot_mybati" options="-parameters" />
+      <module name="springboot_mybatis" options="-parameters" />
+      <module name="springboot_mybatis (1) (com.itheima)" options="-parameters" />
+      <module name="springboot_quick2" options="-parameters" />
+    </option>
+  </component>
+</project>

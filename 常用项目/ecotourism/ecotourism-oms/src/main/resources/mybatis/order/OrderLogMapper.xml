@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.oms.oms.dao.OrderLogDao">
+
+	<select id="get" parameterType="com.ecotourism.oms.oms.domain.OrderLogDO" resultType="com.ecotourism.oms.oms.domain.OrderLogDO">
+		SELECT
+			`id`,
+			`order_no`,
+			`log_type`,
+			`log_content`,
+			`create_user`,
+			`create_time`,
+			`order_distributor`,
+			`self_machine_no`,
+			`electronic_ticket`,
+			`order_quantity`
+		FROM
+			order_log
+		WHERE
+			order_no = #{orderNo}
+			and order_distributor = #{orderDistributor}
+			limit 1
+	</select>
+	<insert id="save" parameterType="com.ecotourism.oms.oms.domain.OrderLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into order_log
+		(
+		`order_no`,
+		`log_type`,
+		`log_content`,
+		`create_user`,
+		`create_time`,
+		`order_distributor`,
+		`self_machine_no`,
+		`electronic_ticket`,
+		`order_quantity`
+		)
+		values
+		(
+		#{orderNo},
+		#{logType},
+		#{logContent},
+		#{createUser},
+		#{createTime},
+		#{orderDistributor},
+		#{selfMachineNo},
+		#{electronicTicket},
+		#{orderQuantity}
+		)
+	</insert>
+
+	<select id="getOrderStatus"  resultType="com.ecotourism.oms.oms.domain.OrderLogDO">
+		SELECT
+		`id`,
+		`order_no`,
+		`log_type`,
+		`log_content`,
+		`create_user`,
+		`create_time`,
+		`order_distributor`,
+		`self_machine_no`,
+		`electronic_ticket`,
+		`order_quantity`
+		FROM
+		order_log
+		WHERE
+		order_no = #{orderNo}
+		and order_distributor = #{orderDistributor}
+	</select>
+</mapper>

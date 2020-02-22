@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
+	<head th:include="include :: header"><meta charset="utf-8" /></head>
+	<script th:inline="javascript">
+        var productNo = [[${productNo}]];
+        var shoppingCarId = [[${shoppingCarId}]];
+        var wcProductType = [[${wcProductType}]];
+	</script>
+	<link rel="stylesheet" type="text/css" href="/css/calendar-pro.css" />
+	<script type="application/javascript" src="/js/calendar-pro.js"></script>
+	<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">门票预定</h1>
+	</header>
+	<div class="mui-content" style="padding-bottom: 50px;">
+		<div class="mui-clearfix">
+			<div>
+				<!-- 日期数量 -->
+				<div class="mui-card" style="border-radius: 10px;">
+					<div class="mui-card-header">
+						<h4 style="border-bottom: 1px solid #eee; padding: 10px 0; width: 100%;" id="productName">
+							&nbsp;
+						</h4>
+					</div>
+					<div class="mui-card-content">
+						<div class="mui-card-content-inner" style="padding-top: 0px;">
+							<div class="date-box mui-clearfix" style="padding-bottom: 0;border-bottom: none;">
+
+								<div class="today-date item-date mui-pull-left date-chose"  style="position:relative; width: 25%; margin-right: 2%;">
+									<input type="hidden" name="playTime">
+									<p class="date-font">
+										今天
+										<small style="font-size: 14px;display: inline-block" class="date">
+											&emsp;
+										</small>
+									</p>
+									<p class="price-font stock-box">
+										库存
+										<small class="stock" style="font-size: 12px;"></small>
+									</p>
+									<p class="price-font">
+										￥
+										<small style="font-size: 16px;font-weight:bold;" class="price">&nbsp;</small>
+									</p>
+									<div class="chose">
+										<span class="mui-icon mui-icon-checkmarkempty chose-icon" style=""></span>
+									</div>
+								</div>
+
+								<div class="tomorrow-date item-date mui-pull-left date-chose" style="position:relative; width: 25%; margin-right: 2%;">
+									<input type="hidden" name="playTime">
+									<p class="date-font">
+										明天
+										<small style="font-size: 14px;display: inline-block" class="date">
+											&emsp;
+										</small>
+									</p>
+									<p class="price-font stock-box">
+										库存
+										<small class="stock" style="font-size: 12px;"></small>
+									</p>
+									<p class="price-font">
+										￥
+										<small style="font-size: 16px;font-weight:bold;" class="price">&nbsp;</small>
+									</p>
+									<div class="chose">
+										<span class="mui-icon mui-icon-checkmarkempty chose-icon" style=""></span>
+									</div>
+
+								</div>
+
+								<div class="arbitrarily-date item-date mui-pull-left date-chose" style="position:relative; width: 25%; margin-right: 2%;">
+									<input type="hidden" name="playTime">
+									<p class="date-font date">
+										&emsp;
+										<small style="font-size: 14px;display: inline-block;">
+											&emsp;
+										</small>
+									</p>
+									<p class="price-font stock-box">
+										库存
+										<small class="stock" style="font-size: 12px;"></small>
+									</p>
+									<p class="price-font">
+										￥
+										<small style="font-size: 16px;font-weight:bold;" class="price">&emsp;</small>
+									</p>
+									<div class="chose">
+										<span class="mui-icon mui-icon-checkmarkempty chose-icon" style=""></span>
+									</div>
+								</div>
+
+								<div class="choice-date item-date mui-pull-left more-date" style="width: 19%;" href="#picture">
+									<p class="date-font mui-text-center" style="margin-bottom: 0;">
+										更多
+									</p>
+									<p class="date-font mui-text-center" style="margin-bottom: 3px;">
+										日期
+									</p>
+								</div>
+
+							</div>
+
+							<div>
+
+							</div>
+						</div>
+					</div>
+					<div class="mui-card-footer"  style="border-top: 1px solid rgba(0, 0, 0, .1);display: none;">
+						<div style="width: 100%;">
+							<h4 class="mui-pull-left">
+								购买数量
+							</h4>
+
+							<div class="mui-pull-right">
+								<div class="mui-numbox " style="width:120px;">
+									<button class="mui-btn mui-minus" type="button" onclick="modifyBuyNum('-', this)">-</button>
+									<input class="mui-input-numbox" name="num" type="number" style="color: #000000;" value="1" readonly="readonly" maxlength="3"/>
+									<button class="mui-btn mui-plus" type="button" onclick="modifyBuyNum('+', this)">+</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- 日期数量 end!-->
+
+				<!-- 游客信息 -->
+				<!--<div>
+					<div class="mui-card" style="border-radius: 10px;">
+						<div class="mui-card-header" style="padding-bottom: 0;">
+							<h4 style="border-bottom: 1px solid #eee; padding: 10px 0; width: 100%;">
+								游客信息&lt;!&ndash;<p class="mui-pull-right tite-tip-font">多人入园，可填一人有效证件</p>&ndash;&gt;
+							</h4>
+						</div>
+						<div class="mui-card-content">
+							<div class="mui-card-content-inner" style="padding-top: 0px;">
+								<div>
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+											姓名
+										</h4>
+										<input type="text" placeholder="请输入身份证上的姓名" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerName"/>
+									</div>
+									<div class="mui-clearfix" style="border-bottom: 1px solid #eee;">
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;" id="buyerNameTip">必须填</p >
+									</div>
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+											身份证
+										</h4>
+										<input type="text" placeholder="输入有效身份证号码" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerIdCard"/>
+									</div>
+									<div class="mui-clearfix" style="border-bottom: 1px solid #eee;">
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;" id="buyerIdCardTip">必须填</p >
+									</div>
+									<div class="mui-clearfix">
+										<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+											手机号
+										</h4>
+										<input type="text" placeholder="输入入园人手机号码" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerMobile"/>
+									</div>
+									<div class="mui-clearfix" >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+										<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;" id="buyerMobileTip">必须填</p >
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>-->
+				<!-- 游客信息 end!-->
+
+				<!-- 游客信息 -->
+				<div>
+					<div class="mui-card" style="border-radius: 10px;">
+						<div class="mui-card-header" style="padding-bottom: 0px;">
+							<h4 style="border-bottom: 1px solid #eee; padding: 10px 0; width: 100%;">
+								游客信息
+							</h4>
+						</div>
+
+						<div class="mui-card-content name-list" id="customer-info-list">
+
+						</div>
+
+						<div class="btn-box mui-clearfix add-btn-box" style="display: none;">
+							<div style="width: 50%;"  class="mui-pull-left">
+								<button onclick="chooseCustomer()" type="button" class="chose-add-btn" id="chose-add-btn" style="width: 100%;line-height: 24px;border: none;color: #ffb527; font-weight: bold;">
+									<span class="mui-icon mui-icon-personadd" style="font-size: 18px;"></span>
+									选择游客
+								</button>
+							</div>
+							<div style="width: 50%;" class="mui-pull-left">
+								<button onclick="addCustomer()" type="button" class="manual-add-btn" id="manual-add-btn" style="width: 100%; line-height: 24px;border: none; color: #02ac85; font-weight: bold;">
+									<span class="mui-icon mui-icon-plusempty" style="font-size: 18px;"></span>
+									添加游客
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 游客信息 end!-->
+			</div>
+		</div>
+	</div>
+	<div>
+
+	</div>
+
+	<!-- 底部导航 -->
+	<foot class="foot-box" style="position: fixed; bottom: 0px; width: 100%;border-top:1px solid rgba(0, 0, 0, .1)">
+		<div style="width: 40%; float: left;background-color: white;">
+			<div class="total-pay mui-clearfix mui-pull-left" style="width: 70%;text-align: center; border-right:1px solid rgba(0, 0, 0, .1);height: 50px;padding-top: 2px;">
+				<span style="color: #999; font-size: 14px;">在线支付</span>
+				<div>
+					<span style="font-size: 10px;color: rgb(255,74,40)">￥</span>
+					<span style="color: rgb(255,74,40);font-weight: 600;font-size: 16px;" id="payment">&nbsp;</span>
+				</div>
+			</div>
+			<div style="width: 30%;color: rgb(40,158,243);position: relative;height: 50px;" class="mui-pull-right mui-clearfix buyer-box" onclick="toShoppingCartList()">
+				<span class="iconfont icon-gouwuche" style="color: red; position: relative;font-size: 24px;top: 14px;left: 8px;">
+					<span class="mui-badge" id="shoppingCarNum" style="position: absolute;top: -5px;left: 16px;background-color: red;color: white;display: none;"></span>
+				</span>
+			</div>
+		</div>
+		<div style="width: 60%;  float: left;">
+			<button class="mui-btn mui-btn-success mui-btn-block choseset mui-pull-left" style="background-color: rgb(255,181,39);border: 1px solid rgb(255,181,39);margin-bottom: 0;border-radius:0px;padding: 10px;width: 50%;font-size: 14px;line-height: 28px;" onclick="addShoppingCart()">加入购物车</button>
+			<button class="mui-btn mui-btn-success mui-btn-block choseset mui-pull-right" style="background-color: rgb(255,75,39);border: 1px solid rgb(255,75,39);margin-bottom: 0;border-radius:0px;padding: 10px;width: 50%;font-size: 14px;line-height: 28px;" onclick="submitOrder(this)" id="submitBtn">立即预定</button>
+		</div>
+	</foot>
+	<!-- 底部导航 end!-->
+	<div class="date-select"></div>
+	<!-- 蒙版  -->
+	<div id="chooseCustomerMask" style="display: none;">
+		<div class="name-list-box" style="width: 100%;background-color: white; position: fixed; bottom: 0px; top:0px; z-index: 11;">
+			<div class="mui-clearfix" style="width: 100%;background: #02ac85;">
+				<a class="mui-icon mui-icon-left-nav mui-pull-left" style="position: absolute;top: 10px;left: 10px;font-size: 20px;" onclick="confirmChooseCustomer()"></a>
+				<h4 class="mui-text-center" style="padding: 8px 0;color: #fff;font-weight: 500;">选择游客</h4>
+			</div>
+			<form class="mui-input-group" style="height: calc(100% - 94px); overflow: auto;">
+			</form>
+			<div style="position: fixed; bottom: 0px;width: 100%;">
+				<button class="mui-btn mui-btn-primary close-form" style="width: 100%;height: 50px;" onclick="confirmChooseCustomer()">
+					确定
+				</button>
+			</div>
+		</div>
+	</div>
+	<script id="template-customer-info" type="text/html">
+		{{
+			var data = it;
+			if (isNeedIdCardVerify) {
+		}}
+		<div class="mui-clearfix customer-info-item" style="margin: 0 20px;border-bottom:1px solid #ededed;">
+			<div class="mui-clearfix mui-pull-left" style="width: calc(100% - 20px);" >
+				<div class="mui-clearfix mui-pull-left" style="width: 25%;">
+					<input type="text" name="name" placeholder="姓名" value="{{= data ? data.name : ''}}" style="width:100%; border: none; margin-bottom: 0px;padding: 0px; font-size: 12px"/>
+				</div>
+				<div class="mui-clearfix mui-pull-left" style="width: 45%;">
+					<input type="text" name="idcardNo" placeholder="身份证号" value="{{= data ? data.idcardNo : ''}}" style="width:100%; border: none; margin-bottom: 0px;padding: 0 0 0 4px; font-size: 12px"/>
+				</div>
+				<div class="mui-clearfix mui-pull-left" style="width: 30%;">
+					<input type="text" name="mobile" placeholder="手机号" value="{{= data ? data.mobile : ''}}" style="width:100%; border: none; margin-bottom: 0px;padding: 0 0 0 4px; font-size: 12px"/>
+				</div>
+			</div>
+
+			<div class="mui-clearfix mui-pull-left" style="width: 20px;">
+				<span class="mui-icon-trash mui-icon" onclick="removeCustomer(this)" style="margin-top: 6px; font-size: 24px;"></span>
+			</div>
+		</div>
+		{{ } else { }}
+		<div class="mui-card-content-inner" style="padding-top: 0px;">
+			<div>
+				<div class="mui-clearfix">
+					<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+						姓名
+					</h4>
+					<input type="text" value="{{= data ? data.name : ''}}" placeholder="请输入身份证上的姓名" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerName"/>
+				</div>
+				<div class="mui-clearfix" style="border-bottom: 1px solid #eee;display: {{=product.whetherUserId === '1' ? 'block' : 'none'}};">
+					<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+<!--
+					<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;{{=(data && data.name) ? 'display:none;' : ''}}" id="buyerNameTip">必须填</p >
+-->
+				</div>
+				<div class="mui-clearfix" style="display: {{=product.whetherUserId === '1' ? 'block' : 'none'}}">
+					<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+						身份证
+					</h4>
+					<input type="text" value="{{= data ? data.idcardNo : ''}}" placeholder="输入有效的身份证号码" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerIdCard"/>
+				</div>
+				<div class="mui-clearfix" style="border-bottom: 1px solid #eee;">
+					<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+<!--
+					<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;{{=((data && data.idcardNo) || product.whetherUserId !== '1') ? 'display:none;' : ''}}" id="buyerIdCardTip">必须填</p >
+-->
+				</div>
+				<div class="mui-clearfix">
+					<h4 class="mui-pull-left" style="width: 30%; padding: 10px 0 0 5px;">
+						手机号
+					</h4>
+					<input type="text" value="{{= data ? data.mobile : ''}}" placeholder="输入入园人手机号码" style="width: 70%; border: none; margin-bottom: 0px;padding-bottom: 0px;" id="buyerMobile"/>
+				</div>
+				<div class="mui-clearfix" >
+					<p class="mui-pull-left" style="font-size: 10px; padding-left: 5px;color: #FF7362;width: 30%;">&nbsp;</p >
+<!--
+					<p class="mui-pull-left" style="font-size: 10px; padding-left: 14px;color: #FF7362;width: 70%;{{=(data && data.mobile) ? 'display:none;' : ''}}" id="buyerMobileTip">必须填</p >
+-->
+				</div>
+			</div>
+		</div>
+		{{ } }}
+	</script>
+	<script id="template-customer-info-select" type="text/html">
+		{{
+			$.each(it, function() {
+		}}
+		<div class="mui-input-row mui-checkbox mui-left">
+			<label class="mui-clearfix">
+				<div class="mui-pull-left" style="width: 25%;">
+					{{=this.name}}
+				</div>
+				<div class="mui-pull-left" style="width: 75%;text-align: center;">
+					{{=this.idcardNo}}
+				</div>
+				<!--<div class="mui-pull-left" style="width: 50%;">
+					{{=this.mobile}}
+				</div>-->
+			</label>
+			<input name="checkbox" value="{{=this.idcardNo}}" type="checkbox" onclick="addOrRemoveCustomer(this)">
+		</div>
+		{{
+			});
+		}}
+	</script>
+	<script type="application/javascript" src="/js/appjs/mobile/bus_ticket_book.js?v=1.2"></script>
+	</body>
+</html>

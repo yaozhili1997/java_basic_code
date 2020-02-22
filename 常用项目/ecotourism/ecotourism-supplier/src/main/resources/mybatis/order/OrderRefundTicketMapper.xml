@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.supplier.order.dao.OrderRefundTicketDao">
+
+	<select id="get" resultType="com.ecotourism.supplier.order.domain.OrderRefundTicketDO">
+		select `id`,`order_no`,`customer_name`,`customer_phone`,`app_user`,`app_time`,`refund_time`,`order_quantity`,`refund_amount`,`counter_fee`,`refund_state`,`create_user`,`create_time`,`review_state`,`electronic_ticket`,`bz` from order_refund_ticket where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.supplier.order.domain.OrderRefundTicketDO">
+		select a.id,`order_no`,`customer_name`,`customer_phone`,`app_user`,`app_time`,`refund_time`,`order_quantity`,`refund_amount`,`counter_fee`,b.name refund_state,`create_user`,`create_time`,c.name review_state,`electronic_ticket`,`bz` from order_refund_ticket a
+		left join sys_dict b ON
+		b.value = a.refund_state
+		and b.company_no = a.company_no
+		left join sys_dict c ON
+		c.value = a.review_state
+		and c.company_no = a.company_no
+		<where>
+			<if test="searchName != null and searchName != ''">(
+				order_no LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				electronic_ticket
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				)
+			</if>
+			<if test="id != null and id != ''"> and a.id = #{id} </if>
+			<if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
+			<if test="customerName != null and customerName != ''"> and customer_name = #{customerName} </if>
+			<if test="customerPhone != null and customerPhone != ''"> and customer_phone = #{customerPhone} </if>
+			<if test="appUser != null and appUser != ''"> and app_user = #{appUser} </if>
+
+			<if test="applyStartTime != null and applyStartTime != ''"> <![CDATA[ and app_time >= #{applyStartTime} ]]> </if>
+			<if test="applyEndTime != null and applyEndTime != ''"> <![CDATA[ and app_time <= #{applyEndTime} ]]> </if>
+			<if test="refundTime != null and refundTime != ''"> and refund_time = #{refundTime} </if>
+			<if test="orderQuantity != null and orderQuantity != ''"> and order_quantity = #{orderQuantity} </if>
+			<if test="refundAmount != null and refundAmount != ''"> and refund_amount = #{refundAmount} </if>
+			<if test="counterFee != null and counterFee != ''"> and counter_fee = #{counterFee} </if>
+			<if test="refundState != null and refundState != ''"> and refund_state = #{refundState} </if>
+			<if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="reviewState != null and reviewState != ''"> and review_state = #{reviewState} </if>
+			<if test="electronicTicket != null and electronicTicket != ''"> and electronic_ticket = #{electronicTicket} </if>
+			<if test="bz != null and bz != ''"> and bz = #{bz} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by a.id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from order_refund_ticket a
+		left join sys_dict b ON
+		b.value = a.refund_state
+		and b.company_no = a.company_no
+		left join sys_dict c ON
+		c.value = a.review_state
+		and c.company_no = a.company_no
+		<where>
+			<if test="searchName != null and searchName != ''">(
+				order_no LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				electronic_ticket
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				)
+			</if>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
+			<if test="customerName != null and customerName != ''"> and customer_name = #{customerName} </if>
+			<if test="customerPhone != null and customerPhone != ''"> and customer_phone = #{customerPhone} </if>
+			<if test="appUser != null and appUser != ''"> and app_user = #{appUser} </if>
+			<if test="appTime != null and appTime != ''"> and app_time = #{appTime} </if>
+			<if test="refundTime != null and refundTime != ''"> and refund_time = #{refundTime} </if>
+			<if test="orderQuantity != null and orderQuantity != ''"> and order_quantity = #{orderQuantity} </if>
+			<if test="refundAmount != null and refundAmount != ''"> and refund_amount = #{refundAmount} </if>
+			<if test="counterFee != null and counterFee != ''"> and counter_fee = #{counterFee} </if>
+			<if test="refundState != null and refundState != ''"> and refund_state = #{refundState} </if>
+			<if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="reviewState != null and reviewState != ''"> and review_state = #{reviewState} </if>
+			<if test="electronicTicket != null and electronicTicket != ''"> and electronic_ticket = #{electronicTicket} </if>
+			<if test="bz != null and bz != ''"> and bz = #{bz} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.supplier.order.domain.OrderRefundTicketDO" useGeneratedKeys="true" keyProperty="id">
+		insert into order_refund_ticket
+		(
+		`order_no`,
+		`customer_name`,
+		`customer_phone`,
+		`app_user`,
+		`app_time`,
+		`refund_time`,
+		`order_quantity`,
+		`refund_amount`,
+		`counter_fee`,
+		`refund_state`,
+		`create_user`,
+		`create_time`,
+		`review_state`,
+		`electronic_ticket`,
+		`bz`
+		)
+		values
+		(
+		#{orderNo},
+		#{customerName},
+		#{customerPhone},
+		#{appUser},
+		#{appTime},
+		#{refundTime},
+		#{orderQuantity},
+		#{refundAmount},
+		#{counterFee},
+		#{refundState},
+		#{createUser},
+		#{createTime},
+		#{reviewState},
+		#{electronicTicket},
+		#{bz}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.supplier.order.domain.OrderRefundTicketDO">
+		update order_refund_ticket
+		<set>
+			<if test="orderNo != null">`order_no` = #{orderNo}, </if>
+			<if test="customerName != null">`customer_name` = #{customerName}, </if>
+			<if test="customerPhone != null">`customer_phone` = #{customerPhone}, </if>
+			<if test="appUser != null">`app_user` = #{appUser}, </if>
+			<if test="appTime != null">`app_time` = #{appTime}, </if>
+			<if test="refundTime != null">`refund_time` = #{refundTime}, </if>
+			<if test="orderQuantity != null">`order_quantity` = #{orderQuantity}, </if>
+			<if test="refundAmount != null">`refund_amount` = #{refundAmount}, </if>
+			<if test="counterFee != null">`counter_fee` = #{counterFee}, </if>
+			<if test="refundState != null">`refund_state` = #{refundState}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="reviewState != null">`review_state` = #{reviewState}, </if>
+			<if test="electronicTicket != null">`electronic_ticket` = #{electronicTicket}, </if>
+			<if test="bz != null">`bz` = #{bz}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from order_refund_ticket where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from order_refund_ticket where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

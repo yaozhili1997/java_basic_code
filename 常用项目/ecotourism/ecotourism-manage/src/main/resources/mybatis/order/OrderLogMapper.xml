@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ecotourism.manage.order.dao.OrderLogDao">
+
+	<select id="get" resultType="com.ecotourism.manage.order.domain.OrderLogDO">
+		select `id`,`order_no`,`log_type`,`log_content`,`create_user`,`create_time`,`order_distributor`,`self_machine_no`,`electronic_ticket`,`order_quantity` from order_log where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.ecotourism.manage.order.domain.OrderLogDO">
+		select a.id,`order_no`,b.name log_type,`log_content`,`create_user`,`create_time`,`order_distributor`,`self_machine_no`,`electronic_ticket`,`order_quantity` from order_log a
+		left join sys_dict b ON
+		b.value = a.log_type
+		and b.company_no = a.company_no
+		<where>
+			<if test="searchName != null and searchName != ''">(
+				order_no LIKE
+				CONCAT(CONCAT('', #{searchName}),'%')
+				or
+				electronic_ticket
+				LIKE CONCAT(CONCAT('', #{searchName}),'%')
+				)
+			</if>
+			<if test="id != null and id != ''"> and a.id = #{id} </if>
+			<if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
+			<if test="logType != null and logType != ''"> and log_type = #{logType} </if>
+			<if test="logContent != null and logContent != ''"> and log_content = #{logContent} </if>
+			<if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="orderDistributor != null and orderDistributor != ''"> and order_distributor = #{orderDistributor} </if>
+			<if test="selfMachineNo != null and selfMachineNo != ''"> and self_machine_no = #{selfMachineNo} </if>
+			<if test="electronicTicket != null and electronicTicket != ''"> and electronic_ticket = #{electronicTicket} </if>
+			<if test="orderQuantity != null and orderQuantity != ''"> and order_quantity = #{orderQuantity} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by a.id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from order_log a
+		left join sys_dict b ON
+		b.value = a.log_type
+		and b.company_no = a.company_no
+		<where>
+			<if test="id != null and id != ''"> and a.id = #{id} </if>
+			<if test="orderNo != null and orderNo != ''"> and order_no = #{orderNo} </if>
+			<if test="logType != null and logType != ''"> and log_type = #{logType} </if>
+			<if test="logContent != null and logContent != ''"> and log_content = #{logContent} </if>
+			<if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+			<if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+			<if test="orderDistributor != null and orderDistributor != ''"> and order_distributor = #{orderDistributor} </if>
+			<if test="selfMachineNo != null and selfMachineNo != ''"> and self_machine_no = #{selfMachineNo} </if>
+			<if test="electronicTicket != null and electronicTicket != ''"> and electronic_ticket = #{electronicTicket} </if>
+			<if test="orderQuantity != null and orderQuantity != ''"> and order_quantity = #{orderQuantity} </if>
+			<if test="companyNo != null and companyNo != ''"> and a.company_no = #{companyNo} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.ecotourism.manage.order.domain.OrderLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into order_log
+		(
+		`order_no`,
+		`log_type`,
+		`log_content`,
+		`create_user`,
+		`create_time`,
+		`order_distributor`,
+		`self_machine_no`,
+		`electronic_ticket`,
+		`order_quantity`
+		)
+		values
+		(
+		#{orderNo},
+		#{logType},
+		#{logContent},
+		#{createUser},
+		#{createTime},
+		#{orderDistributor},
+		#{selfMachineNo},
+		#{electronicTicket},
+		#{orderQuantity}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.ecotourism.manage.order.domain.OrderLogDO">
+		update order_log
+		<set>
+			<if test="orderNo != null">`order_no` = #{orderNo}, </if>
+			<if test="logType != null">`log_type` = #{logType}, </if>
+			<if test="logContent != null">`log_content` = #{logContent}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="orderDistributor != null">`order_distributor` = #{orderDistributor}, </if>
+			<if test="selfMachineNo != null">`self_machine_no` = #{selfMachineNo}, </if>
+			<if test="electronicTicket != null">`electronic_ticket` = #{electronicTicket}, </if>
+			<if test="orderQuantity != null">`order_quantity` = #{orderQuantity}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from order_log where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from order_log where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
